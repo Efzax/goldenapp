@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 export async function GET(
-  req: Request,
+  request: NextRequest,
   { params }: { params: { code: string } }
 ) {
   try {
@@ -11,16 +11,21 @@ export async function GET(
     });
 
     if (!store) {
-      return NextResponse.json({ error: "Store not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Store not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
       name: store.name,
       code: store.code,
     });
-  } catch (err) {
-    console.error("STORE API ERROR:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (e) {
+    return NextResponse.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
 }
 
