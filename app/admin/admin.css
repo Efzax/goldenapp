@@ -1,0 +1,25 @@
+.admin-menu-container {
+  padding: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+.admin-menu {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-menu button {
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #1E51DA;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.admin-menu button:hover {
+  background: #334155;
+}

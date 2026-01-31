@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String? 
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+
+  stores UserStore[]
+}
+
+model Store {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  createdAt DateTime @default(now())
+
+  users       UserStore[]
+  inventories Inventory[]
+}
+
+model UserStore {
+  id      String @id @default(uuid())
+  userId  String
+  storeId String
+
+  user  User  @relation(fields: [userId], references: [id])
+  store Store @relation(fields: [storeId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, storeId])
+}
+
+model ProductFamily {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  products Product[]
+}
+
+enum Category {
+  TV
+  AV
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  sku       String   @unique
+  name      String
+  familyId  String
+  family    ProductFamily   @relation(fields: [familyId], references: [id])
+
+ category  Category @default(TV)   // 👈 con default
+
+  createdAt DateTime @default(now())
+  inventory Inventory[]
+}
+
+
+model Inventory {
+  id        String @id @default(uuid())
+  storeId   String
+  productId String
+
+  stock    Int
+  exhib    Boolean @default(false)
+  minStock Int
+
+  store   Store   @relation(fields: [storeId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([storeId, productId])
+}

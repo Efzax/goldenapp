@@ -1,0 +1,97 @@
+.detail-container {
+  padding: 16px;
+  font-family: system-ui, sans-serif;
+  background: #ffffff;
+  min-height: 100vh;
+  color:#475569;
+}
+
+.detail-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  
+}
+
+.detail-store {
+  color: #6d6e70;
+  margin-bottom: 16px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.stock-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stock-control button {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 18px;
+}
+
+.stock-control input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+.exhib-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.exhib-buttons button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+
+}
+
+.exhib-active {
+  background: #2563eb;
+  color: white;
+}
+
+.status-ok {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-bajo {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.status-critico {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.btn-save {
+  margin-top: 20px;
+  width: 100%;
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}

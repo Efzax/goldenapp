@@ -1,0 +1,44 @@
+.admin-users-container {
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: system-ui, sans-serif;
+  color: #384961
+}
+
+.admin-users-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #384961
+}
+
+.admin-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.admin-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.admin-button:hover {
+  background: #1d4ed8;
+}
+
+.admin-message {
+  margin-top: 12px;
+  font-size: 14px;
+}
