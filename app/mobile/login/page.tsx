@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import "../styles/ui.css";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ padding: 20, fontFamily: "system-ui", color: "#384961", }}>
-      <h2>GoldenApp</h2>
+      <div className="page-title">Golden App v0.12</div>
 
       <input
         type="email"
