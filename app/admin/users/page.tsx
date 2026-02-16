@@ -55,7 +55,7 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <div className="admin-users-container">
+    <div className="container">
       <div className="page-header">
         <button className="btn-back" onClick={() => router.push("/admin")}>
   ← Back

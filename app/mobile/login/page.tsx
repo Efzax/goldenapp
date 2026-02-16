@@ -11,6 +11,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ padding: 20, fontFamily: "system-ui", color: "#384961", }}>
+      <div className="page-container">
       <div className="page-title">Golden App v0.12</div>
 
       <input
@@ -78,6 +79,6 @@ if (res.ok) {
       >
         Entrar
       </button>
-    </div>
+    </div></div>
   );
 }

@@ -29,6 +29,7 @@ export default function SelectStorePage() {
   return (
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
      
+     <div className="page-container">
       {/* HEADER */}
       <div className="page-header">
         <button className="btn-back" onClick={() => history.back()}>
@@ -63,6 +64,6 @@ export default function SelectStorePage() {
           {store.name}
         </button>
       ))}
-    </div>
+    </div></div>
   );
 }

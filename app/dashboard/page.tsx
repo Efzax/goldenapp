@@ -114,7 +114,7 @@ const filteredData =
 
   return (
     
-    <div className="page-container">
+    <div className="page-dashboard">
       <div className="page-header">
         <button className="btn-back" onClick={() => router.push("/admin")}>
   ← Back
