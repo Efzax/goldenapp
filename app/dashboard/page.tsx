@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../styles/ui.css";
 
-
-
 type Store = {
   id: string;
   name: string;
@@ -24,9 +22,8 @@ type Item = {
 };
 
 export default function DashboardPage() {
-    const router = useRouter();
+  const router = useRouter();
 
-  // Protección por rol (solo ADMIN)
   useEffect(() => {
     fetch("/api/me").then(async (res) => {
       if (res.status === 401) {
@@ -35,12 +32,12 @@ export default function DashboardPage() {
       }
 
       const user = await res.json();
-
       if (user.role !== "ADMIN") {
         router.replace("/mobile");
       }
     });
   }, []);
+
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStore, setSelectedStore] = useState<string>("");
   const [data, setData] = useState<Item[]>([]);
@@ -48,41 +45,36 @@ export default function DashboardPage() {
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
 
-
   // Cargar tiendas
   useEffect(() => {
-fetch("/api/my-stores")
-  .then((res) => res.json())
-  .then((json) => {
-    if (Array.isArray(json)) {
-      setStores(json);
-      if (json.length > 0) {
-        setSelectedStore(json[0].code);
-      }
-    } else {
-      console.error("Respuesta inválida de /api/my-stores:", json);
-      setStores([]);
-    }
-  });
-
+    fetch("/api/my-stores")
+      .then((res) => res.json())
+      .then((json) => {
+        if (Array.isArray(json)) {
+          setStores(json);
+          if (json.length > 0) {
+            setSelectedStore(json[0].code);
+          }
+        } else {
+          setStores([]);
+        }
+      });
   }, []);
 
-  // Cargar inventario por tienda
+  // Cargar inventario
   useEffect(() => {
     if (!selectedStore) return;
-        
 
     setLoading(true);
+
     fetch(`/api/dashboard/${selectedStore}?category=${category}`)
       .then((res) => res.json())
-.then((json) => {
-  setData(json.items || []);
-  setLoading(false);
-});
-
+      .then((json) => {
+        setData(json.items || []);
+        setLoading(false);
+      });
   }, [selectedStore, category]);
 
-  // Cálculos locales (como Excel)
   const calculateDerived = (item: Item) => {
     const stockTotal = item.stock + (item.exhib ? 1 : 0);
     let status = "OK";
@@ -106,39 +98,81 @@ fetch("/api/my-stores")
     return "";
   };
 
-const filteredData =
-  statusFilter === "ALL"
-    ? Array.isArray(data) ? data : []
-    : Array.isArray(data) ? data.filter((item) => item.status === statusFilter) : [];
+  const filteredData =
+    statusFilter === "ALL"
+      ? Array.isArray(data)
+        ? data
+        : []
+      : Array.isArray(data)
+      ? data.filter((item) => item.status === statusFilter)
+      : [];
 
+  // 🔥 AGREGAR SKU
+  async function handleAdd() {
+    const sku = prompt("Ingrese SKU nuevo:");
+    if (!sku) return;
+
+    await fetch("/api/inventory/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        storeCode: selectedStore,
+        sku,
+        category,
+      }),
+    });
+
+    const res = await fetch(`/api/dashboard/${selectedStore}?category=${category}`);
+    const json = await res.json();
+    setData(json.items || []);
+  }
+
+  // 🔥 ELIMINAR SKU (solo inventory)
+  async function handleDelete(sku: string) {
+    if (!confirm("¿Eliminar este SKU de esta tienda?")) return;
+
+    await fetch("/api/inventory/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        storeCode: selectedStore,
+        sku,
+      }),
+    });
+
+    const res = await fetch(`/api/dashboard/${selectedStore}?category=${category}`);
+    const json = await res.json();
+    setData(json.items || []);
+  }
 
   return (
-    
     <div className="page-container">
       <div className="page-header">
         <button className="btn-back" onClick={() => router.push("/admin")}>
-  ← Back
-</button>
+          ← Back
+        </button>
 
+        <button
+          className="btn-logout"
+          onClick={async () => {
+            await fetch("/api/logout", { method: "POST" });
+            location.href = "/mobile/login";
+          }}
+        >
+          Logout
+        </button>
+      </div>
 
-  
+      <h2 className="page-title">Dashboard</h2>
 
-  <button
-    className="btn-logout"
-    onClick={async () => {
-      await fetch("/api/logout", { method: "POST" });
-      location.href = "/mobile/login";
-    }}
-  >
-    Logout
-  </button> </div>
-  <h2 className="page-title">Dashboard</h2>
-
+      {/* AGREGAR SKU */}
+      <button className="btn-primary" onClick={handleAdd}>
+        + Agregar SKU
+      </button>
 
       {/* Selector tienda */}
       <div>
         <label>Tienda: </label>
-        
         <select
           className="select"
           value={selectedStore}
@@ -152,23 +186,23 @@ const filteredData =
         </select>
       </div>
 
+      {/* Tabs */}
       <div className="category-tabs">
-  <button
-    className={category === "TV" ? "tab active" : "tab"}
-    onClick={() => setCategory("TV")}
-  >
-    TV
-  </button>
-  <button
-    className={category === "AV" ? "tab active" : "tab"}
-    onClick={() => setCategory("AV")}
-  >
-    AV
-  </button>
-</div>
+        <button
+          className={category === "TV" ? "tab active" : "tab"}
+          onClick={() => setCategory("TV")}
+        >
+          TV
+        </button>
+        <button
+          className={category === "AV" ? "tab active" : "tab"}
+          onClick={() => setCategory("AV")}
+        >
+          AV
+        </button>
+      </div>
 
-
-      {/* Selector status */}
+      {/* Status */}
       <div style={{ marginTop: "10px" }}>
         <label>Status: </label>
         <select
@@ -245,56 +279,61 @@ const filteredData =
                   </td>
 
                   <td>
-  <input
-    type="number"
-    className="input-stock"
-    value={item.min}
-    onChange={(e) => {
-      const newData = data.map((d) =>
-        d.sku === item.sku
-          ? calculateDerived({
-              ...d,
-              min: Number(e.target.value),
-            })
-          : d
-      );
-      setData(newData);
-    }}
-  />
-</td>
-                  <td>{item.stockTotal}</td>
+                    <input
+                      type="number"
+                      className="input-stock"
+                      value={item.min}
+                      onChange={(e) => {
+                        const newData = data.map((d) =>
+                          d.sku === item.sku
+                            ? calculateDerived({
+                                ...d,
+                                min: Number(e.target.value),
+                              })
+                            : d
+                        );
+                        setData(newData);
+                      }}
+                    />
+                  </td>
 
+                  <td>{item.stockTotal}</td>
                   <td className={statusClass(item.status)}>
                     {item.status}
                   </td>
-
                   <td>{item.empuje}</td>
 
-                  <td>
+                  <td style={{ display: "flex", gap: "8px" }}>
                     <button
                       className="btn-save"
                       onClick={async () => {
                         await fetch("/api/inventory/update", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                         body: JSON.stringify({
-  storeCode: selectedStore,
-  sku: item.sku,
-  stock: item.stock,
-  exhib: item.exhib,
-  minStock: item.min,
-}),
-
+                          body: JSON.stringify({
+                            storeCode: selectedStore,
+                            sku: item.sku,
+                            stock: item.stock,
+                            exhib: item.exhib,
+                            minStock: item.min,
+                          }),
                         });
 
                         const res = await fetch(
-                          `/api/dashboard/${selectedStore}`
+                          `/api/dashboard/${selectedStore}?category=${category}`
                         );
                         const json = await res.json();
-                        setData(json);
+                        setData(json.items || []);
                       }}
                     >
                       Guardar
+                    </button>
+
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(item.sku)}
+                    >
+                      Eliminar
                     </button>
                   </td>
                 </tr>
