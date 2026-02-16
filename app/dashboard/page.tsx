@@ -165,10 +165,7 @@ export default function DashboardPage() {
 
       <h2 className="page-title">Dashboard</h2>
 
-      {/* AGREGAR SKU */}
-      <button className="btn-primary" onClick={handleAdd}>
-        + Agregar SKU
-      </button>
+
 
       {/* Selector tienda */}
       <div>
@@ -184,6 +181,10 @@ export default function DashboardPage() {
             </option>
           ))}
         </select>
+              {/* AGREGAR SKU */}
+      <button className="btn-primary" onClick={handleAdd}>
+        + Agregar SKU
+      </button>
       </div>
 
       {/* Tabs */}
