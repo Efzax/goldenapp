@@ -199,7 +199,7 @@ export default function DashboardPage() {
           AV
         </button>
                       {/* AGREGAR SKU */}
-      <button className="btn-primary" onClick={handleAdd}>
+      <button className="btn-ther" onClick={handleAdd}>
         + Agregar SKU
       </button>
       </div>
