@@ -181,10 +181,7 @@ export default function DashboardPage() {
             </option>
           ))}
         </select>
-              {/* AGREGAR SKU */}
-      <button className="btn-primary" onClick={handleAdd}>
-        + Agregar SKU
-      </button>
+
       </div>
 
       {/* Tabs */}
@@ -201,6 +198,10 @@ export default function DashboardPage() {
         >
           AV
         </button>
+                      {/* AGREGAR SKU */}
+      <button className="btn-primary" onClick={handleAdd}>
+        + Agregar SKU
+      </button>
       </div>
 
       {/* Status */}
