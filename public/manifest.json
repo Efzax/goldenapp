@@ -1,6 +1,6 @@
 {
   "name": "GoldenApp",
-  "short_name": "GoldenApp",
+  "short_name": "GoldenApp v0.1.2",
   "description": "Control de stock Samsung",
   "start_url": "/mobile",
   "display": "standalone",
