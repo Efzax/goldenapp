@@ -16,7 +16,13 @@ export default function SelectStorePage() {
 
   useEffect(() => {
     fetch("/api/my-stores")
-      .then((res) => res.json())
+      .then((res) => {
+      if (res.status === 401) {
+        router.replace("/mobile/login");
+        return null;
+      }
+      return res.json();
+    })
       .then((json) => {
         setStores(json);
 
