@@ -18,7 +18,7 @@ export default function SelectStorePage() {
     fetch("/api/my-stores")
       .then((res) => {
       if (res.status === 401) {
-        router.replace("/mobile/login");
+        router.replace("../mobile/login");
         return null;
       }
       return res.json();
