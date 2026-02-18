@@ -29,23 +29,33 @@ const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  // Verificar sesión
+
+  //-- Verificar sesión
 useEffect(() => {
   fetch("/api/me")
-    .then((res) => {
+    .then(async (res) => {
       if (res.status === 401) {
         router.replace("/mobile/login");
+        setIsAuthenticated(false);
         return null;
       }
-      return res.json();
-    })
-    .then((json) => {
+
+      const json = await res.json();
+
       if (json?.role === "ADMIN") {
         setIsAdmin(true);
       }
+
+      setIsAuthenticated(true);
+    })
+    .catch(() => {
+      router.replace("/mobile/login");
+      setIsAuthenticated(false);
     });
 }, [router]);
+
 
 
 
@@ -98,6 +108,7 @@ useEffect(() => {
     return acc;
   }, {});
 
+  if (isAuthenticated === null) {
   return (
     <div className="page-container">
       {/* HEADER */}
@@ -191,4 +202,9 @@ useEffect(() => {
       ))}
     </div>
   );
+  }
+
+if (isAuthenticated === false) {
+  return null;
+}
 }
