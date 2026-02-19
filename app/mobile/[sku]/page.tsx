@@ -51,25 +51,26 @@ useEffect(() => {
     });
 }, [router]);
 
-  useEffect(() => {
-    if (!storeCode) {
-      router.replace("/mobile/select-store");
-      return;
-    }
+useEffect(() => {
+  if (!storeCode) {
+    router.replace("/mobile/select-store");
+    return;
+  }
 
-    fetch(`/api/dashboard/${storeCode}`)
-  .then((res) => res.json())
- .then((json) => {
-  setStoreName(json.storeName);
-  const found = json.items.find((i: Item) => i.sku === sku);
-  setItem(found);
-  setPrevStock(found.stock);
-  setOriginalItem(found);
-  setLoading(false);
-});
+  const currentCategory = searchParams.get("category") || "TV";
 
+  fetch(`/api/dashboard/${storeCode}?category=${currentCategory}`)
+    .then((res) => res.json())
+    .then((json) => {
+      setStoreName(json.storeName);
+      const found = json.items?.find((i: Item) => i.sku === sku);
+      setItem(found);
+      setPrevStock(found?.stock ?? null);
+      setOriginalItem(found);
+      setLoading(false);
+    });
+}, [storeCode, sku, searchParams]);
 
-  }, [storeCode, sku]);
 
   if (loading) return <div className="page-container">Cargando...</div>;
   if (!item) return <div className="page-container">SKU no encontrado</div>;
