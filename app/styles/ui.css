@@ -1,26 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 
+:root {
+  /* Las variables siempre deben empezar con dos guiones -- */
+  --color-primario: #2872a1; 
+  --color-secundario: #cbdde9;
+  --color-fondo: #f4f4f4;
+}
+
+body {
+  background-color: #f9f9f9;
+  color: #101527;
+  margin: 0;
+  font-family: 'Roboto' , sans-serif !important;
+  padding: 0;
+}
+
 /* ===== BASE ===== */
 .page-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 16px;
-  font-family: 'Roboto' , sans-serif !important;
   font-size: 1rem !important;
 }
 .page-dashboard {
   max-width: 100%;
   margin: 0 auto;
   padding: 16px;
-  font-family: 'Roboto' , sans-serif !important;
   font-size: 1rem !important;
 }
 
 .page-title {
   font-size: 1.6rem;
   font-weight: 500;
-  color: #1e293b;
   text-align: left;
   flex: 1 ;
   padding-bottom: 5px;
@@ -51,8 +63,8 @@
   display: flex; 
   padding: 18px;
   border-radius: 8px;
-  background: #2563eb;
-  color: white;
+  background: var(--color-primario);
+  color: var(--color-secundario);
   border: none;
   justify-content: center;
   align-items: center;
@@ -65,8 +77,8 @@
   display: flex; 
   padding: 18px;
   border-radius: 8px;
-  background: #e6e6e6;
-  color: #2563eb;
+  background: var(--color-secundario);
+  color: var(--color-primario);
   border: none;
   justify-content: center;
   align-items: center;
@@ -79,8 +91,8 @@
   display: flex; 
   padding: 18px;
   border-radius: 8px;
-  background: #2563eb;
-  color: white;
+  background: var(--color-primario);
+  color: var(--color-secundario);
   border: none;
   justify-content: center;
   align-items: center;
@@ -90,7 +102,7 @@
 .btn-back {
   background: none !important;
   border: none !important;
-  color: #1E51DA !important; /* azul claro */
+  color: var(--color-primario)!important; /* azul claro */
   font-size: 0.875rem !important;
   font-weight: 500 !important;
   cursor: pointer !important;
@@ -130,8 +142,8 @@
   display: flex; 
   padding: 15px;
   border-radius: 8px;
-  background: #e0f2fc;
-  color: #2563eb;
+  background: var(--color-secundario);
+  color: var(--color-primario);
   border: none;
   justify-content: center;
   align-items: center;
@@ -140,8 +152,8 @@
 
 
 .btn-save {
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--color-primario);
+  color: var(--color-secundario);
   padding: 4px 10px;
   border-radius: 6px;
   border: none;
@@ -149,7 +161,7 @@
 }
 
 .btn-save:hover {
-  background-color: #1d4ed8;
+  background-color: var(--color-primario);
 }
 
 .file-input-hidden {
@@ -167,8 +179,8 @@
   display: flex; 
   padding: 15px;
   border-radius: 8px;
-  background: #e0f2fc;
-  color: #2563eb;
+  background: var(--color-secundario);
+  color: var(--color-primario);
   border: none;
   justify-content: center;
   align-items: center;
@@ -251,14 +263,14 @@
 }
 
 .dashboard-table th {
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--color-primario);
+  color: var(--color-secundario);
   padding: 10px;
   font-size: 14px;
 }
 
 .dashboard-table td {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-secundario);
   padding: 8px;
   text-align: center;
   font-size: 14px;
@@ -267,7 +279,7 @@
 .input-stock {
   width: 60px;
   padding: 4px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--color-secundario);
   border-radius: 4px;
   text-align: center;
 }
@@ -283,14 +295,14 @@
   padding: 8px;
   border-radius: 8px;
   border: none;
-  background: #e6e6e6;
-  color: #2563eb;
+  background: var(--color-secundario);
+  color: var(--color-primario);
   cursor: pointer;
 }
 
 .tab.active {
-  background: #2563eb;
-  color: white;
+  background: var(--color-primario);
+  color: var(--color-secundario);
 }
 
 
@@ -414,7 +426,7 @@
 }
 
 .icon-tv {
-  color: #2563eb;
+  color: var(--color-primario);
 }
 
 .stock-number {
@@ -428,7 +440,7 @@
   background: #fff;
   border-radius: 14px;
   margin-bottom: 16px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--color-secundario);
 }
 
 .card-header {
@@ -438,7 +450,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid var(--color-secundario);
   background-color: #f3f3f3;
 }
 
@@ -457,7 +469,7 @@
 .btn-on {
   width: 40%;
   background: #16a34a;
-  color: white;
+  color: var(--color-secundario);
   padding: 6px 14px;
   border-radius: 10px;
   border:1px solid #16a34a;
@@ -465,7 +477,7 @@
 .btn-off {
   width: 40%;
   border: 1px solid #9ca3af;
-  background: #fff;
+  background: var(--color-secundario);
   color: #9ca3af;
   padding: 6px 14px;
   border-radius: 10px;
@@ -483,7 +495,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 0;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid var(--color-secundario);
 }
 
 .row-end {
@@ -505,8 +517,8 @@
   height: 36px;
   border-radius: 8px;
   border: none;
-  background: #2563eb;
-  color: white;
+  background: var(--color-primario);
+  color: var(--color-secundario);
   font-size: 18px;
 }
 
@@ -519,9 +531,9 @@
 }
 
 .toggle .active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
+  background: var(--color-primario);
+  color: var(--color-secundario);
+  border-color: var(--color-primario);
 }
 
 .save-message {
