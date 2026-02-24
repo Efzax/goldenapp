@@ -277,9 +277,11 @@ const filteredData = Array.isArray(data)
 </td>
                   <td>{item.stockTotal}</td>
 
-                  <td className={statusClass(item.status)}>
-                    {item.status}
-                  </td>
+<td>
+  <span className={`status-badge ${statusClass(item.status)}`}>
+    {item.status}
+  </span>
+</td>
 
                   <td>{item.empuje}</td>
 
