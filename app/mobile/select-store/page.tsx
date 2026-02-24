@@ -38,9 +38,22 @@ export default function SelectStorePage() {
      <div className="page-container">
       {/* HEADER */}
       <div className="page-header">
-        <button className="btn-back" onClick={() => history.back()}>
-          
-        </button>
+<button className="btn-back" onClick={() => router.back()}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-6 h-6 shrink-0"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+</button>
         <button
           className="btn-logout"
           onClick={async () => {
@@ -51,7 +64,7 @@ export default function SelectStorePage() {
           Logout
         </button>
       </div>
-      <div className="page-title">Selecciona tu tienda</div>
+      <div className="page-title">SELECCIONA TU TIENDA</div>
       {stores.map((store) => (
         <button
           key={store.id}

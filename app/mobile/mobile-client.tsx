@@ -104,9 +104,22 @@ useEffect(() => {
       {/* HEADER */}
       <div className="page-header">
 
-    <button className="btn-back" onClick={() => history.back()}>
-      ← Back
-    </button>
+<button className="btn-back" onClick={() => router.back()}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-6 h-6 shrink-0"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+</button>
 
 
   {isAdmin && (
@@ -158,36 +171,38 @@ useEffect(() => {
       />
 
       {/* LISTA */}
-      
+   
       {Object.keys(grouped).map((family) => (
-        <div key={family}>
-          <div className="family-title">{family}</div>
+        <div key={family}><div className="card-dots">
+          <div className="card-header-dots">
+          <div className="family-title">{family}</div></div>
 
           {grouped[family].map((item: Item) => (
-            <a
-              key={item.sku}
-              href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
-              className="sku-row"
-            >
-              <div className={`status-dot ${statusDotClass(item.status)}`} />
+  <div key={item.sku} className="card-body-dots">
+    <a
+      href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
+      className="sku-row"
+    >
+      <div className={`status-dot ${statusDotClass(item.status)}`} />
 
-              <div className="sku-info">
-                <div className="sku-text">{item.sku}</div>
+      <div className="sku-info">
+        <div className="sku-text">{item.sku}</div>
 
-                <div className="sku-icons">
-                  {item.stock > 0 ? (
-                    <CheckCircleIcon className="icon icon-ok" />
-                  ) : (
-                    <XCircleIcon className="icon icon-zero" />
-                  )}
+        <div className="sku-icons">
+          {item.stock > 0 ? (
+            <CheckCircleIcon className="icon icon-ok" />
+          ) : (
+            <XCircleIcon className="icon icon-zero" />
+          )}
 
-                  {item.exhib && <TvIcon className="icon icon-tv" />}
+          {item.exhib && <TvIcon className="icon icon-tv" />}
 
-                  <span className="stock-number">{item.stock}</span>
-                </div>
-              </div>
-            </a>
-          ))}
+          <span className="stock-number">{item.stock}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+))}</div>
         </div>
       ))}
     </div>

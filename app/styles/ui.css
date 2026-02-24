@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-
 :root {
   /* Las variables siempre deben empezar con dos guiones -- */
-  --color-primario: #2872a1; 
-  --color-secundario: #cbdde9;
-  --color-fondo: #f4f4f4;
+  --color-primario: #2d3142; 
+  --color-secundario: #DFEAFF;
+  --color-fondo: #f9f9f9;
+  --color-fondo2: #F2F4F7;
+  --color-card: #ffffff;
 }
 
 body {
-  background-color: #f9f9f9;
-  color: #101527;
+  background-color: var(--color-fondo);
   margin: 0;
-  font-family: 'Roboto' , sans-serif !important;
-  padding: 0;
+  font-size: 16px;
+  font-family: var(--font-satoshi), sans-serif;
+  font-weight: 400;
 }
+
+
 
 /* ===== BASE ===== */
 .page-container {
@@ -32,7 +33,6 @@ body {
 
 .page-title {
   font-size: 1.6rem;
-  font-weight: 500;
   text-align: left;
   flex: 1 ;
   padding-bottom: 5px;
@@ -57,7 +57,7 @@ body {
 }
 
 /* ===== BUTTONS ===== */
-.btn-primary {
+.btn-primary{
   width: 100%;
   margin-top: 5px;
   display: flex; 
@@ -77,7 +77,6 @@ body {
   display: flex; 
   padding: 18px;
   border-radius: 8px;
-  background: var(--color-secundario);
   color: var(--color-primario);
   border: none;
   justify-content: center;
@@ -100,51 +99,64 @@ body {
 }
 
 .btn-back {
-  background: none !important;
-  border: none !important;
+  background: var(--color-fondo2) !important;
+  border: 1px solid var(--color-secundario) !important;
   color: var(--color-primario)!important; /* azul claro */
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
   cursor: pointer !important;
+  padding: 6px 20px !important;
+  border-radius: 9999px !important; /* pill */
+}
+
+.btn-back svg {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
 .btn-back:hover {
-  text-decoration: underline !important;
+  text-decoration: none !important;
+  background-color: var(--color-fondo2) !important;
+/* fondo claro */
 }
 .btn-primary svg {
   margin-right: 5px;
-  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
+  vertical-align: middle;
+  width: 30px;
+  height: 30px; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
 .btn-secondary svg {
   margin-right: 5px;
+  width: 30px;
+  height: 30px;
   vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
 .btn-logout {
   background-color: #fcdede !important; /* lila claro como la imagen */
-  border: none !important;
+  border: 1px solid red  !important;
   color: red !important; /* azul */
-  padding: 6px 14px !important;
+  padding: 6px 20px !important;
   border-radius: 9999px !important; /* pill */
   font-size: 0.875rem !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   cursor: pointer !important;
   float: right !important;
 }
 
 .btn-logout:hover {
-  background-color: #fab8b8 !important;
+  background-color: red !important;
+  color: white !important;
 }
 
 .btn-dash {
-  margin: 0 0 10px 0 ;
   display: flex; 
-  padding: 15px;
+  padding: 10px 30px;
   border-radius: 8px;
-  background: var(--color-secundario);
+  background: var(--color-fondo2);
   color: var(--color-primario);
-  border: none;
+  border: 1px solid var(--color-secundario);
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -189,6 +201,8 @@ body {
 
 .file-upload {
   margin: 12px 0;
+  border: 1px solid var(--color-primario);
+  border-radius: 8px;
 }
 
 
@@ -197,7 +211,8 @@ body {
   width: 100%;
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #cbd5e1;
+  margin-bottom: 10px;
+  border: 1px solid var(--color-fondo2);
 }
 
 .import-message {
@@ -294,8 +309,7 @@ body {
   flex: 1;
   padding: 8px;
   border-radius: 8px;
-  border: none;
-  background: var(--color-secundario);
+  border: 1px solid var(--color-primario);
   color: var(--color-primario);
   cursor: pointer;
 }
@@ -305,6 +319,74 @@ body {
   color: var(--color-secundario);
 }
 
+
+/* Contenedor principal: Activa el layout de dos columnas */
+.admin-container {
+  display: flex;
+  min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
+}
+
+/* Sidebar: Ancho fijo y diseño vertical */
+.admin-sidebar {
+  width: 250px;
+background-color: white;
+  color: var(--color-primario);
+  padding: 20px;
+  flex-shrink: 0; /* Evita que el sidebar se encoja en pantallas pequeñas */
+}
+
+/* Estilos de navegación */
+.admin-sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  gap: 12px;
+}
+
+
+/* Seleccionamos el enlace dentro de la lista del sidebar */
+.admin-sidebar nav li a {
+  display: flex;         /* Activa el alineamiento horizontal */
+  align-items: center;    /* Centra verticalmente el icono con el texto */
+  gap: 12px;             /* Separa el SVG del texto */
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: var(--color-primario);
+  transition: background 0.2s;
+  margin-top: 20px;
+}
+
+/* Controlamos el tamaño del SVG */
+.admin-sidebar nav li svg {
+  width: 20px;           /* Ajusta el tamaño a tu gusto */
+  height: 20px;
+  flex-shrink: 0;        /* Evita que el icono se aplaste si el texto es largo */
+}
+
+/* Opcional: un efecto de fondo al pasar el mouse */
+.admin-sidebar nav li a:hover {
+  background-color: var(--color-primario)
+}
+
+.admin-sidebar nav a {
+  color: var(--color-secundario);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+  display: block;
+}
+
+.admin-sidebar nav a:hover {
+  color: var(--color-secundario);
+}
+
+/* Contenido Principal: Ocupa el resto del espacio */
+.admin-content {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: var(--color-fondo);
+  overflow-y: auto; /* Permite scroll solo en el contenido si es muy largo */
+}
 
 /* ===== STATUS ===== */
 
@@ -335,26 +417,55 @@ body {
 /*===== DOTS ===== */
 
 .family-title {
-  margin-top: 16px;
-  font-weight: 600;
-  ;
+  font-weight: 700;
+  font-size: 24px
+}
+
+.card-dots {
+  background: var(--color-card);
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 16px 0;
+  border: 1px solid var(--color-secundario);
+}
+
+.card-dots a {
+  text-decoration: none;
+  font-weight: 400;
+  color: inherit;
+}
+
+.card-dots a:hover {
+  text-decoration: none;
+  background-color: var(--color-fondo);
+}
+
+.card-header-dots {
+  display: flex;
+  border-start-start-radius: 14px;
+  border-start-end-radius: 14px;
+  padding: 16px;
+  background-color: var(--color-fondo2);
+}
+
+.card-body-dots {
+  display: flex;
+  flex-direction: column;
 }
 
 .sku-row {
-  background: white;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 12px;
   text-decoration: none;
-  border: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
 }
 
 .status-dot {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height:22px;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -362,9 +473,9 @@ body {
 }
 
 .status-dot::after {
-  content: "";
-  width: 8px;
-  height: 8px;
+  content:"";
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
 }
 
@@ -400,7 +511,7 @@ body {
 }
 
 .sku-text {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1rem;
  
 }
@@ -437,7 +548,7 @@ body {
 /*===== SKU Pnale =====*/
 
 .card {
-  background: #fff;
+  background: var(--color-card);
   border-radius: 14px;
   margin-bottom: 16px;
   border: 1px solid var(--color-secundario);
@@ -451,7 +562,7 @@ body {
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid var(--color-secundario);
-  background-color: #f3f3f3;
+  background-color: var(--color-fondo2);
 }
 
 .sku-title {
@@ -476,9 +587,8 @@ body {
 }
 .btn-off {
   width: 40%;
-  border: 1px solid #9ca3af;
-  background: var(--color-secundario);
-  color: #9ca3af;
+  border: 1px solid var(--color-primario);
+  background-color: var(--color-card);
   padding: 6px 14px;
   border-radius: 10px;
 }

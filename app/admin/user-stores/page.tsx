@@ -91,9 +91,7 @@ useEffect(() => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <button className="btn-back" onClick={() => router.push("/admin")}>
-  ← Back
-</button>
+<div className="header-left"></div>
 
         
         <button

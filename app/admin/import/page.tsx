@@ -104,9 +104,7 @@ export default function ImportPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <button className="btn-back" onClick={() => location.href = "/admin"}>
-          ← Back
-        </button>
+<div className="header-left"></div>
         <button
           className="btn-logout"
           onClick={async () => {
@@ -118,7 +116,7 @@ export default function ImportPage() {
         </button>
       </div>
 
-      <div className="page-title">Importar Excel</div>
+      <h2 className="page-title">Importar Excel</h2>
 
       <div className="button-group">
         <button

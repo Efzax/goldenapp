@@ -1,95 +1,306 @@
 "use client";
 
-import "../styles/ui.css";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import "../styles/ui.css";
 
-export default function AdminPage() {
-  const router = useRouter();
 
-  // proteger admin
+
+type Store = {
+  id: string;
+  name: string;
+  code: string;
+};
+
+type Item = {
+  sku: string;
+  family: string;
+  stock: number;
+  exhib: boolean;
+  min: number;
+  stockTotal: number;
+  status: string;
+  empuje: number;
+};
+
+export default function DashboardPage() {
+    const router = useRouter();
+
+  // Protección por rol (solo ADMIN)
   useEffect(() => {
     fetch("/api/me").then(async (res) => {
-      if (!res.ok) {
+      if (res.status === 401) {
         router.replace("/mobile/login");
         return;
       }
+
       const user = await res.json();
+
       if (user.role !== "ADMIN") {
         router.replace("/mobile");
       }
     });
   }, []);
+  const [stores, setStores] = useState<Store[]>([]);
+  const [selectedStore, setSelectedStore] = useState<string>("");
+  const [data, setData] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [category, setCategory] = useState<"TV" | "AV">("TV");
+
+
+  // Cargar tiendas
+  useEffect(() => {
+fetch("/api/my-stores")
+  .then((res) => res.json())
+  .then((json) => {
+    if (Array.isArray(json)) {
+      setStores(json);
+      if (json.length > 0) {
+        setSelectedStore(json[0].code);
+      }
+    } else {
+      console.error("Respuesta inválida de /api/my-stores:", json);
+      setStores([]);
+    }
+  });
+
+  }, []);
+
+  // Cargar inventario por tienda
+  useEffect(() => {
+    if (!selectedStore) return;
+        
+
+    setLoading(true);
+    fetch(`/api/dashboard/${selectedStore}?category=${category}`)
+      .then((res) => res.json())
+.then((json) => {
+  setData(json.items || []);
+  setLoading(false);
+});
+
+  }, [selectedStore, category]);
+
+  // Cálculos locales (como Excel)
+  const calculateDerived = (item: Item) => {
+    const stockTotal = item.stock + (item.exhib ? 1 : 0);
+    let status = "OK";
+    if (stockTotal <= item.min * 0.5) status = "CRITICO";
+    else if (stockTotal < item.min) status = "BAJO";
+
+    const empuje = Math.max(item.min - stockTotal, 0);
+
+    return {
+      ...item,
+      stockTotal,
+      status,
+      empuje,
+    };
+  };
+
+  const statusClass = (status: string) => {
+    if (status === "OK") return "status-ok";
+    if (status === "BAJO") return "status-bajo";
+    if (status === "CRITICO") return "status-critico";
+    return "";
+  };
+
+const filteredData =
+  statusFilter === "ALL"
+    ? Array.isArray(data) ? data : []
+    : Array.isArray(data) ? data.filter((item) => item.status === statusFilter) : [];
+
 
   return (
-    <div className="page-container">
+    
+    <div className="page-dashboard">
       <div className="page-header">
-        <button className="btn-back" onClick={() => router.push("/admin")}>
-  ← Back
-</button>
+<div className="header-left"></div>
 
-        
-        <button
-          className="btn-logout"
-          onClick={async () => {
-            await fetch("/api/logout", { method: "POST" });
-            location.href = "/mobile/login";
-          }}
-        >
-          Logout
-        </button>
-      </div>
-<h2 className="page-title">Admin</h2>
-      <div className="admin-menu">
-<button 
-  onClick={() => router.push("/dashboard")}
-  className="btn-primary" >
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    fill="none" 
-    viewBox="0 0 24 24" 
-    strokeWidth={1.5} 
-    stroke="currentColor" 
-    className="size-6"
+
+  
+
+  <button
+    className="btn-logout"
+    onClick={async () => {
+      await fetch("/api/logout", { method: "POST" });
+      location.href = "/mobile/login";
+    }}
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-  </svg>
-  <span>Dashboard</span>
-</button>
+    Logout
+  </button> </div>
+  <h2 className="page-title">Dashboard</h2>
 
-        <button onClick={() => router.push("/admin/users")}
-            className="btn-primary" >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-</svg>
- Crear Usuarios
-        </button>
 
-        <button onClick={() => router.push("/admin/user-stores")}
-            className="btn-primary" >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-</svg>
- Asignar Tiendas
-        </button>
-
-                <button onClick={() => router.push("/admin/import")}
-            className="btn-primary" >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-</svg>
- Exportar - Importar
-        </button>
-
-                        <button onClick={() => router.push("./mobile")}
-            className="btn-primary" >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
-</svg>
-
- Mobile Client
-        </button>
+      {/* Selector tienda */}
+      <div>
+        <label>Tienda: </label>
+        
+        <select
+          className="select"
+          value={selectedStore}
+          onChange={(e) => setSelectedStore(e.target.value)}
+        >
+          {stores.map((store) => (
+            <option key={store.id} value={store.code}>
+              {store.name}
+            </option>
+          ))}
+        </select>
       </div>
+
+      <div className="category-tabs">
+  <button
+    className={category === "TV" ? "tab active" : "tab"}
+    onClick={() => setCategory("TV")}
+  >
+    TV
+  </button>
+  <button
+    className={category === "AV" ? "tab active" : "tab"}
+    onClick={() => setCategory("AV")}
+  >
+    AV
+  </button>
+</div>
+
+
+      {/* Selector status */}
+      <div style={{ marginTop: "10px" }}>
+        <label>Status: </label>
+        <select
+          className="store-select"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="ALL">Todos</option>
+          <option value="OK">OK</option>
+          <option value="BAJO">Bajo</option>
+          <option value="CRITICO">Crítico</option>
+        </select>
+      </div>
+
+      {loading ? (
+        <p>Cargando...</p>
+      ) : (
+        <div className="table-container">
+          <table className="dashboard-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Familia</th>
+                <th>Stock</th>
+                <th>Exhib</th>
+                <th>Min</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Empuje</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((item) => (
+                <tr key={item.sku}>
+                  <td>{item.sku}</td>
+                  <td>{item.family}</td>
+
+                  <td>
+                    <input
+                      type="number"
+                      className="input-stock"
+                      value={item.stock}
+                      onChange={(e) => {
+                        const newData = data.map((d) =>
+                          d.sku === item.sku
+                            ? calculateDerived({
+                                ...d,
+                                stock: Number(e.target.value),
+                              })
+                            : d
+                        );
+                        setData(newData);
+                      }}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={item.exhib}
+                      onChange={(e) => {
+                        const newData = data.map((d) =>
+                          d.sku === item.sku
+                            ? calculateDerived({
+                                ...d,
+                                exhib: e.target.checked,
+                              })
+                            : d
+                        );
+                        setData(newData);
+                      }}
+                    />
+                  </td>
+
+                  <td>
+  <input
+    type="number"
+    className="input-stock"
+    value={item.min}
+    onChange={(e) => {
+      const newData = data.map((d) =>
+        d.sku === item.sku
+          ? calculateDerived({
+              ...d,
+              min: Number(e.target.value),
+            })
+          : d
+      );
+      setData(newData);
+    }}
+  />
+</td>
+                  <td>{item.stockTotal}</td>
+
+                  <td className={statusClass(item.status)}>
+                    {item.status}
+                  </td>
+
+                  <td>{item.empuje}</td>
+
+                  <td>
+                    <button
+                      className="btn-save"
+                      onClick={async () => {
+                        await fetch("/api/inventory/update", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                         body: JSON.stringify({
+  storeCode: selectedStore,
+  sku: item.sku,
+  stock: item.stock,
+  exhib: item.exhib,
+  minStock: item.min,
+}),
+
+                        });
+
+                        const res = await fetch(
+                          `/api/dashboard/${selectedStore}`
+                        );
+                        const json = await res.json();
+                        setData(json);
+                      }}
+                    >
+                      Guardar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
