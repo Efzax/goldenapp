@@ -47,6 +47,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
+  const [search, setSearch] = useState("");
 
 
   // Cargar tiendas
@@ -106,10 +107,15 @@ fetch("/api/my-stores")
     return "";
   };
 
-const filteredData =
-  statusFilter === "ALL"
-    ? Array.isArray(data) ? data : []
-    : Array.isArray(data) ? data.filter((item) => item.status === statusFilter) : [];
+const filteredData = Array.isArray(data)
+  ? data
+      .filter((item) =>
+        statusFilter === "ALL" ? true : item.status === statusFilter
+      )
+      .filter((item) =>
+        item.sku.toLowerCase().includes(search.toLowerCase())
+      )
+  : [];
 
 
   return (
@@ -132,13 +138,12 @@ const filteredData =
   </button> </div>
   <h2 className="page-title">Dashboard</h2>
 
-
       {/* Selector tienda */}
-      <div>
-        <label>Tienda: </label>
+      
+        <div className="dash-top-row">
         
         <select
-          className="select"
+          className="input-select"
           value={selectedStore}
           onChange={(e) => setSelectedStore(e.target.value)}
         >
@@ -148,7 +153,7 @@ const filteredData =
             </option>
           ))}
         </select>
-      </div>
+     
 
       <div className="category-tabs">
   <button
@@ -162,12 +167,13 @@ const filteredData =
     onClick={() => setCategory("AV")}
   >
     AV
-  </button>
+  </button> </div>
 </div>
 
 
       {/* Selector status */}
-      <div style={{ marginTop: "10px" }}>
+      <div className="status-selector">
+        <div className="status-label">
         <label>Status: </label>
         <select
           className="store-select"
@@ -178,7 +184,16 @@ const filteredData =
           <option value="OK">OK</option>
           <option value="BAJO">Bajo</option>
           <option value="CRITICO">Crítico</option>
-        </select>
+        </select></div>
+
+              {/* BUSCADOR */}
+      <input
+        className="input"
+        placeholder="Buscar SKU..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       </div>
 
       {loading ? (
