@@ -322,7 +322,6 @@ body {
 
 /* Contenedor principal: Activa el layout de dos columnas */
 .admin-container {
-  
   display: flex;
   min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
 }
@@ -330,12 +329,14 @@ body {
 /* Sidebar: Ancho fijo y diseño vertical */
 .admin-sidebar {
   width: 250px;
-  position: sticky;
-top: 0;
+  position: fixed;
+  top: 0;
   background-color: white;
   color: var(--color-primario);
   padding: 20px;
-  flex-shrink: 0; /* Evita que el sidebar se encoja en pantallas pequeñas */
+  width: 230px;       /* mismo ancho que ya uses */
+  height: 100vh;      /* ocupa toda la pantalla */
+  overflow-y: auto;   /* por si el menú crece */
 }
 
 /* Estilos de navegación */
@@ -385,6 +386,8 @@ top: 0;
 
 /* Contenido Principal: Ocupa el resto del espacio */
 .admin-content {
+    margin-left: 250px;  /* igual al width del sidebar */
+  min-height: 100vh;
   flex-grow: 1;
   padding: 30px;
   background-color: var(--color-fondo);
