@@ -77,7 +77,8 @@ fetch("/api/my-stores")
     fetch(`/api/dashboard/${selectedStore}?category=${category}`)
       .then((res) => res.json())
 .then((json) => {
-  setData(json.items || []);
+  const recalculated = (json.items || []).map(calculateDerived);
+setData(recalculated);
   setLoading(false);
 });
 
@@ -302,11 +303,10 @@ const filteredData = Array.isArray(data)
 
                         });
 
-                        const res = await fetch(
-                          `/api/dashboard/${selectedStore}`
-                        );
-                        const json = await res.json();
-                        setData(json);
+                        const res = await fetch(`/api/dashboard/${selectedStore}?category=${category}`);
+const json = await res.json();
+const recalculated = (json.items || []).map(calculateDerived);
+setData(recalculated);
                       }}
                     >
                       Guardar

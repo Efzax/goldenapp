@@ -5,7 +5,7 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { storeCode, sku, stock, exhib } = body;
+  const { storeCode, sku, stock, exhib, minStock } = body;
 
   const store = await prisma.store.findUnique({
     where: { code: storeCode },
@@ -22,23 +22,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // 👇 BUSCAMOS EL INVENTARIO ACTUAL
-  const currentInventory = await prisma.inventory.findUnique({
-    where: {
-      storeId_productId: {
-        storeId: store.id,
-        productId: product.id,
-      },
-    },
-  });
-
-  if (!currentInventory) {
-    return NextResponse.json(
-      { error: "Inventory not found" },
-      { status: 404 }
-    );
-  }
-
   const inventory = await prisma.inventory.update({
     where: {
       storeId_productId: {
@@ -49,10 +32,9 @@ export async function POST(request: Request) {
     data: {
       stock: Number(stock),
       exhib: Boolean(exhib),
-      minStock: currentInventory.minStock, // 👈 SE REENVÍA
+      minStock: Number(minStock), // 👈 AHORA SÍ SE ACTUALIZA
     },
   });
 
   return NextResponse.json(inventory);
 }
-
