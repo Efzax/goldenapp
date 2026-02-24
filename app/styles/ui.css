@@ -322,6 +322,7 @@ body {
 
 /* Contenedor principal: Activa el layout de dos columnas */
 .admin-container {
+  position: fixed;
   display: flex;
   min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
 }
