@@ -322,7 +322,7 @@ body {
 
 /* Contenedor principal: Activa el layout de dos columnas */
 .admin-container {
-  position: fixed;
+  
   display: flex;
   min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
 }
@@ -330,7 +330,8 @@ body {
 /* Sidebar: Ancho fijo y diseño vertical */
 .admin-sidebar {
   width: 250px;
-background-color: white;
+  position: fixed;
+  background-color: white;
   color: var(--color-primario);
   padding: 20px;
   flex-shrink: 0; /* Evita que el sidebar se encoja en pantallas pequeñas */
