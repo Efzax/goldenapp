@@ -32,7 +32,7 @@ const [isAdmin, setIsAdmin] = useState(false);
   
 
   // Verificar sesión
-useEffect(() => {
+/*useEffect(() => {
   fetch("/api/me")
     .then((res) => {
       if (res.status === 401) {
@@ -47,7 +47,7 @@ useEffect(() => {
       }
     });
 }, [router]);
-
+*/
 
 
   const storeCode = searchParams.get("store");

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/ui.css";
+import { api } from "@/app/lib/api";
 
 type Store = {
   id: string;
@@ -14,23 +15,21 @@ export default function SelectStorePage() {
   const [stores, setStores] = useState<Store[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    fetch("/api/my-stores")
-      .then((res) => {
-      if (res.status === 401) {
-        router.replace("../mobile/login");
-        return null;
-      }
-      return res.json();
-    })
-      .then((json) => {
-        setStores(json);
 
-        if (json.length === 1) {
-          router.push(`/mobile?store=${json[0].code}`);
-        }
-      });
-  }, []);
+
+useEffect(() => {
+  api<any[]>("/api/my-stores")
+    .then((json) => {
+      setStores(json);
+
+      if (json.length === 1) {
+        router.push(`/mobile?store=${json[0].code}`);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}, [router]);
 
   return (
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
