@@ -44,7 +44,7 @@ body {
 
 .btn-add {
   background: #16a34a !important;
-  color: var(--color-secundario);
+  color: var(--color-fondo);
   padding: 8px 16px;
   min-width: 200px;
   border-radius: 8px;
