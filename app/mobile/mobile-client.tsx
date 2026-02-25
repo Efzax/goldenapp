@@ -48,7 +48,15 @@ const [isAdmin, setIsAdmin] = useState(false);
     });
 }, [router]);
 */
-
+useEffect(() => {
+  fetch("/api/me")
+    .then(res => res.json())
+    .then(user => {
+      if (user?.role?.toUpperCase() === "ADMIN") {
+        setIsAdmin(true);
+      }
+    });
+}, []);
 
   const storeCode = searchParams.get("store");
 

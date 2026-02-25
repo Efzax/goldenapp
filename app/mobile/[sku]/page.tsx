@@ -36,13 +36,13 @@ const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 
 
 useEffect(() => {
-  api<{ role: string }>("/api/me")
-    .then((json) => {
-      if (json.role === "ADMIN") {
+  fetch("/api/me")
+    .then(res => res.json())
+    .then(user => {
+      if (user?.role?.toUpperCase() === "ADMIN") {
         setIsAdmin(true);
       }
-    })
-    .catch(() => {});
+    });
 }, []);
 
 useEffect(() => {

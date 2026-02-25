@@ -2,15 +2,17 @@
   /* Las variables siempre deben empezar con dos guiones -- */
   --color-primario: #2d3142; 
   --color-secundario: #DFEAFF;
-  --color-fondo: #f9f9f9;
-  --color-fondo2: #F2F4F7;
+  --color-fondo: #fcfcfc;
+  --color-fondo2: #f3f3f3;
   --color-card: #ffffff;
+  --color-font: #374151;
 }
 
 body {
-  background-color: var(--color-fondo);
+  background-color: var(--color-fondo) !important;
   margin: 0;
   font-size: 16px;
+  color: var(--color-font);
   font-family: var(--font-satoshi), sans-serif;
   font-weight: 400;
 }
@@ -38,6 +40,23 @@ body {
   padding-bottom: 5px;
   border-bottom: 1px solid #e2e8f0;
   margin-bottom: 15px;
+}
+
+.btn-add {
+  background: #16a34a !important;
+  color: var(--color-secundario);
+  padding: 8px 16px;
+  min-width: 200px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-add svg {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
 .section-title {
@@ -166,6 +185,8 @@ body {
   height: 20px;
   vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
 }
+
+
 
 .btn-file svg {
   margin-right: 5px;
@@ -338,6 +359,7 @@ body {
   min-width: 70px;
   padding: 4px 10px;
   border-radius: 20px;
+  text-align: center;
   font-size: 12px;
   font-weight: 600;
 }
@@ -380,36 +402,119 @@ body {
   border-radius: 8px;
 }
 /* El input ocupa el espacio restante */
-.status-selector .input {
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 8px;
+
+.status-selector {
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* 👈 clave para responsive */
+  width: 100%;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-input {
+  margin-bottom: 0px !important;
+  flex: 1;            /* 👈 ocupa el espacio disponible */;
+  min-width: 180px;   /* 👈 evita que se haga demasiado chico */
+}
+/* 📱 En pantallas pequeñas */
+@media (max-width: 768px) {
+  .status-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .btn-add {
+    width: 100%;
+  }
+}
+
+.store-select,
+.search-input,
+.btn-add {
+  height: 40px; /* mismo alto para todos */
+  box-sizing: border-box;
 }
 
 .table-container {
   overflow-x: auto;
 }
 
+/* Tabla con estilo moderno */
+
 .dashboard-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 16px;
-  padding: 8px;
+  border-collapse: separate;   /* 🔥 importante */
+  border-spacing: 0;
+  margin-top: 20px;
+  font-size: 14px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;            /* 🔥 permite que el radius funcione */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* HEADER */
+.dashboard-table thead {
+  background: var(--color-primario);
+}
+
+.dashboard-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dashboard-table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.dashboard-table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
 }
 
 .dashboard-table th {
-  background-color: var(--color-primario);
-  color: var(--color-secundario);
-  padding: 8px;
-  margin: 8px;
-  font-size: 14px;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 14px 12px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.5px;
 }
 
+/* BODY */
 .dashboard-table td {
-  border: 1px solid var(--color-secundario);
-  padding: 8px;
+  padding: 12px;
   text-align: center;
-  font-size: 14px;
+  color: #374151;
+  border-top: 1px solid var(--color-secundario);
+}
+
+/* Hover fila */
+.dashboard-table tbody tr:hover {
+  background: #f9fafb;
+  transition: 0.2s ease;
+}
+
+/* Primera y última celda alineadas mejor */
+.dashboard-table td:first-child {
+  font-weight: 500;
+  text-align: left;
+  padding-left: 16px;
 }
 
 .input-stock {
@@ -450,74 +555,6 @@ body {
   min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
 }
 
-/* Sidebar: Ancho fijo y diseño vertical */
-.admin-sidebar {
-  width: 250px;
-  position: fixed;
-  top: 0;
-  background-color: white;
-  color: var(--color-primario);
-  padding: 20px;
-  width: 230px;       /* mismo ancho que ya uses */
-  height: 100vh;      /* ocupa toda la pantalla */
-  overflow-y: auto;   /* por si el menú crece */
-}
-
-
-/* Estilos de navegación */
-.admin-sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  gap: 12px;
-}
-
-
-/* Seleccionamos el enlace dentro de la lista del sidebar */
-.admin-sidebar nav li a {
-  display: flex;         /* Activa el alineamiento horizontal */
-  align-items: center;    /* Centra verticalmente el icono con el texto */
-  gap: 12px;             /* Separa el SVG del texto */
-  text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  color: var(--color-primario);
-  transition: background 0.2s;
-  margin-top: 20px;
-}
-
-/* Controlamos el tamaño del SVG */
-.admin-sidebar nav li svg {
-  width: 20px;           /* Ajusta el tamaño a tu gusto */
-  height: 20px;
-  flex-shrink: 0;        /* Evita que el icono se aplaste si el texto es largo */
-}
-
-/* Opcional: un efecto de fondo al pasar el mouse */
-.admin-sidebar nav li a:hover {
-  background-color: var(--color-primario)
-}
-
-.admin-sidebar nav a {
-  color: var(--color-secundario);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-  display: block;
-}
-
-.admin-sidebar nav a:hover {
-  color: var(--color-secundario);
-}
-
-/* Contenido Principal: Ocupa el resto del espacio */
-.admin-content {
-    margin-left: 250px;  /* igual al width del sidebar */
-  min-height: 100vh;
-  flex-grow: 1;
-  padding: 30px;
-  background-color: var(--color-fondo);
-  overflow-y: auto; /* Permite scroll solo en el contenido si es muy largo */
-}
 
 /* ===== STATUS ===== */
 
@@ -601,6 +638,7 @@ body {
   border-radius: 999px;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
 }
 
@@ -705,6 +743,7 @@ body {
 .status-badge {
   padding: 4px 10px;
   border-radius: 999px;
+  text-align: center;
   font-size: 12px;
   font-weight: 600;
 }
@@ -812,4 +851,313 @@ body {
   0% { transform: scale(1); }
   50% { transform: scale(0.7); }
   100% { transform: scale(1); }
+}
+
+
+.sort-arrow {
+  font-size: 12px;
+  margin-left: 4px;
+ color: var(--color-secundario);
+}
+
+
+.kpi-container {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.kpi-card {
+  flex: 1;
+  min-width: 100px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--color-fondo2);
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  text-align: center;
+}
+
+.kpi-card strong {
+  font-size: 20px;
+  margin-top: 6px;
+}
+
+.kpi-ok {
+  border-left: 6px solid #22c55e;
+}
+
+.kpi-bajo {
+  border-left: 6px solid #f97316;
+}
+
+.kpi-critico {
+  border-left: 6px solid #ef4444;
+}
+
+.kpi-total {
+  border-left: 6px solid #334155;
+}
+
+.kpi-empuje {
+  border-left: 6px solid #6366f1;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon-btn:hover {
+  background: #f1f5f9;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.delete-btn {
+  color: #ef4444;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+}
+
+.success {
+  color: #22c55e;
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-btn {
+  position: relative;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal h3 {
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: #e5e7eb;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-confirm:hover {
+  background: #dc2626;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.checkbox-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/*===== ADMIN LAYOUT ===== */
+
+/* MAIN */
+.admin-content {
+  flex: 1;              /* 🔥 CLAVE */
+  padding: 32px;
+  overflow-y: auto;
+  background: var(--color-fondo);
+}
+
+.admin-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-fondo);
+}
+
+/* Contenedor superior (usuario + menú) */
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto; /* 🔥 si crece, scrollea aquí */
+}
+
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  margin: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  position: sticky;     /* 🔥 */
+  top: 0;
+  height: auto;        /* 🔥 */
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;   /* 🔥 esto centra verticalmente */
+  gap: 14px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Avatar */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--color-primario);
+  color: var(--color-secundario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  flex-shrink: 0; /* 🔥 evita que se achique */
+}
+
+/* Contenedor texto */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* 🔥 centra el texto dentro */
+  line-height: 1.2;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.user-email {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-link {
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--color-font);
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.sidebar-link:hover {
+  background: #f3f4f6;
+}
+
+.sidebar-link.active {
+  background: var(--color-primario);
+  color: var(--color-secundario);
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #f87171;
+  color: white;
 }

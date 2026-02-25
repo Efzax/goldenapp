@@ -51,6 +51,17 @@ export default function DashboardPage() {
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
   const [search, setSearch] = useState("");
+  const [sortField, setSortField] = useState<keyof Item | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc"); 
+  const [skuToDelete, setSkuToDelete] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+const [newItem, setNewItem] = useState({
+  sku: "",
+  family: "",
+  stock: 0,
+  exhib: false,
+  min: 0,
+});
 
 
   // Cargar tiendas
@@ -122,6 +133,35 @@ const filteredData = Array.isArray(data)
       )
   : [];
 
+  const sortedData = [...filteredData].sort((a, b) => {
+  if (!sortField) return 0;
+
+  const valueA = a[sortField];
+  const valueB = b[sortField];
+
+  if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+  if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+  return 0;
+});
+
+const handleSort = (field: keyof Item) => {
+  if (sortField === field) {
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  } else {
+    setSortField(field);
+    setSortDirection("asc");
+  }
+};
+const renderSortIcon = (field: keyof Item) => {
+  if (sortField !== field) return null;
+
+  return (
+    <span className="sort-arrow">
+      {sortDirection === "asc" ? " ▲" : " ▼"}
+    </span>
+  );
+};
+
   const hasChanges = (item: Item) => {
   const original = originalData.find((o) => o.sku === item.sku);
   if (!original) return false;
@@ -133,25 +173,59 @@ const filteredData = Array.isArray(data)
   );
 };
 
+const kpis = {
+  total: filteredData.length,
+  stockTotal: filteredData.reduce((acc, i) => acc + i.stockTotal, 0),
+  ok: filteredData.filter(i => i.status === "OK").length,
+  bajo: filteredData.filter(i => i.status === "BAJO").length,
+  critico: filteredData.filter(i => i.status === "CRITICO").length,
+  empujeTotal: filteredData.reduce((acc, i) => acc + i.empuje, 0),
+};
+
   return (
     
     <div className="page-dashboard">
-      <div className="page-header">
-<div className="header-left"></div>
+      
 
-
-  
-
-  <button
-    className="btn-logout"
-    onClick={async () => {
-      await fetch("/api/logout", { method: "POST" });
-      location.href = "./mobile/login";
-    }}
-  >
-    Logout
-  </button> </div>
   <h2 className="page-title">Dashboard</h2>
+
+
+
+
+
+
+
+  <div className="kpi-container">
+  <div className="kpi-card kpi-total">
+    <span>Total SKUs</span>
+    <strong>{kpis.total}</strong>
+  </div>
+
+  <div className="kpi-card kpi-total">
+  <span>Stock Total</span>
+  <strong>{kpis.stockTotal}</strong>
+</div>
+
+  <div className="kpi-card kpi-ok">
+    <span>OK</span>
+    <strong>{kpis.ok}</strong>
+  </div>
+
+  <div className="kpi-card kpi-bajo">
+    <span>Bajo</span>
+    <strong>{kpis.bajo}</strong>
+  </div>
+
+  <div className="kpi-card kpi-critico">
+    <span>Crítico</span>
+    <strong>{kpis.critico}</strong>
+  </div>
+
+  <div className="kpi-card kpi-empuje">
+    <span>Empuje Total</span>
+    <strong>{kpis.empujeTotal}</strong>
+  </div>
+</div>
 
       {/* Selector tienda */}
       
@@ -187,50 +261,66 @@ const filteredData = Array.isArray(data)
 
 
       {/* Selector status */}
-      <div className="status-selector">
-        <div className="status-label">
-        <label>Status: </label>
-        <select
-          className="store-select"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="ALL">Todos</option>
-          <option value="OK">OK</option>
-          <option value="BAJO">Bajo</option>
-          <option value="CRITICO">Crítico</option>
-        </select></div>
+      
+<div className="status-selector">
 
-              {/* BUSCADOR */}
-      <input
-        className="input"
-        placeholder="Buscar SKU..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+  <div className="status-left">
+    <label>Status:</label>
+    <select
+      className="store-select"
+      value={statusFilter}
+      onChange={(e) => setStatusFilter(e.target.value)}
+    >
+      <option value="ALL">Todos</option>
+      <option value="OK">OK</option>
+      <option value="BAJO">Bajo</option>
+      <option value="CRITICO">Crítico</option>
+    </select>
+  </div>
 
-      </div>
+  <input
+    className="input search-input"
+    placeholder="Buscar SKU..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+  <button
+    className="btn-add"
+    onClick={() => setShowAddModal(true)}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+  <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+</svg>
+    Agregar producto
+  </button>
+
+</div>
 
       {loading ? (
         <p>Cargando...</p>
       ) : (
         <div className="table-container">
+
+         <div className="table-wrapper">
           <table className="dashboard-table">
             <thead>
               <tr>
-                <th>SKU</th>
-                <th>Familia</th>
-                <th>Stock</th>
+                <th onClick={() => handleSort("sku")} 
+                className="sortable">SKU {renderSortIcon("sku")}</th>
+               <th onClick={() => handleSort("family")} 
+               className="sortable">Familia {renderSortIcon("family")}  </th>
+                <th onClick={() => handleSort("stock")} className="sortable">Stock {renderSortIcon("stock")}</th>
                 <th>Exhib</th>
-                <th>Min</th>
+                <th onClick={() => handleSort("min")} className="sortable">Min {renderSortIcon("min")}</th>
                 <th>Total</th>
-                <th>Status</th>
-                <th>Empuje</th>
+                <th onClick={() => handleSort("status")} className="sortable">Status {renderSortIcon("status")}</th>
+                <th onClick={() => handleSort("empuje")} className="sortable">Empuje {renderSortIcon("empuje")}</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((item) => (
+              {sortedData.map((item) => (
                 <tr key={item.sku}>
                   <td>{item.sku}</td>
                   <td>{item.family}</td>
@@ -301,8 +391,10 @@ const filteredData = Array.isArray(data)
                   <td>{item.empuje}</td>
 
                   <td>
+                    <div className="action-cell">
                     <button
-  className="btn-save"
+    className="icon-btn save-btn"
+  title="Guardar cambios"
   disabled={!hasChanges(item) || savingSku === item.sku}
   onClick={async () => {
     try {
@@ -323,7 +415,6 @@ const filteredData = Array.isArray(data)
 
       if (!res.ok) throw new Error("Error");
 
-      // actualizar originalData SOLO de esa fila
       setOriginalData((prev) =>
         prev.map((o) =>
           o.sku === item.sku ? { ...item } : o
@@ -332,26 +423,208 @@ const filteredData = Array.isArray(data)
 
       setSavedSku(item.sku);
       setTimeout(() => setSavedSku(null), 2000);
-    } catch (err) {
+
+    } catch {
       alert("Error al guardar");
     } finally {
       setSavingSku(null);
     }
   }}
 >
-  {savingSku === item.sku
-    ? "Guardando..."
-    : savedSku === item.sku
-    ? "✅ Guardado"
-    : "Guardar"}
+  {savingSku === item.sku ? (
+    // 🟡 GUARDANDO
+    <svg className="icon spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path strokeLinecap="round" strokeLinejoin="round"
+        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 
+        59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+    </svg>
+  ) : savedSku === item.sku ? (
+    // 🟢 GUARDADO
+    <svg className="icon success" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path strokeLinecap="round" strokeLinejoin="round"
+        d="M9 12.75 11.25 15 15 9.75" />
+    </svg>
+  ) : (
+    // ✏️ GUARDAR
+    <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path strokeLinecap="round" strokeLinejoin="round"
+        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+    </svg>
+  )}
 </button>
+<button
+  className="icon-btn delete-btn"
+  title="Eliminar producto"
+  onClick={() => setSkuToDelete(item.sku)}
+>
+  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path strokeLinecap="round" strokeLinejoin="round"
+      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
+      c.342.052.682.107 1.022.166m-1.022-.165L18.16
+      19.673a2.25 2.25 0 0 1-2.244 2.077H8.084
+      a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79" />
+  </svg>
+</button>
+</div>
+
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </div>
+            )}
+
+      {/* MODAL ELIMINAR */}
+      {skuToDelete && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Eliminar producto</h3>
+            <p>¿Estás seguro que deseas eliminar el SKU {skuToDelete}?</p>
+
+            <div className="modal-actions">
+              <button
+                className="btn-cancel"
+                onClick={() => setSkuToDelete(null)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="btn-confirm"
+                onClick={async () => {
+                  await fetch("/api/inventory/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      storeCode: selectedStore,
+                      sku: skuToDelete,
+                    }),
+                  });
+
+                  setData(prev => prev.filter(d => d.sku !== skuToDelete));
+                  setOriginalData(prev => prev.filter(d => d.sku !== skuToDelete));
+                  setSkuToDelete(null);
+                }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+        
       )}
+      {showAddModal && (
+  <div className="modal-overlay">
+    <div className="modal">
+      <h3>Agregar nuevo producto</h3>
+
+      <div className="modal-form">
+        <input
+          placeholder="SKU"
+          value={newItem.sku}
+          onChange={(e) =>
+            setNewItem({ ...newItem, sku: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="Familia"
+          value={newItem.family}
+          onChange={(e) =>
+            setNewItem({ ...newItem, family: e.target.value })
+          }
+        />
+
+        <input
+          type="number"
+          placeholder="Stock"
+          value={newItem.stock}
+          onChange={(e) =>
+            setNewItem({ ...newItem, stock: Number(e.target.value) })
+          }
+        />
+
+        <label className="checkbox-line">
+          <input
+            type="checkbox"
+            checked={newItem.exhib}
+            onChange={(e) =>
+              setNewItem({ ...newItem, exhib: e.target.checked })
+            }
+          />
+          Exhibición
+        </label>
+
+        <input
+          type="number"
+          placeholder="Mínimo"
+          value={newItem.min}
+          onChange={(e) =>
+            setNewItem({ ...newItem, min: Number(e.target.value) })
+          }
+        />
+      </div>
+
+      <div className="modal-actions">
+        <button
+          className="btn-cancel"
+          onClick={() => setShowAddModal(false)}
+        >
+          Cancelar
+        </button>
+
+        <button
+          className="btn-confirm"
+          onClick={async () => {
+            if (!newItem.sku || !newItem.family) {
+              alert("Completa todos los campos");
+              return;
+            }
+
+            const calculated = calculateDerived({
+              ...newItem,
+              stockTotal: 0,
+              status: "OK",
+              empuje: 0,
+            });
+
+            // 👉 Aquí luego puedes conectar a API
+await fetch("/api/inventory/create", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    storeCode: selectedStore,
+    sku: newItem.sku,
+    familyName: newItem.family,
+    stock: newItem.stock,
+    exhib: newItem.exhib,
+    minStock: newItem.min,
+    category: category, // TV o AV
+  }),
+});
+
+            setData(prev => [...prev, calculated]);
+            setOriginalData(prev => [...prev, calculated]);
+
+            setNewItem({
+              sku: "",
+              family: "",
+              stock: 0,
+              exhib: false,
+              min: 0,
+            });
+
+            setShowAddModal(false);
+          }}
+        >
+          Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
