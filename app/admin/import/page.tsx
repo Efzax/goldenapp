@@ -109,7 +109,7 @@ export default function ImportPage() {
           className="btn-logout"
           onClick={async () => {
             await fetch("/api/logout", { method: "POST" });
-            location.href = "/login";
+            location.href = "/mobile/login";
           }}
         >
           Logout

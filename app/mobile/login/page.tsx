@@ -12,50 +12,36 @@ export default function LoginPage() {
   return (
     <div style={{ padding: 20, fontFamily: "system-ui", color: "#384961", }}>
       <div className="page-container">
-      <div className="page-title">Golden App v0.12</div>
+     
 
-      <input
-        type="email"
-        placeholder="Correo"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "12px",
-          marginTop: "20px",
-          borderRadius: "8px",
-          border: "1px solid #cbd5e1",
-          color: "#384961",
-        }}
-      />
+      <div className="loginhome"><img src="/icon.png" alt="Logo" /></div>
+ <div className="login-title">
+        BIENVENIDO SPARTAN
+        <h2>Golden App v0.12</h2></div>
+<input
+  type="email"
+  name="email"
+  id="email"
+  autoComplete="email"
+  placeholder="Correo"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="input-field"
+/>
 
-      <input
-        type="password"
-        placeholder="Clave"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "12px",
-          marginTop: "12px",
-          borderRadius: "8px",
-          border: "1px solid #cbd5e1",
-          color: "#384961",
-        }}
-      />
+<input
+  type="password"
+  name="password"
+  id="password"
+  autoComplete="current-password"
+  placeholder="Clave"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  className="input-field"
+/>
 
       <button
-        style={{
-          marginTop: "20px",
-          width: "100%",
-          padding: "12px",
-          borderRadius: "8px",
-          background: "#2563eb",
-          color: "white",
-          border: "none",
-          fontSize: "16px",
-          
-        }}
+className="btn-primary"
         onClick={async () => {
           const res = await fetch("/api/login", {
             method: "POST",

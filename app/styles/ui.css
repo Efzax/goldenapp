@@ -45,6 +45,53 @@ body {
   font-weight: 500;
 }
 
+.loginhome {
+  display: flex;
+  justify-content: center;   /* centro horizontal */
+  align-items: center;       /* centro vertical */
+  height: 100%;             /* ocupa toda la pantalla */
+  width: 100%;
+  border-radius: 9999px;
+  margin-bottom: 25px;
+}
+
+.loginhome img {
+  width: 180px;
+  height: 180px;
+  padding: 20px;
+  border-radius: 9999px;
+}
+
+.login-title {
+  font-size: 36px;
+  color: var(--color-primario);
+  line-height: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.login-title h2{
+  font-size: 18px;
+  color: var(--color-primario);
+  font-weight: 400 ;
+}
+
+.input-field {
+  width: 96%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  color: #384961;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #3b82f6;
+}
+
 /* ===== HEADER ===== */
 .page-header {
   display: flex !important;
@@ -60,6 +107,7 @@ body {
 .btn-primary{
   width: 100%;
   margin-top: 5px;
+  font-size: 18px;
   display: flex; 
   padding: 18px;
   border-radius: 8px;
@@ -215,12 +263,13 @@ body {
 
 /* ===== INPUTS ===== */
 .input {
-  width: 100%;
+  width: 96%;
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 10px;
-  border: 1px solid var(--color-fondo2);
+  border: 1px solid var(--color-primario);
 }
+
 
 .import-message {
   margin-top: 12px;
@@ -402,6 +451,7 @@ body {
   height: 100vh;      /* ocupa toda la pantalla */
   overflow-y: auto;   /* por si el menú crece */
 }
+
 
 /* Estilos de navegación */
 .admin-sidebar nav ul {

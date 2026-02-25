@@ -132,7 +132,7 @@ const filteredData = Array.isArray(data)
     className="btn-logout"
     onClick={async () => {
       await fetch("/api/logout", { method: "POST" });
-      location.href = "/mobile/login";
+      location.href = "./mobile/login";
     }}
   >
     Logout
