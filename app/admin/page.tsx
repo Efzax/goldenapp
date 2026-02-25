@@ -44,6 +44,9 @@ export default function DashboardPage() {
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStore, setSelectedStore] = useState<string>("");
   const [data, setData] = useState<Item[]>([]);
+  const [originalData, setOriginalData] = useState<Item[]>([]);
+  const [savingSku, setSavingSku] = useState<string | null>(null);
+  const [savedSku, setSavedSku] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
@@ -79,6 +82,7 @@ fetch("/api/my-stores")
 .then((json) => {
   const recalculated = (json.items || []).map(calculateDerived);
 setData(recalculated);
+setOriginalData(recalculated);
   setLoading(false);
 });
 
@@ -118,6 +122,16 @@ const filteredData = Array.isArray(data)
       )
   : [];
 
+  const hasChanges = (item: Item) => {
+  const original = originalData.find((o) => o.sku === item.sku);
+  if (!original) return false;
+
+  return (
+    item.stock !== original.stock ||
+    item.min !== original.min ||
+    item.exhib !== original.exhib
+  );
+};
 
   return (
     
@@ -288,29 +302,49 @@ const filteredData = Array.isArray(data)
 
                   <td>
                     <button
-                      className="btn-save"
-                      onClick={async () => {
-                        await fetch("/api/inventory/update", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                         body: JSON.stringify({
-  storeCode: selectedStore,
-  sku: item.sku,
-  stock: item.stock,
-  exhib: item.exhib,
-  minStock: item.min,
-}),
+  className="btn-save"
+  disabled={!hasChanges(item) || savingSku === item.sku}
+  onClick={async () => {
+    try {
+      setSavingSku(item.sku);
+      setSavedSku(null);
 
-                        });
+      const res = await fetch("/api/inventory/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storeCode: selectedStore,
+          sku: item.sku,
+          stock: item.stock,
+          exhib: item.exhib,
+          minStock: item.min,
+        }),
+      });
 
-                        const res = await fetch(`/api/dashboard/${selectedStore}?category=${category}`);
-const json = await res.json();
-const recalculated = (json.items || []).map(calculateDerived);
-setData(recalculated);
-                      }}
-                    >
-                      Guardar
-                    </button>
+      if (!res.ok) throw new Error("Error");
+
+      // actualizar originalData SOLO de esa fila
+      setOriginalData((prev) =>
+        prev.map((o) =>
+          o.sku === item.sku ? { ...item } : o
+        )
+      );
+
+      setSavedSku(item.sku);
+      setTimeout(() => setSavedSku(null), 2000);
+    } catch (err) {
+      alert("Error al guardar");
+    } finally {
+      setSavingSku(null);
+    }
+  }}
+>
+  {savingSku === item.sku
+    ? "Guardando..."
+    : savedSku === item.sku
+    ? "✅ Guardado"
+    : "Guardar"}
+</button>
                   </td>
                 </tr>
               ))}

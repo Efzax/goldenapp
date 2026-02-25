@@ -119,6 +119,11 @@ body {
   cursor: pointer;
 }
 
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-secondary {
   width: 100%;
   margin-top: 5px;
@@ -225,6 +230,11 @@ body {
   border-radius: 6px;
   border: none;
   cursor: pointer;
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-save:hover {

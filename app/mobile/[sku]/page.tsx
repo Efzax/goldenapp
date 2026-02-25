@@ -60,7 +60,10 @@ useEffect(() => {
       const found = json.items?.find((i: Item) => i.sku === sku);
       setItem(found);
       setPrevStock(found?.stock ?? null);
-      setOriginalItem(found);
+      setOriginalItem({
+  stock: found?.stock,
+  exhib: found?.exhib,
+});
       setLoading(false);
     });
 }, [storeCode, sku, searchParams]);
@@ -92,6 +95,11 @@ async function saveChanges() {
     if (!res.ok) throw new Error("Error");
 
     setMessage("✅ Guardado correctamente");
+
+    setOriginalItem({
+  stock: item!.stock,
+  exhib: item!.exhib,
+});
 
     router.replace(`/mobile?store=${storeCode}&category=${searchParams.get("category") || "TV"}`);
   } catch (e) {
