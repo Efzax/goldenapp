@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, useParams } from "next/navigation";
 import "../../styles/ui.css";
+import { api } from "@/app/lib/api";
 
 type Item = {
   sku: string;
@@ -34,22 +35,15 @@ const [prevStock, setPrevStock] = useState<number | null>(null);
 const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 
 
-  // Verificar sesión
 useEffect(() => {
-  fetch("/api/me")
-    .then((res) => {
-      if (res.status === 401) {
-        router.replace("/mobile/login");
-        return null;
-      }
-      return res.json();
-    })
+  api<{ role: string }>("/api/me")
     .then((json) => {
-      if (json?.role === "ADMIN") {
+      if (json.role === "ADMIN") {
         setIsAdmin(true);
       }
-    });
-}, [router]);
+    })
+    .catch(() => {});
+}, []);
 
 useEffect(() => {
   if (!storeCode) {
