@@ -31,23 +31,6 @@ const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
   
 
-  // Verificar sesión
-/*useEffect(() => {
-  fetch("/api/me")
-    .then((res) => {
-      if (res.status === 401) {
-        router.replace("/mobile/login");
-        return null;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      if (json?.role === "ADMIN") {
-        setIsAdmin(true);
-      }
-    });
-}, [router]);
-*/
 useEffect(() => {
   fetch("/api/me")
     .then(res => res.json())
