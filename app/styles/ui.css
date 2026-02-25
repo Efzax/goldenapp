@@ -1161,3 +1161,43 @@ body {
   background: #f87171;
   color: white;
 }
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.role-badge.ADMIN {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.role-badge.USER {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-right {
+  display: flex;
+  gap: 10px;
+}
