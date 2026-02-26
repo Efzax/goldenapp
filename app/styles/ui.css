@@ -52,7 +52,7 @@ body {
   cursor: pointer;
 }
 
-.btn-add svg {
+svg {
   margin-right: 5px;
   width: 20px;
   height: 20px;
@@ -179,40 +179,21 @@ body {
   border-radius: 9999px !important; /* pill */
 }
 
-.btn-back svg {
-  margin-right: 5px;
-  width: 20px;
-  height: 20px;
-  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
-}
 
-
-
-.btn-file svg {
-  margin-right: 5px;
-  width: 20px;
-  height: 20px;
-  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
-}
 
 .btn-back:hover {
   text-decoration: none !important;
   background-color: var(--color-fondo2) !important;
 /* fondo claro */
 }
-.btn-primary svg {
+.btn-primary .btn-secondary svg {
   margin-right: 5px;
   vertical-align: middle;
   width: 30px;
   height: 30px; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
-.btn-secondary svg {
-  margin-right: 5px;
-  width: 30px;
-  height: 30px;
-  vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
-}
+
 
 .btn-logout {
   background-color: #fcdede !important; /* lila claro como la imagen */
