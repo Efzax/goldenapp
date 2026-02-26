@@ -9,6 +9,15 @@ type User = {
   name: string;
   email: string;
   role: string;
+  stores: {
+    store: {
+      id: string;
+      name: string;
+    };
+  }[];
+  _count: {
+    stores: number;
+  };
 };
 
 export default function AdminUsersPage() {
@@ -19,6 +28,9 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [creating, setCreating] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [allStores, setAllStores] = useState<any[]>([]);
+    const [selectedStores, setSelectedStores] = useState<any[]>([]);
+const [storeSearch, setStoreSearch] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -43,6 +55,12 @@ export default function AdminUsersPage() {
     });
 
     loadUsers();
+    loadStores();
+    async function loadStores() {
+  const res = await fetch("/api/stores");
+  const data = await res.json();
+  setAllStores(data);
+}
   }, []);
 
   async function loadUsers() {
@@ -61,28 +79,53 @@ export default function AdminUsersPage() {
     loadUsers();
   }
 
-  function openEdit(user: User) {
-    setEditingUser(user);
-    setForm({
-      name: user.name,
-      email: user.email,
-      password: "",
-      role: user.role,
-    });
+function openEdit(user: User) {
+  setEditingUser(user);
+
+  setForm({
+    name: user.name,
+    email: user.email,
+    password: "",
+    role: user.role,
+  });
+
+  // 🔒 Precargar tiendas asignadas
+  const mappedStores = user.stores.map((s) => s.store);
+  setSelectedStores(mappedStores);
+}
+
+async function updateUser() {
+  if (!editingUser) return;
+
+  if (selectedStores.length === 0) {
+    alert("Debe asignar al menos una tienda");
+    return;
   }
 
-  async function updateUser() {
-    if (!editingUser) return;
-
-    await fetch(`/api/admin/users/${editingUser.id}`, {
+  const res = await fetch(
+    `/api/admin/users/${editingUser.id}`,
+    {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+      body: JSON.stringify({
+        ...form,
+        storeIds: selectedStores.map((s) => s.id),
+      }),
+    }
+  );
 
-    setEditingUser(null);
-    loadUsers();
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error || "Error al actualizar");
+    return;
   }
+
+  setEditingUser(null);
+  setSelectedStores([]);
+  setStoreSearch("");
+  loadUsers();
+}
 const filteredUsers = users.filter((user) =>
   user.name.toLowerCase().includes(search.toLowerCase()) ||
   user.email.toLowerCase().includes(search.toLowerCase())
@@ -97,7 +140,7 @@ const filteredUsers = users.filter((user) =>
     <input
       type="text"
       placeholder="Buscar usuario..."
-      className="input"
+      className="search-input"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
     />
@@ -141,7 +184,7 @@ const filteredUsers = users.filter((user) =>
           <tr>
             <th>Usuario</th>
             <th>Correo</th>
-            <th>Clave</th>
+            <th>Tiendas</th>
             <th>Rol</th>
             <th>Acciones</th>
           </tr>
@@ -158,7 +201,11 @@ const filteredUsers = users.filter((user) =>
               </td>
 
               <td>{user.email}</td>
-              <td>••••••••</td>
+              <td>
+  <span className="store-count-badge">
+    {user._count.stores}
+  </span>
+</td>
               <td>
   <span className={`role-badge ${user.role}`}>
     {user.role}
@@ -273,6 +320,88 @@ const filteredUsers = users.filter((user) =>
               <option value="ADMIN">Admin</option>
             </select>
 
+            {/* ===== Selector Profesional de Tiendas ===== */}
+
+<div style={{ marginTop: 15 }}>
+  <input
+    className="input"
+    placeholder="Buscar tienda..."
+    value={storeSearch}
+    onChange={(e) => setStoreSearch(e.target.value)}
+  />
+
+  <div style={{ maxHeight: 120, overflowY: "auto", marginTop: 8 }}>
+    {allStores
+      .filter((store) =>
+        store.name.toLowerCase().includes(storeSearch.toLowerCase())
+      )
+      .map((store) => {
+        const alreadySelected = selectedStores.find(
+          (s) => s.id === store.id
+        );
+
+        if (alreadySelected) return null;
+
+        return (
+          <div
+            key={store.id}
+            style={{
+              padding: "6px 10px",
+              cursor: "pointer",
+              borderBottom: "1px solid #eee",
+            }}
+            onClick={() =>
+              setSelectedStores([...selectedStores, store])
+            }
+          >
+            {store.name}
+          </div>
+        );
+      })}
+  </div>
+</div>
+
+<div style={{ marginTop: 15 }}>
+  <strong>Tiendas asignadas:</strong>
+
+  {selectedStores.length === 0 && (
+    <p style={{ fontSize: 12, opacity: 0.6 }}>
+      Debe seleccionar al menos una tienda
+    </p>
+  )}
+
+  {selectedStores.map((store) => (
+    <div
+      key={store.id}
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "6px 10px",
+        marginTop: 5,
+        background: "#f5f5f5",
+        borderRadius: 6,
+      }}
+    >
+      <span>{store.name}</span>
+
+      <button
+        onClick={() =>
+          setSelectedStores(
+            selectedStores.filter((s) => s.id !== store.id)
+          )
+        }
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+        }}
+      >
+        ✖
+      </button>
+    </div>
+  ))}
+</div>
+
             <div className="modal-actions">
               <button className="btn-primary" onClick={updateUser}>
                 Guardar
@@ -368,22 +497,126 @@ const filteredUsers = users.filter((user) =>
         <option value="ADMIN">Admin</option>
       </select>
 
+      {/* ===== Selector Profesional de Tiendas ===== */}
+
+<div style={{ marginTop: 15 }}>
+  <input
+    className="input"
+    placeholder="Buscar tienda..."
+    value={storeSearch}
+    onChange={(e) => setStoreSearch(e.target.value)}
+  />
+
+  <div style={{ maxHeight: 120, overflowY: "auto", marginTop: 8 }}>
+    {allStores
+      .filter((store) =>
+        store.name
+          .toLowerCase()
+          .includes(storeSearch.toLowerCase())
+      )
+      .map((store) => {
+        const alreadySelected = selectedStores.find(
+          (s) => s.id === store.id
+        );
+
+        if (alreadySelected) return null;
+
+        return (
+          <div
+            key={store.id}
+            style={{
+              padding: "6px 10px",
+              cursor: "pointer",
+              borderBottom: "1px solid #eee",
+            }}
+            onClick={() =>
+              setSelectedStores([...selectedStores, store])
+            }
+          >
+            {store.name}
+          </div>
+        );
+      })}
+  </div>
+</div>
+
+{/* Tiendas seleccionadas */}
+
+<div style={{ marginTop: 15 }}>
+  <strong>Tiendas asignadas:</strong>
+
+  {selectedStores.length === 0 && (
+    <p style={{ fontSize: 12, opacity: 0.6 }}>
+      Debe seleccionar al menos una tienda
+    </p>
+  )}
+
+  {selectedStores.map((store) => (
+    <div
+      key={store.id}
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "6px 10px",
+        marginTop: 5,
+        background: "#f5f5f5",
+        borderRadius: 6,
+      }}
+    >
+      <span>{store.name}</span>
+
+      <button
+        onClick={() =>
+          setSelectedStores(
+            selectedStores.filter((s) => s.id !== store.id)
+          )
+        }
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+        }}
+      >
+        ✖
+      </button>
+    </div>
+  ))}
+</div>
+
       <div className="modal-actions">
         <button
-          className="btn-primary"
-          onClick={async () => {
-            await fetch("/api/admin/users", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(form),
-            });
+  className="btn-primary"
+  disabled={selectedStores.length === 0}
+  onClick={async () => {
+    if (selectedStores.length === 0) {
+      alert("Debe asignar al menos una tienda");
+      return;
+    }
 
-            setCreating(false);
-            loadUsers();
-          }}
-        >
-          Crear
-        </button>
+    const res = await fetch("/api/admin/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        storeIds: selectedStores.map((s) => s.id),
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Error al crear usuario");
+      return;
+    }
+
+    setCreating(false);
+    setSelectedStores([]);
+    setStoreSearch("");
+    loadUsers();
+  }}
+>
+  Crear
+</button>
 
         <button
           className="btn-secondary"

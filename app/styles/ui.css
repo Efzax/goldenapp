@@ -96,7 +96,7 @@ body {
 }
 
 .input-field {
-  width: 100%;
+  width: 100%;;
   padding: 12px;
   margin-bottom: 12px;
   border-radius: 8px;
@@ -1187,17 +1187,35 @@ body {
 
 .table-toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 15px;
 }
 
 .toolbar-left {
   display: flex;
   gap: 10px;
+  flex: 1;
 }
 
 .toolbar-right {
   display: flex;
   gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: 0.2s ease;
+}
+
+.store-count-badge {
+  background: #eef3ff;
+  color: #2b4eff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
 }

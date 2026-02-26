@@ -45,7 +45,7 @@ model UserStore {
   userId  String
   storeId String
 
-  user  User  @relation(fields: [userId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   store Store @relation(fields: [storeId], references: [id])
 
   createdAt DateTime @default(now())
