@@ -5,6 +5,8 @@ import { prisma } from "@/app/lib/prisma";
 import { Category } from "@prisma/client";
 
 type Row = {
+  chain: string;
+  externalCode: string;
   category: string;
   storeName: string;
   sku: string;
@@ -23,13 +25,63 @@ export async function POST(req: Request) {
     const familyName = row.family.toUpperCase().trim();
     const sku = row.sku.toUpperCase().trim();
     const category = row.category.toUpperCase().trim() as Category;
+    const chainName = row.chain.toUpperCase().trim();
+    const externalCode = row.externalCode.toUpperCase().trim();
 
-    // BUSCAR TIENDA
-    let store = await prisma.store.findFirst({
-      where: { name: storeName },
-    });
+    // BUSCAR O CREAR CADENA
+let chain = await prisma.chain.findFirst({
+  where: { name: chainName },
+});
 
-    if (!store) continue;
+if (!chain) {
+  chain = await prisma.chain.create({
+    data: { name: chainName },
+  });
+}
+
+// BUSCAR TIENDA POR externalCode
+let store = await prisma.store.findUnique({
+  where: { externalCode },
+});
+
+// SI NO EXISTE → CREARLA
+if (!store) {
+  
+  // BUSCAR ÚLTIMO CÓDIGO SG
+  const lastStore = await prisma.store.findFirst({
+    where: {
+      code: {
+        startsWith: "SG",
+      },
+    },
+    orderBy: {
+      code: "desc",
+    },
+  });
+
+  let nextNumber = 1;
+
+  if (lastStore) {
+    const lastNumber = parseInt(lastStore.code.replace("SG", ""), 10);
+    nextNumber = lastNumber + 1;
+  }
+
+  const newCode = `SG${String(nextNumber).padStart(4, "0")}`;
+
+  store = await prisma.store.create({
+    data: {
+      name: storeName,
+      code: newCode,
+      externalCode,
+      chainId: chain.id,
+    },
+  });
+}
+
+// VALIDAR QUE LA TIENDA PERTENEZCA A LA MISMA CADENA
+if (store.chainId !== chain.id) {
+  continue; // puedes luego mejorar esto con manejo de error acumulado
+}
 
     // BUSCAR O CREAR FAMILIA
     let family = await prisma.productFamily.findFirst({

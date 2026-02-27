@@ -26,21 +26,24 @@ type Item = {
 export default function DashboardPage() {
     const router = useRouter();
 
-  // Protección por rol (solo ADMIN)
-  useEffect(() => {
-    fetch("/api/me").then(async (res) => {
-      if (res.status === 401) {
-        router.replace("/mobile/login");
-        return;
-      }
+// Protección por rol (bloquear solo USER)
+useEffect(() => {
+  fetch("/api/me").then(async (res) => {
+    if (res.status === 401) {
+      router.replace("/mobile/login");
+      return;
+    }
 
-      const user = await res.json();
+    const user = await res.json();
 
-      if (user.role !== "ADMIN") {
-        router.replace("/mobile");
-      }
-    });
-  }, []);
+    if (user.role === "USER") {
+      router.replace("/mobile");
+    }
+  });
+}, [router]);
+
+
+
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStore, setSelectedStore] = useState<string>("");
   const [data, setData] = useState<Item[]>([]);
@@ -49,6 +52,7 @@ export default function DashboardPage() {
   const [savedSku, setSavedSku] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [familyFilter, setFamilyFilter] = useState<string>("ALL");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<keyof Item | null>(null);
@@ -123,10 +127,18 @@ setOriginalData(recalculated);
     return "";
   };
 
+// 👇 NUEVO — familias únicas
+const families = Array.from(
+  new Set(data.map((item) => item.family))
+);
+
 const filteredData = Array.isArray(data)
   ? data
       .filter((item) =>
         statusFilter === "ALL" ? true : item.status === statusFilter
+      )
+      .filter((item) =>
+        familyFilter === "ALL" ? true : item.family === familyFilter
       )
       .filter((item) =>
         item.sku.toLowerCase().includes(search.toLowerCase())
@@ -231,8 +243,10 @@ const kpis = {
       
         <div className="dash-top-row">
         
+        <div className="filter-pill">
+  <span className="filter-label">Store:</span>
         <select
-          className="input-select"
+          className="filter-select-clean"
           value={selectedStore}
           onChange={(e) => setSelectedStore(e.target.value)}
         >
@@ -242,7 +256,7 @@ const kpis = {
             </option>
           ))}
         </select>
-     
+     </div>
 
       <div className="category-tabs">
   <button
@@ -265,17 +279,36 @@ const kpis = {
 <div className="status-selector">
 
   <div className="status-left">
-    <label>Status:</label>
-    <select
-      className="store-select"
-      value={statusFilter}
-      onChange={(e) => setStatusFilter(e.target.value)}
-    >
-      <option value="ALL">Todos</option>
-      <option value="OK">OK</option>
-      <option value="BAJO">Bajo</option>
-      <option value="CRITICO">Crítico</option>
-    </select>
+<div className="filter-pill">
+  <span className="filter-label">Status:</span>
+  <select
+    className="filter-select-clean"
+    value={statusFilter}
+    onChange={(e) => setStatusFilter(e.target.value)}
+  >
+    <option value="ALL">Todos</option>
+    <option value="OK">OK</option>
+    <option value="BAJO">Bajo</option>
+    <option value="CRITICO">Crítico</option>
+  </select>
+</div>
+
+<div className="filter-pill">
+  <span className="filter-label">Familia:</span>
+  <select
+    className="filter-select-clean"
+    value={familyFilter}
+    onChange={(e) => setFamilyFilter(e.target.value)}
+  >
+    <option value="ALL">Todas</option>
+    {families.map((fam) => (
+      <option key={fam} value={fam}>
+        {fam}
+      </option>
+    ))}
+  </select>
+</div>
+
   </div>
 
   <input

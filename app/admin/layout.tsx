@@ -14,35 +14,39 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetch("/api/me")
-      .then((res) => {
-        if (res.status === 401) {
-          router.replace("/mobile/login");
-          return null;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data?.email) {
-          setUser(data);
-        }
-      });
-  }, [router]);
+useEffect(() => {
+  fetch("/api/me")
+    .then((res) => {
+      if (res.status === 401) {
+        router.replace("/mobile/login");
+        return null;
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data?.email) {
+        setUser(data);
+        setRole(data.role);
+      }
+    });
+}, [router]);
 
   async function handleLogout() {
     await fetch("/api/logout", { method: "POST" });
     router.replace("/mobile/login");
   }
 
-  const menu = [
-    { name: "Dashboard", href: "/admin" },
-    { name: "Import", href: "/admin/import" },
-    { name: "User Stores", href: "/admin/user-stores" },
-    { name: "Users", href: "/admin/users" },
-    { name: "Mobile Client", href: "/mobile" },
-  ];
+const menu = [
+  { name: "Dashboard", href: "/admin", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR"] },
+    { name: "Users", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Import", href: "/admin/import", roles: ["ADMIN"] },
+  { name: "Assign Stores", href: "/admin/user-stores", roles: ["ADMIN"] },
+
+  { name: "Mobile Client", href: "/mobile", roles: ["ADMIN", "SUPERVISOR"] },
+];
 
   return (
     <div className="admin-wrapper">
@@ -60,24 +64,26 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </div>
 
           {/* MENU */}
-          <nav className="sidebar-nav">
-            {menu.map((item) => {
-  const isActive =
-    item.href === "/admin"
-      ? pathname === "/admin"
-      : pathname.startsWith(item.href);
+<nav className="sidebar-nav">
+  {menu
+    .filter((item) => role && item.roles.includes(role))
+    .map((item) => {
+      const isActive =
+        item.href === "/admin"
+          ? pathname === "/admin"
+          : pathname.startsWith(item.href);
 
-  return (
-    <Link
-      key={item.href}
-      href={item.href}
-      className={`sidebar-link ${isActive ? "active" : ""}`}
-    >
-      {item.name}
-    </Link>
-  );
-})}
-          </nav>
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={`sidebar-link ${isActive ? "active" : ""}`}
+        >
+          {item.name}
+        </Link>
+      );
+    })}
+</nav>
         </div>
 
         {/* FOOTER */}

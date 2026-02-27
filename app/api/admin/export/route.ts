@@ -10,14 +10,18 @@ function calculateStatus(stockTotal: number, min: number) {
 
 export async function GET() {
   const inventory = await prisma.inventory.findMany({
+include: {
+  store: {
     include: {
-      store: true,
-      product: {
-        include: {
-          family: true,
-        },
-      },
+      chain: true,
     },
+  },
+  product: {
+    include: {
+      family: true,
+    },
+  },
+},
   });
 
   const rows = inventory.map((i) => {
@@ -25,18 +29,20 @@ export async function GET() {
     const status = calculateStatus(stockTotal, i.minStock);
     const empuje = Math.max(i.minStock - stockTotal, 0);
 
-    return {
-      Categoria: i.product.category,
-      Tienda: i.store.name,
-      SKU: i.product.sku,
-      Familia: i.product.family.name,
-      Stock: i.stock,
-      Exhib: i.exhib ? "SI" : "NO",
-      Min: i.minStock,
-      "Stock Total": stockTotal,
-      Status: status,
-      Empuje: empuje,
-    };
+return {
+  Cadena: i.store.chain?.name ?? "",
+  Tienda: i.store.name,
+  ExternalCode: i.store.externalCode ?? "",
+  Categoria: i.product.category,
+  SKU: i.product.sku,
+  Familia: i.product.family.name,
+  Stock: i.stock,
+  Exhib: i.exhib ? "SI" : "NO",
+  Min: i.minStock,
+  "Stock Total": stockTotal,
+  Status: status,
+  Empuje: empuje,
+};
   });
 
   const worksheet = XLSX.utils.json_to_sheet(rows);

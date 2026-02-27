@@ -38,14 +38,18 @@ export default function ImportPage() {
       const json = XLSX.utils.sheet_to_json<any>(sheet);
 
       const cleaned: Row[] = json
-        .filter(
-          (r) =>
-            r["Categoria"] &&
-            r["Tienda"] &&
-            r["SKU"] &&
-            r["Familia"]
-        )
+.filter(
+  (r) =>
+    r["Cadena"] &&
+    r["ExternalCode"] &&
+    r["Categoria"] &&
+    r["Tienda"] &&
+    r["SKU"] &&
+    r["Familia"]
+)
 .map((r) => ({
+  chain: String(r["Cadena"]).trim().toUpperCase(),
+  externalCode: String(r["ExternalCode"]).trim().toUpperCase(),
   category: String(r["Categoria"]).trim().toUpperCase(),
   storeName: String(r["Tienda"]).trim(),
   sku: String(r["SKU"]).trim(),

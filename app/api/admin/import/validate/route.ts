@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 type Row = {
+  chain: string;
+  externalCode: string;
   category: string;
   storeName: string;
   sku: string;
@@ -23,15 +25,25 @@ export async function POST(req: Request) {
     const storeName = row.storeName.toUpperCase().trim();
     const familyName = row.family.toUpperCase().trim();
     const categoryName = row.category.toUpperCase().trim(); // TV / AV
+    const chainName = row.chain?.toUpperCase().trim();
+    const externalCode = row.externalCode?.toUpperCase().trim();
 
-    const store = await prisma.store.findFirst({
-      where: { name: storeName },
-    });
+const store = await prisma.store.findFirst({
+  where: { name: storeName },
+  include: { chain: true },
+});
 
-    if (!store) {
-      valid = false;
-      error = "Tienda no existe";
-    }
+if (store) {
+  if (store.externalCode !== externalCode) {
+    valid = false;
+    error = "ExternalCode no coincide con tienda existente";
+  }
+
+  if (store.chain?.name !== chainName) {
+    valid = false;
+    error = "Cadena no coincide con tienda existente";
+  }
+}
 
     if (!familyName) {
       valid = false;
@@ -42,20 +54,26 @@ export async function POST(req: Request) {
       valid = false;
       error = "Campos obligatorios vacíos";
     }
+    if (!chainName || !externalCode) {
+  valid = false;
+  error = "Cadena o ExternalCode vacío";
+}
 
     if (isNaN(row.stock) || isNaN(row.minStock)) {
       valid = false;
       error = "Stock o Min no es número";
     }
 
-    result.push({
-      ...row,
-      storeName,
-      family: familyName,     // 👈 NORMALIZADO
-      category: categoryName, // 👈 NORMALIZADO
-      valid,
-      error,
-    });
+result.push({
+  ...row,
+  chain: chainName,
+  externalCode,
+  storeName,
+  family: familyName,
+  category: categoryName,
+  valid,
+  error,
+});
   }
 
   return NextResponse.json(result);

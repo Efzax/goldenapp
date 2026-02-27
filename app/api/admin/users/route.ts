@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import { Role } from "@prisma/client";
 
 /* =======================
    GET → listar usuarios
@@ -11,43 +12,73 @@ import bcrypt from "bcryptjs";
 export async function GET() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("userId")?.value;
-  
 
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  const admin = await prisma.user.findUnique({
+  const currentUser = await prisma.user.findUnique({
     where: { id: userId },
+    include: { stores: true },
   });
 
-  if (!admin || admin.role !== "ADMIN") {
-    return NextResponse.json({ error: "Solo ADMIN" }, { status: 403 });
+  if (!currentUser) {
+    return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
   }
 
-const users = await prisma.user.findMany({
-  select: {
-    id: true,
-    name: true,
-    email: true,
-    role: true,
-    stores: {
+  // 🔴 ADMIN
+  if (currentUser.role === Role.ADMIN) {
+    const users = await prisma.user.findMany({
       select: {
-        store: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        stores: {
           select: {
-            id: true,
-            name: true,
+            store: { select: { id: true, name: true } },
+          },
+        },
+        _count: { select: { stores: true } },
+      },
+    });
+
+    return NextResponse.json(users);
+  }
+
+  // 🟡 SUPERVISOR
+  else if (currentUser.role === Role.SUPERVISOR) {
+    const storeIds = currentUser.stores.map((s) => s.storeId);
+
+    const users = await prisma.user.findMany({
+      where: {
+        stores: {
+          some: {
+            storeId: { in: storeIds },
           },
         },
       },
-    },
-    _count: {
-      select: { stores: true },
-    },
-  },
-});
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        stores: {
+          select: {
+            store: { select: { id: true, name: true } },
+          },
+        },
+        _count: { select: { stores: true } },
+      },
+    });
 
-  return NextResponse.json(users);
+    return NextResponse.json(users);
+  }
+
+  // 🔵 USER
+  else {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
 }
 
 /* =======================

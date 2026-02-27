@@ -16,6 +16,7 @@ datasource db {
 
 enum Role {
   ADMIN
+  SUPERVISOR
   USER
 }
 
@@ -34,8 +35,11 @@ model Store {
   id        String   @id @default(uuid())
   name      String
   code      String   @unique
+  externalCode String? @unique
+  chainId   String
   createdAt DateTime @default(now())
 
+  chain     Chain @relation(fields: [chainId], references: [id])
   users       UserStore[]
   inventories Inventory[]
 }
@@ -95,4 +99,12 @@ model Inventory {
   createdAt DateTime @default(now())
 
   @@unique([storeId, productId])
+}
+
+model Chain {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  stores    Store[]
 }

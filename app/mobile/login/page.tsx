@@ -52,10 +52,10 @@ className="btn-primary"
 if (res.ok) {
   const json = await res.json();
 
-  if (json.role === "ADMIN") {
-    router.push("/admin");
-  } else {
+  if (json.role === "USER") {
     router.push("/mobile");
+  } else {
+    router.push("/admin");
   }
 }
  else {

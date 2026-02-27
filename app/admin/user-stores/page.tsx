@@ -31,9 +31,9 @@ export default function AdminUserStoresPage() {
         return;
       }
       const user = await res.json();
-      if (user.role !== "ADMIN") {
-        router.replace("/mobile");
-      }
+if (user.role !== "ADMIN") {
+  router.replace("/admin");
+}
     });
   }, []);
 

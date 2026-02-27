@@ -6,10 +6,8 @@ import { cookies } from "next/headers";
 export async function POST() {
   const cookieStore = await cookies();
 
-  cookieStore.set("userId", "", {
-    path: "/",
-    maxAge: 0,
-  });
+  cookieStore.delete("userId");
+  cookieStore.delete("role");
 
   return NextResponse.json({ ok: true });
 }

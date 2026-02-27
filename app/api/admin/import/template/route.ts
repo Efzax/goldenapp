@@ -3,7 +3,17 @@ import * as XLSX from "xlsx";
 
 export async function GET() {
   const headers = [
-    ["Categoria", "Tienda", "SKU", "Familia", "Stock", "Exhib", "Min"],
+    [
+      "Cadena",
+      "ExternalCode",
+      "Tienda",
+      "Categoria",
+      "SKU",
+      "Familia",
+      "Stock",
+      "Exhib",
+      "Min",
+    ],
   ];
 
   const worksheet = XLSX.utils.aoa_to_sheet(headers);

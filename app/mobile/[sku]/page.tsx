@@ -30,7 +30,7 @@ export default function MobileSkuPage() {
 const [message, setMessage] = useState("");
 const [originalItem, setOriginalItem] = useState<any>(null);
 const [storeName, setStoreName] = useState("");
-const [isAdmin, setIsAdmin] = useState(false);
+const [canAccessAdmin, setCanAccessAdmin] = useState(false);
 const [prevStock, setPrevStock] = useState<number | null>(null);
 const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 
@@ -39,8 +39,8 @@ useEffect(() => {
   fetch("/api/me")
     .then(res => res.json())
     .then(user => {
-      if (user?.role?.toUpperCase() === "ADMIN") {
-        setIsAdmin(true);
+      if (user?.role && user.role !== "USER") {
+        setCanAccessAdmin(true);
       }
     });
 }, []);
@@ -143,14 +143,14 @@ function calculateDerived(stock: number, exhib: boolean, min: number) {
     />
   </svg>
 </button>
+{canAccessAdmin && (
+  <button
+    className="btn-dash"
+    onClick={() => location.href = "/admin"}
+  >
+    Dashboard
+  </button>
 
-          {isAdmin && (
-    <button
-      className="btn-dash"
-      onClick={() => location.href = "/admin"}
-    >
-      Dashboard
-    </button>
   )}
 
 

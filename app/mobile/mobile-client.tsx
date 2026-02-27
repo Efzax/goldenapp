@@ -23,7 +23,7 @@ export default function MobileClient() {
   const [category, setCategory] = useState<"TV" | "AV">("TV");
   const [storeName, setStoreName] = useState<string>("");
   const [storeCount, setStoreCount] = useState(1);
-const [isAdmin, setIsAdmin] = useState(false);
+const [canAccessAdmin, setCanAccessAdmin] = useState(false);
 
 
   const router = useRouter();
@@ -35,8 +35,8 @@ useEffect(() => {
   fetch("/api/me")
     .then(res => res.json())
     .then(user => {
-      if (user?.role?.toUpperCase() === "ADMIN") {
-        setIsAdmin(true);
+      if (user?.role && user.role !== "USER") {
+        setCanAccessAdmin(true);
       }
     });
 }, []);
@@ -113,14 +113,14 @@ useEffect(() => {
 </button>
 
 
-  {isAdmin && (
-    <button
-      className="btn-dash"
-      onClick={() => location.href = "/admin"}
-    >
-      Dashboard
-    </button>
-  )}
+{canAccessAdmin && (
+  <button
+    className="btn-dash"
+    onClick={() => location.href = "/admin"}
+  >
+    Dashboard
+  </button>
+)}
 
         <button
           className="btn-logout"

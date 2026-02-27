@@ -1,11 +1,12 @@
 :root {
   /* Las variables siempre deben empezar con dos guiones -- */
   --color-primario: #2d3142; 
-  --color-secundario: #DFEAFF;
+  --color-secundario: #DDD;
   --color-fondo: #fcfcfc;
   --color-fondo2: #f3f3f3;
   --color-card: #ffffff;
   --color-font: #374151;
+  --color-font2: #6b7280;
 }
 
 body {
@@ -349,6 +350,14 @@ svg {
   width: 100%;
   gap: 10px;
   align-items: center;
+}
+
+.dash-top-row .filter-pill{
+ flex: 1;
+}
+
+.dash-top-row .filter-select-clean {
+  width: 100%;
 }
 
 .input-select {
@@ -1199,4 +1208,51 @@ svg {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
+}
+
+.table-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dashboard-table tfoot td {
+  border-top: 2px solid #ccc;
+  background-color: var(--color-primario);
+  color:var(--color-secundario);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid var(--color-secundario);
+}
+
+.filter-label {
+  font-size: 13px;
+  color: var(--color-font2) ; /* gris clarito */
+  font-weight: 500;
+}
+
+.filter-select-clean {
+  border: none;
+  background: transparent;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primario);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
 }

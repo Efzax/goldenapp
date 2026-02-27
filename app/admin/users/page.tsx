@@ -49,9 +49,9 @@ const [storeSearch, setStoreSearch] = useState("");
 
       const user = await res.json();
 
-      if (user.role !== "ADMIN") {
-        router.replace("/mobile");
-      }
+if (user.role === "USER") {
+  router.replace("/mobile");
+}
     });
 
     loadUsers();

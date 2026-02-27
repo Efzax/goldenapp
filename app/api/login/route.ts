@@ -29,11 +29,19 @@ export async function POST(req: Request) {
 
   const res = NextResponse.json({
     ok: true,
-    role: user.role, // 👈 CLAVE
+    role: user.role,
   });
 
+  // ✅ Guardamos userId
   res.cookies.set("userId", user.id, {
     path: "/",
+    httpOnly: true,
+  });
+
+  // ✅ Guardamos role
+  res.cookies.set("role", user.role, {
+    path: "/",
+    httpOnly: true,
   });
 
   return res;
