@@ -93,20 +93,20 @@ const renderSortArrow = (column: keyof StoreSummary) => {
      <h2 className="page-title">Store Summary</h2>
 
 <div className="table-controls">
-  <div className="filter-group">
-    <label>Categoría:</label>
-    <select
-    className="store-select"
-      value={categoryFilter}
-      onChange={(e) =>
-        setCategoryFilter(e.target.value as "ALL" | "TV" | "AV")
-      }
-    >
-      <option value="ALL">Todas</option>
-      <option value="TV">TV</option>
-      <option value="AV">AV</option>
-    </select>
-  </div>
+<div className="filter-pill">
+  <span className="filter-label">Categoría:</span>
+  <select
+    className="filter-select-clean"
+    value={categoryFilter}
+    onChange={(e) =>
+      setCategoryFilter(e.target.value as "ALL" | "TV" | "AV")
+    }
+  >
+    <option value="ALL">Todas</option>
+    <option value="TV">TV</option>
+    <option value="AV">AV</option>
+  </select>
+</div>
 
   <input
     type="text"
