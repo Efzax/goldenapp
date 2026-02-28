@@ -729,7 +729,7 @@ svg {
 }
 
 .sku-title {
-  font-size: 1.5rem;
+  font-size: 28pt;
   font-weight: 600;
 }
 
@@ -1361,4 +1361,94 @@ svg {
 .search-input-full {
   width: 100%;
   margin: 20px 0;
+}
+
+/* ===== MOBILE HEADER NUEVO ===== */
+
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mobile-header-left {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.mobile-greeting {
+  font-size: 13px;
+  color: var(--color-font2);
+  font-weight: 500;
+}
+
+.mobile-store-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primario);
+}
+
+.ff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-fondo2);
+  color: var(--color-primario);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mobile-menu-item {
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--color-font);
+  font-size: 14px;
+  transition: 0.2s;
+  margin-bottom: 10px;
+
+}
+
+.mobile-menu-item:hover {
+  background: #f3f4f6;
+    cursor: pointer;
+}
+
+.mobile-menu-item.active {
+  background: var(--color-primario);
+  color: var(--color-secundario);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mobile-logout-btn {
+  padding: 10px;
+  border-radius: 10px;
+    font-size: 14px;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+}
+
+.mobile-logout-btn:hover {
+  background: #f87171;
+  color: white;
+}
+
+/* ===== MOBILE ACTION BUTTONS ===== */
+
+.mobile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.mobile-actions button {
+  flex: 1;
 }
