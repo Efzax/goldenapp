@@ -194,6 +194,20 @@ const kpis = {
   empujeTotal: filteredData.reduce((acc, i) => acc + i.empuje, 0),
 };
 
+const criticalPercent =
+  kpis.total > 0
+    ? ((kpis.critico / kpis.total) * 100).toFixed(1)
+    : "0";
+
+let criticalClass = "kpi-ok";
+
+if (Number(criticalPercent) >= 20) {
+  criticalClass = "kpi-critico";
+} else if (Number(criticalPercent) >= 10) {
+  criticalClass = "kpi-bajo";
+}
+
+
   return (
     
     <div className="page-dashboard">
@@ -228,10 +242,12 @@ const kpis = {
     <strong>{kpis.bajo}</strong>
   </div>
 
-  <div className="kpi-card kpi-critico">
-    <span>Crítico</span>
-    <strong>{kpis.critico}</strong>
-  </div>
+<div className={`kpi-card ${criticalClass}`}>
+  <span>Crítico</span>
+  <strong>
+    {kpis.critico} ({criticalPercent}%)
+  </strong>
+</div>
 
   <div className="kpi-card kpi-empuje">
     <span>Empuje Total</span>

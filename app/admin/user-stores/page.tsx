@@ -22,6 +22,7 @@ export default function AdminUserStoresPage() {
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedStores, setSelectedStores] = useState<string[]>([]);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
 
   // Proteger ADMIN
   useEffect(() => {
@@ -88,71 +89,130 @@ useEffect(() => {
     );
   }
 
-  return (
-    <div className="page-container">
-      <div className="page-header">
-<div className="header-left"></div>
+  const filteredStores = stores.filter((store) =>
+  store.name.toLowerCase().includes(search.toLowerCase())
+);
 
-        
-        <button
-          className="btn-logout"
-          onClick={async () => {
-            await fetch("/api/logout", { method: "POST" });
-            location.href = "/mobile/login";
+return (
+  <div className="page-dashboard">
+
+  <h2 className="page-title">Asignación de Tiendas</h2>
+
+  <div className="assign-layout">
+
+    {/* COLUMNA IZQUIERDA (SIEMPRE VISIBLE) */}
+    <div className="assign-left">
+
+      <div className="filter-pill">
+        <span className="filter-label">Seleccionar Usuario:</span>
+        <select
+          className="filter-select-clean"
+          value={selectedUser}
+          onChange={async (e) => {
+            const userId = e.target.value;
+            setSelectedUser(userId);
+
+            if (!userId) {
+              setSelectedStores([]);
+              return;
+            }
+
+            const res = await fetch(
+              `/api/admin/user-stores?userId=${userId}`
+            );
+            const json = await res.json();
+            setSelectedStores(json);
           }}
         >
-          Logout
-        </button>
-      </div>
-<h2 className="page-title">Asignar Tiendas</h2>
-      <select
-        className="select"
-        value={selectedUser}
-onChange={async (e) => {
-  const userId = e.target.value;
-  setSelectedUser(userId);
-
-  if (!userId) {
-    setSelectedStores([]);
-    return;
-  }
-
-  const res = await fetch(`/api/admin/user-stores?userId=${userId}`);
-  const json = await res.json();
-  setSelectedStores(json);
-}}
-
-      >
-        <option value="">Selecciona usuario</option>
-        {users.map((u) => (
-          <option key={u.id} value={u.id}>
-            {u.name} ({u.email})
-          </option>
-        ))}
-      </select>
-
-      {selectedUser && (
-        <div className="list">
-          {stores.map((store) => (
-            <label key={store.id} className="list-item">
-              <input
-                type="checkbox"
-                checked={selectedStores.includes(store.id)}
-                onChange={() => toggleStore(store.id)}
-              />
-              {store.name}
-            </label>
+          <option value="">Seleccionar</option>
+          {users.map((u) => (
+            <option key={u.id} value={u.id}>
+              {u.name} ({u.email})
+            </option>
           ))}
+        </select>
+      </div>
+
+      {/* Chips solo si hay usuario */}
+      {selectedUser && selectedStores.length > 0 && (
+        <div className="chips-container">
+          {stores
+            .filter((s) => selectedStores.includes(s.id))
+            .map((store) => (
+              <div key={store.id} className="chip">
+                {store.name}
+                <button
+                  className="chip-remove"
+                  onClick={() => toggleStore(store.id)}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
         </div>
       )}
 
-      {selectedUser && (
-        <button className="btn-primary" onClick={save}>
-          Guardar asignación
-        </button>
+      <button
+        className="btn-primary full-width"
+        onClick={save}
+        disabled={!selectedUser}
+      >
+        Guardar Asignación
+      </button>
+
+    </div>
+
+    {/* COLUMNA DERECHA */}
+    <div className="assign-right">
+
+      {selectedUser ? (
+        <>
+          <input
+            type="text"
+            placeholder="Buscar tienda..."
+            className="input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <div className="table-container">
+            <div className="table-wrapper">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: "60px" }}>✓</th>
+                    <th>Nombre Tienda</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStores.map((store) => (
+                    <tr key={store.id}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedStores.includes(store.id)}
+                          onChange={() => toggleStore(store.id)}
+                        />
+                      </td>
+                      <td className="col-store">{store.name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="empty-state">
+          Selecciona un usuario para asignar tiendas
+        </div>
       )}
 
-      {message && <p className="admin-message">{message}</p>}
     </div>
-  );
-}
+
+  </div>
+
+  {message && <div className="success-message">{message}</div>}
+
+</div>
+);}

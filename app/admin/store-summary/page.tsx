@@ -91,6 +91,20 @@ const totals = sortedData.reduce(
   }
 );
 
+const totalStores = new Set(sortedData.map(r => r.store_id)).size;
+
+const totalCriticalPercent =
+  totals.total_skus > 0
+    ? ((totals.total_critico / totals.total_skus) * 100).toFixed(1)
+    : "0";
+
+    let criticalClass = "kpi-ok";
+
+if (Number(totalCriticalPercent) >= 20) {
+  criticalClass = "kpi-critico";
+} else if (Number(totalCriticalPercent) >= 10) {
+  criticalClass = "kpi-bajo";
+}
 
 const renderSortArrow = (column: keyof StoreSummary) => {
   if (sortKey !== column) return null;
@@ -106,7 +120,44 @@ const renderSortArrow = (column: keyof StoreSummary) => {
 
   return (
     <div className="page-dashboard">
+
+
      <h2 className="page-title">Store Summary</h2>
+
+      <div className="kpi-container">
+
+  <div className="kpi-card kpi-total">
+    Tiendas
+    <strong>{totalStores}</strong>
+  </div>
+
+  <div className="kpi-card kpi-total">
+    Promotores
+    <strong>{totals.total_users}</strong>
+  </div>
+
+  <div className="kpi-card kpi-total">
+    SKUs
+    <strong>{totals.total_skus}</strong>
+  </div>
+
+  <div className="kpi-card kpi-total">
+    Stock Total
+    <strong>{totals.total_stock}</strong>
+  </div>
+
+  <div className={`kpi-card ${criticalClass}`}>
+    Críticos
+    <strong>{totals.total_critico}</strong>
+  </div>
+
+  <div className="kpi-card kpi-empuje">
+    Empuje
+    <strong>{totals.total_empuje}</strong>
+  </div>
+
+</div>
+
 
 <div className="table-controls">
 <div className="filter-pill">
