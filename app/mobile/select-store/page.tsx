@@ -14,6 +14,13 @@ type Store = {
 export default function SelectStorePage() {
   const [stores, setStores] = useState<Store[]>([]);
   const router = useRouter();
+  const [user, setUser] = useState<{
+  name: string;
+  email: string;
+  role: string;
+} | null>(null);
+
+const [menuOpen, setMenuOpen] = useState(false);
 
 
 
@@ -30,6 +37,16 @@ useEffect(() => {
       console.error(err);
     });
 }, [router]);
+
+useEffect(() => {
+  fetch("/api/me")
+    .then(res => res.json())
+    .then(data => {
+      if (data?.role) {
+        setUser(data);
+      }
+    });
+}, []);
 
   return (
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
@@ -53,17 +70,73 @@ useEffect(() => {
     />
   </svg>
 </button>
-        <button
-          className="btn-logout"
+{user && (
+  <div style={{ position: "relative" }}>
+    <div
+      className="avatar"
+      style={{ cursor: "pointer" }}
+      onClick={() => setMenuOpen(!menuOpen)}
+    >
+      {user.name
+        ? user.name.charAt(0).toUpperCase()
+        : user.email.charAt(0).toUpperCase()}
+    </div>
+
+    {menuOpen && (
+      <div
+        style={{
+          position: "absolute",
+          top: "60px",
+          right: 0,
+          background: "white",
+          border: "1px solid var(--color-secundario)",
+          borderRadius: "10px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          minWidth: "160px",
+          zIndex: 100,
+          padding: "8px 0",
+        }}
+      >
+        {(user.role === "ADMIN" || user.role === "SUPERVISOR") && (
+          <div
+            style={{ padding: "10px 16px", cursor: "pointer" }}
+            onClick={() => {
+              setMenuOpen(false);
+              location.href = "/admin";
+            }}
+          >
+            Dashboard
+          </div>
+        )}
+
+        <div
+          style={{
+            padding: "10px 16px",
+            cursor: "pointer",
+            color: "red",
+          }}
           onClick={async () => {
+            setMenuOpen(false);
             await fetch("/api/logout", { method: "POST" });
             location.href = "/mobile/login";
           }}
         >
           Logout
-        </button>
+        </div>
       </div>
-      <div className="page-title">SELECCIONA TU TIENDA</div>
+    )}
+  </div>
+)}
+      </div>
+      <div className="page-title">
+  {user && (
+    <div style={{ fontSize: "14px", color: "var(--color-font2)" }}>
+      Hola {user.name}, por favor
+    </div>
+  )}
+
+  <div>Selecciona tu tienda</div>
+</div>
       {stores.map((store) => (
         <button
           key={store.id}
