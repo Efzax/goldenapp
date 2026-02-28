@@ -7,12 +7,17 @@
   --color-card: #ffffff;
   --color-font: #374151;
   --color-font2: #6b7280;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
 }
 
 body {
   background-color: var(--color-fondo) !important;
   margin: 0;
-  font-size: 16px;
+  font-size: var(--text-base);
   color: var(--color-font);
   font-family: var(--font-satoshi), sans-serif;
   font-weight: 400;
@@ -25,17 +30,15 @@ body {
   max-width: 600px;
   margin: 0 auto;
   padding: 16px;
-  font-size: 1rem !important;
 }
 .page-dashboard {
   max-width: 100%;
   margin: 0 auto;
   padding: 16px;
-  font-size: 1rem !important;
 }
 
 .page-title {
-  font-size: 1.6rem;
+  font-size: var(--text-xl);
   text-align: left;
   flex: 1 ;
   padding-bottom: 5px;
@@ -60,10 +63,11 @@ svg {
   vertical-align: middle; /* Ayuda a que no se vea "caído" respecto al texto */
 }
 
-.section-title {
+/*.section-title {
   font-size: 14px;
+  background-color: #22B14C;
   font-weight: 500;
-}
+}*/
 
 .loginhome {
   display: flex;
@@ -83,7 +87,7 @@ svg {
 }
 
 .login-title {
-  font-size: 36px;
+  font-size: 2rem;
   color: var(--color-primario);
   line-height: 30px;
   font-weight: 700;
@@ -91,7 +95,7 @@ svg {
   margin-bottom: 50px;
 }
 .login-title h2{
-  font-size: 18px;
+  font-size: var(--text-lg);
   color: var(--color-primario);
   font-weight: 400 ;
 }
@@ -103,7 +107,7 @@ svg {
   border-radius: 10px;
   border: 1px solid #cbd5e1;
   color: #384961;
-  font-size: 14px;
+  font-size: var(--text-sm);
   outline: none;
   box-sizing: border-box;
   transition: all 0.2s ease;
@@ -580,13 +584,12 @@ svg {
 
 .family-title {
   font-weight: 700;
-  font-size: 24px
+  font-size: var(--text-lg);
 }
 
 .card-dots {
   background: var(--color-card);
   border-radius: 10px;
-  font-size: 16px;
   font-weight: 400;
   margin: 16px 0;
   border: 1px solid var(--color-secundario);
@@ -605,8 +608,8 @@ svg {
 
 .card-header-dots {
   display: flex;
-  border-start-start-radius: 14px;
-  border-start-end-radius: 14px;
+  border-start-start-radius: 10px;
+  border-start-end-radius: 10px;
   padding: 16px;
   background-color: var(--color-fondo2);
 }
@@ -675,7 +678,6 @@ svg {
 
 .sku-text {
   font-weight: 500;
-  font-size: 1rem;
  
 }
 
@@ -729,7 +731,7 @@ svg {
 }
 
 .sku-title {
-  font-size: 28pt;
+  font-size: var(--text-lg);
   font-weight: 600;
 }
 
@@ -1379,13 +1381,13 @@ svg {
 }
 
 .mobile-greeting {
-  font-size: 13px;
+  font-size: var(--text-sm);
   color: var(--color-font2);
   font-weight: 500;
 }
 
 .mobile-store-title {
-  font-size: 20px;
+  font-size: var(--text-lg);
   font-weight: 600;
   color: var(--color-primario);
 }
