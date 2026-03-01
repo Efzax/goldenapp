@@ -25,7 +25,7 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "GoldenApp v0.1.2",
+  title: "GoldenApp v0.1.5",
   description: "Gestor de Stock e iventario para tiendas",
 };
 
