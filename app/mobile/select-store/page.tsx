@@ -18,6 +18,7 @@ export default function SelectStorePage() {
   name: string;
   email: string;
   role: string;
+  image?: string | null; // 👈 agregar esto
 } | null>(null);
 
 const [menuOpen, setMenuOpen] = useState(false);
@@ -66,17 +67,25 @@ useEffect(() => {
     </div>
   </div>
 
-  {user && (
-    <div style={{ position: "relative" }}>
-      <div
-        className="avatar"
-        style={{ cursor: "pointer" }}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        {user.name
-          ? user.name.charAt(0).toUpperCase()
-          : user.email.charAt(0).toUpperCase()}
-      </div>
+{user && (
+  <div style={{ position: "relative" }}>
+    <div
+      className="avatar"
+      style={{ cursor: "pointer" }}
+      onClick={() => setMenuOpen(!menuOpen)}
+    >
+      {user.image ? (
+        <img
+          src={user.image}
+          alt="Avatar"
+          className="avatar-img"
+        />
+      ) : user.name ? (
+        user.name.charAt(0).toUpperCase()
+      ) : (
+        user.email.charAt(0).toUpperCase()
+      )}
+    </div>
 
       {menuOpen && (
         <div
@@ -105,6 +114,16 @@ useEffect(() => {
             </div>
           )}
 
+  <div
+    className="mobile-menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      location.href = "/mobile/profile";
+    }}
+  >
+    Perfil
+  </div>
+  
           <div
             className="mobile-logout-btn"
             onClick={async () => {

@@ -32,6 +32,9 @@ export async function POST(request: Request) {
     data: {
       stock: Number(stock),
       exhib: Boolean(exhib),
+      ...(minStock !== undefined && {
+        minStock: Number(minStock),
+      }),
     },
   });
 

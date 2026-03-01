@@ -47,6 +47,7 @@ const [storeSearch, setStoreSearch] = useState("");
         return;
       }
 
+
       const user = await res.json();
 
 if (user.role === "USER") {
@@ -89,6 +90,7 @@ function openEdit(user: User) {
     role: user.role,
   });
 
+
   // 🔒 Precargar tiendas asignadas
   const mappedStores = user.stores.map((s) => s.store);
   setSelectedStores(mappedStores);
@@ -130,6 +132,13 @@ const filteredUsers = users.filter((user) =>
   user.name.toLowerCase().includes(search.toLowerCase()) ||
   user.email.toLowerCase().includes(search.toLowerCase())
 );
+
+const roleLabels: Record<string, string> = {
+  ADMIN: "Administrador",
+  SUPERVISOR: "Supervisor",
+  USER: "Promotor",
+};
+
   return (
     <div className="page-dashboard" >
       <h2 className="page-title">Usuarios</h2>
@@ -199,7 +208,7 @@ Crear usuario
 </td>
               <td>
   <span className={`role-badge ${user.role}`}>
-    {user.role}
+    {roleLabels[user.role] || user.role}
   </span>
 </td>
 
@@ -300,16 +309,17 @@ Crear usuario
               placeholder="Nueva contraseña (opcional)"
             />
 
-            <select
-              className="input"
-              value={form.role}
-              onChange={(e) =>
-                setForm({ ...form, role: e.target.value })
-              }
-            >
-              <option value="USER">Usuario</option>
-              <option value="ADMIN">Admin</option>
-            </select>
+<select
+  className="input"
+  value={form.role}
+  onChange={(e) =>
+    setForm({ ...form, role: e.target.value })
+  }
+>
+  <option value="USER">Promotor</option>
+  <option value="SUPERVISOR">Supervisor</option>
+  <option value="ADMIN">Administrador</option>
+</select>
 
             {/* ===== Selector Profesional de Tiendas ===== */}
 
@@ -477,16 +487,17 @@ Crear usuario
         }
       />
 
-      <select
-        className="input"
-        value={form.role}
-        onChange={(e) =>
-          setForm({ ...form, role: e.target.value })
-        }
-      >
-        <option value="USER">Usuario</option>
-        <option value="ADMIN">Admin</option>
-      </select>
+<select
+  className="input"
+  value={form.role}
+  onChange={(e) =>
+    setForm({ ...form, role: e.target.value })
+  }
+>
+  <option value="USER">Promotor</option>
+  <option value="SUPERVISOR">Supervisor</option>
+  <option value="ADMIN">Administrador</option>
+</select>
 
       {/* ===== Selector Profesional de Tiendas ===== */}
 

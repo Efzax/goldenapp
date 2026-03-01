@@ -17,7 +17,8 @@ export default function LoginPage() {
       <div className="loginhome"><img src="/icon.png" alt="Logo" /></div>
  <div className="login-title">
         BIENVENIDO SPARTAN
-        <h2>Golden App v0.12</h2></div>
+        <h2>Golden App v0.1.9</h2>
+        </div>
 <input
   type="email"
   name="email"
@@ -65,6 +66,8 @@ if (res.ok) {
       >
         Entrar
       </button>
-    </div></div>
+    </div>
+    <div className="mobile-greeting-login">Desarrollado por Efza & Orideken.cl</div>
+    </div>
   );
 }

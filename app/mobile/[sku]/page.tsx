@@ -5,6 +5,7 @@ import { useRouter, useSearchParams, useParams } from "next/navigation";
 import "../../styles/ui.css";
 import { api } from "@/app/lib/api";
 
+
 type Item = {
   sku: string;
   family: string;
@@ -34,11 +35,13 @@ const [canAccessAdmin, setCanAccessAdmin] = useState(false);
 const [prevStock, setPrevStock] = useState<number | null>(null);
 const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 const [hasMultipleStores, setHasMultipleStores] = useState(false);
+
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState<{
+const [user, setUser] = useState<{
   name: string;
   email: string;
   role: string;
+  image?: string | null; // 👈 agregar esto
 } | null>(null);
 
 
@@ -160,18 +163,25 @@ function calculateDerived(stock: number, exhib: boolean, min: number) {
     </div>
   </div>
 
-  {user && (
-    <div style={{ position: "relative" }}>
-      <div
-        className="avatar"
-        style={{ cursor: "pointer" }}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        {user.name
-          ? user.name.charAt(0).toUpperCase()
-          : user.email.charAt(0).toUpperCase()}
-      </div>
-
+{user && (
+  <div style={{ position: "relative" }}>
+    <div
+      className="avatar"
+      style={{ cursor: "pointer" }}
+      onClick={() => setMenuOpen(!menuOpen)}
+    >
+      {user.image ? (
+        <img
+          src={user.image}
+          alt="Avatar"
+          className="avatar-img"
+        />
+      ) : user.name ? (
+        user.name.charAt(0).toUpperCase()
+      ) : (
+        user.email.charAt(0).toUpperCase()
+      )}
+    </div>
       {menuOpen && (
         <div
           style={{
@@ -198,6 +208,7 @@ function calculateDerived(stock: number, exhib: boolean, min: number) {
   >
     Mis Tiendas
   </div>
+  
 )}
 
          {(user.role === "ADMIN" || user.role === "SUPERVISOR") && (
@@ -211,6 +222,15 @@ function calculateDerived(stock: number, exhib: boolean, min: number) {
               Dashboard
             </div>
           )}
+  <div
+    className="mobile-menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      location.href = "/mobile/profile";
+    }}
+  >
+    Perfil
+  </div>
 
           <div
             className="mobile-logout-btn"

@@ -29,6 +29,7 @@ const [user, setUser] = useState<{
   name: string;
   email: string;
   role: string;
+  image?: string | null; // 👈 agregar esto
 } | null>(null);
 
   const router = useRouter();
@@ -115,6 +116,10 @@ useEffect(() => {
   return (
     <div className="page-container">
       {/* HEADER */}
+
+
+
+
 <div className="mobile-header">
   <div className="mobile-header-left">
     {user && (
@@ -128,17 +133,24 @@ useEffect(() => {
     </div>
   </div>
 
-  {user && (
-    <div style={{ position: "relative" }}>
-      <div
-        className="avatar"
-        style={{ cursor: "pointer" }}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        {user.name
-          ? user.name.charAt(0).toUpperCase()
-          : user.email.charAt(0).toUpperCase()}
-      </div>
+{user && (
+  <div style={{ position: "relative" }}>
+    <div
+      className="avatar"
+      style={{ cursor: "pointer" }}
+      onClick={() => setMenuOpen(!menuOpen)}
+    >
+      {user.image ? (
+<img
+  src={user.image}
+  alt="Avatar"
+/>
+      ) : user.name ? (
+        user.name.charAt(0).toUpperCase()
+      ) : (
+        user.email.charAt(0).toUpperCase()
+      )}
+    </div>
 
       {menuOpen && (
         <div
@@ -178,6 +190,17 @@ useEffect(() => {
               Dashboard
             </div>
           )}
+
+            <div
+    className="mobile-menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      location.href = "/mobile/profile";
+    }}
+  >
+    Perfil
+  </div>
+  
 
           <div
             className="mobile-logout-btn"

@@ -25,8 +25,8 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "GoldenApp v0.1.5",
-  description: "Gestor de Stock e iventario para tiendas",
+  title: "GoldenApp v0.1.9",
+  description: "Gestor de Stock e iventario para tiendas, desarrollado por Efza & Orideken.cl",
 };
 
 export default function RootLayout({
