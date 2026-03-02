@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./styles/ui.css";
 import localFont from "next/font/local";
 
-
-
 const satoshi = localFont({
   src: [
     {
@@ -28,21 +26,18 @@ const satoshi = localFont({
 
 export const metadata: Metadata = {
   title: "GoldenApp v0.1.9",
-  description: "Gestor de Stock e iventario para tiendas, desarrollado por Efza & Orideken.cl",
+  description:
+    "Gestor de Stock e inventario para tiendas, desarrollado por Efza & Orideken.cl",
+  manifest: "/manifest.json", // ✅ Mejor usar metadata en vez de <link>
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="es">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-<link rel="apple-touch-icon" href="/apple-icon.png" />
-</head>
-
       <body className={satoshi.variable}>
         {children}
       </body>
