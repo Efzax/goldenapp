@@ -145,7 +145,7 @@ export default function MobileLayout({
                     await fetch("/api/logout", {
                       method: "POST",
                     });
-                    location.href = "/mobile/login";
+                    location.href = "/login";
                   }}
                 >
                   Logout

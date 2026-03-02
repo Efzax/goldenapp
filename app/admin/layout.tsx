@@ -21,7 +21,7 @@ useEffect(() => {
   fetch("/api/me")
     .then((res) => {
       if (res.status === 401) {
-        router.replace("/mobile/login");
+        router.replace("/login");
         return null;
       }
       return res.json();
@@ -36,7 +36,7 @@ useEffect(() => {
 
   async function handleLogout() {
     await fetch("/api/logout", { method: "POST" });
-    router.replace("/mobile/login");
+    router.replace("/login");
   }
 
 const menu = [
