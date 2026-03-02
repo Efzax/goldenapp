@@ -1,8 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
 
@@ -22,29 +21,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Validación básica tipo archivo
     if (!file.type.startsWith("image/")) {
       return NextResponse.json({ error: "Only images allowed" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // 🔥 Nombre único para evitar cache
+    const blob = await put(
+      `avatars/${userId}-${Date.now()}.jpg`,
+      file,
+      {
+        access: "public",
+      }
+    );
 
-    const fileName = `${userId}.jpg`;
-    const filePath = path.join(process.cwd(), "public/avatars", fileName);
-
-    await writeFile(filePath, buffer);
-
-    const imagePath = `/avatars/${fileName}`;
-
+    // Guardar URL pública en DB
     await prisma.user.update({
       where: { id: userId },
-      data: { image: imagePath },
+      data: { image: blob.url },
     });
 
     return NextResponse.json({
       success: true,
-      image: imagePath,
+      image: blob.url,
     });
 
   } catch (error) {
