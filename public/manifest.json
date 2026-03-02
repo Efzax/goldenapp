@@ -2,7 +2,7 @@
   "name": "GoldenApp",
   "short_name": "GoldenApp",
   "description": "Control de stock Samsung",
-  "start_url": "/mobile",
+  "start_url": "/login",
 
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
