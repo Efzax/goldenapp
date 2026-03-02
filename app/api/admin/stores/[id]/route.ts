@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
+
+  const { id } = await context.params;
 
   const cookieStore = await cookies();
   const role = cookieStore.get("role")?.value;
@@ -17,11 +20,9 @@ export async function DELETE(
     );
   }
 
-  const storeId = params.id;
-
   // 🔒 Verificar inventario
   const inventoryCount = await prisma.inventory.count({
-    where: { storeId },
+    where: { storeId: id },
   });
 
   if (inventoryCount > 0) {
@@ -33,7 +34,7 @@ export async function DELETE(
 
   // 🔒 Verificar usuarios asignados
   const userCount = await prisma.userStore.count({
-    where: { storeId },
+    where: { storeId: id },
   });
 
   if (userCount > 0) {
@@ -44,7 +45,7 @@ export async function DELETE(
   }
 
   await prisma.store.delete({
-    where: { id: storeId },
+    where: { id },
   });
 
   return NextResponse.json({ ok: true });
