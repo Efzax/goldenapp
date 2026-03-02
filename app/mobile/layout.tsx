@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+
 import "../styles/ui.css";
 
 
@@ -22,8 +22,7 @@ export default function MobileLayout({
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
 
-  const searchParams = useSearchParams();
-  const storeCode = searchParams.get("store");
+
 
   // 🔹 Cargar usuario (seguro)
   useEffect(() => {
@@ -38,17 +37,7 @@ export default function MobileLayout({
       .catch(() => setUser(null));
   }, []);
 
-  // 🔹 Cargar nombre tienda
-  useEffect(() => {
-    if (!storeCode) return;
 
-    fetch(`/api/store/${storeCode}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.name) setStoreName(data.name);
-      })
-      .catch(() => setStoreName(""));
-  }, [storeCode]);
 
   // 🔹 Saber si tiene múltiples tiendas
   useEffect(() => {
@@ -79,9 +68,9 @@ export default function MobileLayout({
             </div>
           )}
 
-          <div className="mobile-store-title">
-            {storeName || "Selecciona tu tienda"}
-          </div>
+<div className="mobile-store-title">
+  {storeName || ""}
+</div>
         </div>
 
         {user && (
