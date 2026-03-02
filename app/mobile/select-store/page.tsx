@@ -1,7 +1,9 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useMobileStore } from "../MobileStoreContext";
 import "../../styles/ui.css";
 import { api } from "@/app/lib/api";
 
@@ -14,8 +16,12 @@ type Store = {
 export default function SelectStorePage() {
   const [stores, setStores] = useState<Store[]>([]);
   const router = useRouter();
+  const { setStoreName } = useMobileStore();
 
   useEffect(() => {
+    // ✅ Setear título del header
+    setStoreName("Selecciona tu tienda");
+
     api<Store[]>("/api/my-stores")
       .then((json) => {
         setStores(json);
@@ -28,25 +34,27 @@ export default function SelectStorePage() {
       .catch((err) => {
         console.error("Error loading stores:", err);
       });
-  }, [router]);
+  }, [router, setStoreName]);
 
   return (
-    <div style={{ padding: 20, fontFamily: "system-ui" }}>
-     
-     <div>
-      {/* HEADER */}
+    <div className="page-container">
+      <div className="card">
 
-      {stores.map((store) => (
-         <button
-            key={store.id}
-            onClick={() =>
-              router.push(`/mobile?store=${store.code}`)
-            }
-            className="store-select-btn"
-          >
-            {store.name}
-          </button>
-      ))}
-    </div></div>
+
+        <div className="card-body">
+          {stores.map((store) => (
+            <button
+              key={store.id}
+              onClick={() =>
+                router.push(`/mobile?store=${store.code}`)
+              }
+              className="store-select-btn"
+            >
+              {store.name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

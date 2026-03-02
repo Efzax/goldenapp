@@ -2,13 +2,13 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   CheckCircleIcon,
   XCircleIcon,
   TvIcon,
 } from "@heroicons/react/24/outline";
+import { useMobileStore } from "./MobileStoreContext";
 import "../styles/ui.css";
 
 type Item = {
@@ -23,28 +23,15 @@ export default function MobileClient() {
   const [data, setData] = useState<Item[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
-  const [storeName, setStoreName] = useState<string>("");
-  const [storeCount, setStoreCount] = useState(1);
-const [canAccessAdmin, setCanAccessAdmin] = useState(false);
-const [hasMultipleStores, setHasMultipleStores] = useState(false);
 
-const [user, setUser] = useState<{
-  name: string;
-  email: string;
-  role: string;
-  image?: string | null; // 👈 agregar esto
-} | null>(null);
+  const { setStoreName } = useMobileStore();
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
-  
-
 
   const storeCode = searchParams.get("store");
 
-  // Cargar inventario
   useEffect(() => {
     if (!storeCode && pathname === "/mobile") {
       router.replace("/mobile/select-store");
@@ -52,27 +39,16 @@ const [user, setUser] = useState<{
     }
 
     if (storeCode) {
-      fetch(`/api/dashboard/${storeCode}?category=${category}`, { cache: "no-store" })
+      fetch(`/api/dashboard/${storeCode}?category=${category}`, {
+        cache: "no-store",
+      })
         .then((res) => res.json())
         .then((json) => {
-  setStoreName(json.storeName);
-  setData(json.items);
-});
-
+          setStoreName(json.storeName || "");
+          setData(json.items);
+        });
     }
-  }, [storeCode, pathname, category, router]);
-
-useEffect(() => {
-  if (!storeCode) return;
-
-  fetch(`/api/store/${storeCode}`)
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.name) setStoreName(json.name);
-    })
-    .catch(() => setStoreName(""));
-}, [storeCode]);
-
+  }, [storeCode, pathname, category, router, setStoreName]);
 
   const statusDotClass = (status: string) => {
     if (status === "OK") return "dot-ok";
@@ -93,8 +69,6 @@ useEffect(() => {
 
   return (
     <div>
-
-      {/* BOTONES TV / AV */}
       <div className="category-tabs">
         <button
           className={category === "TV" ? "tab active" : "tab"}
@@ -110,7 +84,6 @@ useEffect(() => {
         </button>
       </div>
 
-      {/* BUSCADOR */}
       <input
         className="input"
         placeholder="Buscar SKU..."
@@ -118,39 +91,42 @@ useEffect(() => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* LISTA */}
-   
       {Object.keys(grouped).map((family) => (
-        <div key={family}><div className="card-dots">
-          <div className="card-header-dots">
-          <div className="family-title">{family}</div></div>
+        <div key={family}>
+          <div className="card-dots">
+            <div className="card-header-dots">
+              <div className="family-title">{family}</div>
+            </div>
 
-          {grouped[family].map((item: Item) => (
-  <div key={item.sku} className="card-body-dots">
-    <a
-      href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
-      className="sku-row"
-    >
-      <div className={`status-dot ${statusDotClass(item.status)}`} />
+            {grouped[family].map((item: Item) => (
+              <div key={item.sku} className="card-body-dots">
+                <a
+                  href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
+                  className="sku-row"
+                >
+                  <div className={`status-dot ${statusDotClass(item.status)}`} />
 
-      <div className="sku-info">
-        <div className="sku-text">{item.sku}</div>
+                  <div className="sku-info">
+                    <div className="sku-text">{item.sku}</div>
 
-        <div className="sku-icons">
-          {item.stock > 0 ? (
-            <CheckCircleIcon className="icon icon-ok" />
-          ) : (
-            <XCircleIcon className="icon icon-zero" />
-          )}
+                    <div className="sku-icons">
+                      {item.stock > 0 ? (
+                        <CheckCircleIcon className="icon icon-ok" />
+                      ) : (
+                        <XCircleIcon className="icon icon-zero" />
+                      )}
 
-          {item.exhib && <TvIcon className="icon icon-tv" />}
+                      {item.exhib && <TvIcon className="icon icon-tv" />}
 
-          <span className="stock-number">{item.stock}</span>
-        </div>
-      </div>
-    </a>
-  </div>
-))}</div>
+                      <span className="stock-number">
+                        {item.stock}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>

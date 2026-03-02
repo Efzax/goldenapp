@@ -1,9 +1,8 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-
+import { MobileStoreProvider, useMobileStore } from "./MobileStoreContext";
 import "../styles/ui.css";
-
 
 type User = {
   name?: string;
@@ -17,14 +16,25 @@ export default function MobileLayout({
 }: {
   children: ReactNode;
 }) {
+  return (
+    <MobileStoreProvider>
+      <MobileLayoutContent>{children}</MobileLayoutContent>
+    </MobileStoreProvider>
+  );
+}
+
+function MobileLayoutContent({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const { storeName } = useMobileStore();
+
   const [user, setUser] = useState<User | null>(null);
-  const [storeName, setStoreName] = useState<string>("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
 
-
-
-  // 🔹 Cargar usuario (seguro)
+  // 🔹 Cargar usuario
   useEffect(() => {
     fetch("/api/me", { cache: "no-store" })
       .then((res) => {
@@ -36,8 +46,6 @@ export default function MobileLayout({
       })
       .catch(() => setUser(null));
   }, []);
-
-
 
   // 🔹 Saber si tiene múltiples tiendas
   useEffect(() => {
@@ -51,7 +59,6 @@ export default function MobileLayout({
       .catch(() => setHasMultipleStores(false));
   }, []);
 
-  // 🔹 Inicial seguro para avatar
   const avatarInitial =
     user?.name?.charAt(0) ||
     user?.email?.charAt(0) ||
@@ -68,9 +75,9 @@ export default function MobileLayout({
             </div>
           )}
 
-<div className="mobile-store-title">
-  {storeName || ""}
-</div>
+          <div className="mobile-store-title">
+            {storeName || ""}
+          </div>
         </div>
 
         {user && (

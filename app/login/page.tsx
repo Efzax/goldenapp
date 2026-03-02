@@ -66,6 +66,11 @@ if (res.ok) {
       >
         Entrar
       </button>
+
+            <footer className="mobile-footer">
+        Desarrollado y creado por Efza y Orideken.cl
+      </footer>
+      
     </div>
     </div>
   );
