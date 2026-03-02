@@ -21,69 +21,36 @@ export async function POST(req: Request) {
 
   for (const row of rows) {
     // NORMALIZAR A MAYÚSCULAS
-    const storeName = row.storeName.toUpperCase().trim();
     const familyName = row.family.toUpperCase().trim();
     const sku = row.sku.toUpperCase().trim();
     const category = row.category.toUpperCase().trim() as Category;
     const chainName = row.chain.toUpperCase().trim();
     const externalCode = row.externalCode.toUpperCase().trim();
 
-    // BUSCAR O CREAR CADENA
-let chain = await prisma.chain.findFirst({
-  where: { name: chainName },
-});
+    // 🔒 BUSCAR CADENA (NO CREAR)
+    const chain = await prisma.chain.findFirst({
+      where: { name: chainName },
+    });
 
-if (!chain) {
-  chain = await prisma.chain.create({
-    data: { name: chainName },
-  });
-}
+    if (!chain) {
+      continue; // cadena no registrada
+    }
 
-// BUSCAR TIENDA POR externalCode
-let store = await prisma.store.findUnique({
-  where: { externalCode },
-});
+    // 🔒 BUSCAR TIENDA POR externalCode (NO CREAR)
+    const store = await prisma.store.findUnique({
+      where: { externalCode },
+    });
 
-// SI NO EXISTE → CREARLA
-if (!store) {
-  
-  // BUSCAR ÚLTIMO CÓDIGO SG
-  const lastStore = await prisma.store.findFirst({
-    where: {
-      code: {
-        startsWith: "SG",
-      },
-    },
-    orderBy: {
-      code: "desc",
-    },
-  });
+    if (!store) {
+      continue; // tienda no registrada
+    }
 
-  let nextNumber = 1;
+    // 🔒 VALIDAR QUE LA TIENDA PERTENEZCA A ESA CADENA
+    if (store.chainId !== chain.id) {
+      continue;
+    }
 
-  if (lastStore) {
-    const lastNumber = parseInt(lastStore.code.replace("SG", ""), 10);
-    nextNumber = lastNumber + 1;
-  }
-
-  const newCode = `SG${String(nextNumber).padStart(4, "0")}`;
-
-  store = await prisma.store.create({
-    data: {
-      name: storeName,
-      code: newCode,
-      externalCode,
-      chainId: chain.id,
-    },
-  });
-}
-
-// VALIDAR QUE LA TIENDA PERTENEZCA A LA MISMA CADENA
-if (store.chainId !== chain.id) {
-  continue; // puedes luego mejorar esto con manejo de error acumulado
-}
-
-    // BUSCAR O CREAR FAMILIA
+    // ✅ BUSCAR O CREAR FAMILIA
     let family = await prisma.productFamily.findFirst({
       where: { name: familyName },
     });
@@ -94,7 +61,7 @@ if (store.chainId !== chain.id) {
       });
     }
 
-    // BUSCAR O CREAR PRODUCTO
+    // ✅ BUSCAR O CREAR PRODUCTO
     let product = await prisma.product.findUnique({
       where: { sku },
     });
@@ -110,7 +77,7 @@ if (store.chainId !== chain.id) {
       });
     }
 
-    // UPSERT INVENTARIO
+    // ✅ UPSERT INVENTARIO
     await prisma.inventory.upsert({
       where: {
         storeId_productId: {

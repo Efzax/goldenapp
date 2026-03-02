@@ -40,10 +40,12 @@ useEffect(() => {
   }
 
 const menu = [
-  { name: "Dashboard", href: "/admin", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Dashbaord", href: "/admin", roles: ["ADMIN", "SUPERVISOR"] },
+    { name: "Import Product", href: "/admin/import", roles: ["ADMIN"] },
   { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR"] },
-    { name: "Users", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
-  { name: "Import", href: "/admin/import", roles: ["ADMIN"] },
+
+  { name: "Stores", href: "/admin/stores", roles: ["ADMIN"] },
+    { name: "Usuarios", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
   { name: "Assign Stores", href: "/admin/user-stores", roles: ["ADMIN"] },
 
   { name: "Mobile Client", href: "/mobile", roles: ["ADMIN", "SUPERVISOR"] },

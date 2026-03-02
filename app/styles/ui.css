@@ -56,6 +56,16 @@ body {
   cursor: pointer;
 }
 
+.btn-add2 {
+  background-color: var(--color-secundario);
+  color: var(--color-primario);
+  padding: 8px 16px;
+  min-width: 200px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
 svg {
   margin-right: 5px;
   width: 20px;
@@ -982,7 +992,7 @@ svg {
   background: white;
   padding: 24px;
   border-radius: 10px;
-  width: 320px;
+  width: 80vh;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
@@ -1347,6 +1357,11 @@ svg {
 }
 .table-wrapper {
   height: calc(100vh - 400px);
+  overflow-y: auto;
+}
+
+.table-wrapper-stores {
+  height: calc(100vh - 300px);
   overflow-y: auto;
 }
 

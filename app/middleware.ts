@@ -25,7 +25,8 @@ export function middleware(request: NextRequest) {
     isAdminRoute &&
     role === "SUPERVISOR" &&
     (pathname.startsWith("/admin/import") ||
-     pathname.startsWith("/admin/user-stores"))
+     pathname.startsWith("/admin/user-stores"))||
+    pathname.startsWith("/admin/stores")
   ) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
