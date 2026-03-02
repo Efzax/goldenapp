@@ -1436,12 +1436,17 @@ svg {
   text-decoration: none;
   align-items: center !important;
   color: var(--color-font);
+  background-color: var(--color-fondo2);
   font-size: 14px;
   transition: 0.2s;
   margin-bottom: 10px;
-  border: var(--color-secundario) 1px solid;
 }
 
+.mobile-menu-item-admin:hover {
+  background-color: var(--color-primario);
+  color: var(--color-secundario);
+    cursor: pointer;
+}
 
 
 .mobile-menu-item:hover {
