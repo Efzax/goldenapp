@@ -5,10 +5,6 @@ import { MobileStoreProvider, useMobileStore } from "./MobileStoreContext";
 import "../styles/ui.css";
 
 
-export const metadata = {
-  manifest: "/manifest.json",
-};
-
 type User = {
   name?: string;
   email?: string;

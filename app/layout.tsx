@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./styles/ui.css";
 import localFont from "next/font/local";
 
+
+
 const satoshi = localFont({
   src: [
     {
