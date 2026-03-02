@@ -9,6 +9,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  
+
   return (
     <div style={{ padding: 20, fontFamily: "system-ui", color: "#384961", }}>
       <div className="page-container">
