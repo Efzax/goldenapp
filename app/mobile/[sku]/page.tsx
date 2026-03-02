@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, useParams } from "next/navigation";
 import "../../styles/ui.css";
-import { api } from "@/app/lib/api";
-
 
 type Item = {
   sku: string;
@@ -24,229 +22,93 @@ export default function MobileSkuPage() {
 
   const storeCode = searchParams.get("store");
   const sku = params.sku as string;
+  const category = searchParams.get("category") || "TV";
 
   const [item, setItem] = useState<Item | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-const [message, setMessage] = useState("");
-const [originalItem, setOriginalItem] = useState<any>(null);
-const [storeName, setStoreName] = useState("");
-const [canAccessAdmin, setCanAccessAdmin] = useState(false);
-const [prevStock, setPrevStock] = useState<number | null>(null);
-const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
-const [hasMultipleStores, setHasMultipleStores] = useState(false);
+  const [message, setMessage] = useState("");
+  const [originalItem, setOriginalItem] = useState<any>(null);
+  const [prevStock, setPrevStock] = useState<number | null>(null);
+  const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 
-  const [menuOpen, setMenuOpen] = useState(false);
-const [user, setUser] = useState<{
-  name: string;
-  email: string;
-  role: string;
-  image?: string | null; // 👈 agregar esto
-} | null>(null);
+  useEffect(() => {
+    if (!storeCode) {
+      router.replace("/mobile/select-store");
+      return;
+    }
 
-
-useEffect(() => {
-  fetch("/api/me")
-    .then(res => res.json())
-    .then(data => {
-      if (data?.role) {
-        setUser(data);
-
-        if (data.role !== "USER") {
-          setCanAccessAdmin(true);
-        }
-      }
-    });
-}, []);
-
-useEffect(() => {
-  fetch("/api/my-stores")
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data) && data.length > 1) {
-        setHasMultipleStores(true);
-      }
-    });
-}, []);
-
-useEffect(() => {
-  if (!storeCode) {
-    router.replace("/mobile/select-store");
-    return;
-  }
-
-  const currentCategory = searchParams.get("category") || "TV";
-
-  fetch(`/api/dashboard/${storeCode}?category=${currentCategory}`)
-    .then((res) => res.json())
-    .then((json) => {
-      setStoreName(json.storeName);
-      const found = json.items?.find((i: Item) => i.sku === sku);
-      setItem(found);
-      setPrevStock(found?.stock ?? null);
-      setOriginalItem({
-  stock: found?.stock,
-  exhib: found?.exhib,
-});
-      setLoading(false);
-    });
-}, [storeCode, sku, searchParams]);
-
+    fetch(`/api/dashboard/${storeCode}?category=${category}`, {
+      cache: "no-store",
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        const found = json.items?.find((i: Item) => i.sku === sku);
+        setItem(found);
+        setPrevStock(found?.stock ?? null);
+        setOriginalItem({
+          stock: found?.stock,
+          exhib: found?.exhib,
+        });
+        setLoading(false);
+      });
+  }, [storeCode, sku, category, router]);
 
   if (loading) return <div className="page-container">Cargando...</div>;
   if (!item) return <div className="page-container">SKU no encontrado</div>;
+
   const hasChanges =
-  originalItem &&
-  (item.stock !== originalItem.stock ||
-    item.exhib !== originalItem.exhib);
+    originalItem &&
+    (item.stock !== originalItem.stock ||
+      item.exhib !== originalItem.exhib);
 
-async function saveChanges() {
-  setSaving(true);
-  setMessage("");
+  function calculateDerived(stock: number, exhib: boolean, min: number) {
+    const stockTotal = stock + (exhib ? 1 : 0);
 
-  try {
-    const res = await fetch("/api/inventory/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        storeCode,
-        sku: item!.sku,
-        stock: item!.stock,
-        exhib: item!.exhib,
-      }),
-    });
+    let status = "OK";
+    if (stockTotal <= min * 0.5) status = "CRITICO";
+    else if (stockTotal < min) status = "BAJO";
 
-    if (!res.ok) throw new Error("Error");
+    const empuje = Math.max(min - stockTotal, 0);
 
-    setMessage("✅ Guardado correctamente");
-
-    setOriginalItem({
-  stock: item!.stock,
-  exhib: item!.exhib,
-});
-
-    router.replace(`/mobile?store=${storeCode}&category=${searchParams.get("category") || "TV"}`);
-  } catch (e) {
-    setMessage("❌ Error al guardar");
+    return { stockTotal, status, empuje };
   }
 
-  setSaving(false);
-}
+  async function saveChanges() {
+    setSaving(true);
+    setMessage("");
 
+    try {
+      const res = await fetch("/api/inventory/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storeCode,
+          sku: item!.sku,
+          stock: item!.stock,
+          exhib: item!.exhib,
+        }),
+      });
 
-function calculateDerived(stock: number, exhib: boolean, min: number) {
-  const stockTotal = stock + (exhib ? 1 : 0);
+      if (!res.ok) throw new Error("Error");
 
-  let status = "OK";
-  if (stockTotal <= min * 0.5) status = "CRITICO";
-  else if (stockTotal < min) status = "BAJO";
+      setOriginalItem({
+        stock: item!.stock,
+        exhib: item!.exhib,
+      });
 
-  const empuje = Math.max(min - stockTotal, 0);
+      router.replace(`/mobile?store=${storeCode}&category=${category}`);
+    } catch {
+      setMessage("❌ Error al guardar");
+    }
 
-  return { stockTotal, status, empuje };
-}
-
+    setSaving(false);
+  }
 
   return (
-    <div className="page-container">
+    <div>
       {/* HEADER */}
-      <div className="mobile-header">
-  <div className="mobile-header-left">
-    {user && (
-      <div className="mobile-greeting">
-        Hola, {user.name}
-      </div>
-    )}
 
-    <div className="mobile-store-title">
-      {storeName || storeCode || "Selecciona tu tienda"}
-    </div>
-  </div>
-
-{user && (
-  <div style={{ position: "relative" }}>
-    <div
-      className="avatar"
-      style={{ cursor: "pointer" }}
-      onClick={() => setMenuOpen(!menuOpen)}
-    >
-      {user.image ? (
-        <img
-          src={user.image}
-          alt="Avatar"
-          className="avatar-img"
-        />
-      ) : user.name ? (
-        user.name.charAt(0).toUpperCase()
-      ) : (
-        user.email.charAt(0).toUpperCase()
-      )}
-    </div>
-      {menuOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "60px",
-            right: 0,
-            background: "white",
-            border: "1px solid var(--color-secundario)",
-            borderRadius: "10px",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-            minWidth: "160px",
-            zIndex: 100,
-            padding: "8px ",
-          }}
-        >
-
-          {hasMultipleStores && (
-  <div
-    className="mobile-menu-item"
-    onClick={() => {
-      setMenuOpen(false);
-      location.href = "/mobile/select-store";
-    }}
-  >
-    Mis Tiendas
-  </div>
-  
-)}
-
-         {(user.role === "ADMIN" || user.role === "SUPERVISOR") && (
-            <div
-              className="mobile-menu-item"
-              onClick={() => {
-                setMenuOpen(false);
-                location.href = "/admin";
-              }}
-            >
-              Dashboard
-            </div>
-          )}
-  <div
-    className="mobile-menu-item"
-    onClick={() => {
-      setMenuOpen(false);
-      location.href = "/mobile/profile";
-    }}
-  >
-    Perfil
-  </div>
-
-          <div
-            className="mobile-logout-btn"
-            onClick={async () => {
-              setMenuOpen(false);
-              await fetch("/api/logout", { method: "POST" });
-              location.href = "/mobile/login";
-            }}
-          >
-            Logout
-          </div>
-        </div>
-      )}
-    </div>
-  )}
-</div>
 
 {/* CARD */}
 <div className="card">

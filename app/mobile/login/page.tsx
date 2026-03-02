@@ -67,7 +67,6 @@ if (res.ok) {
         Entrar
       </button>
     </div>
-    <div className="mobile-greeting-login">Desarrollado por Efza & Orideken.cl</div>
     </div>
   );
 }

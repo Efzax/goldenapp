@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   CheckCircleIcon,
@@ -25,6 +26,7 @@ export default function MobileClient() {
   const [storeCount, setStoreCount] = useState(1);
 const [canAccessAdmin, setCanAccessAdmin] = useState(false);
 const [hasMultipleStores, setHasMultipleStores] = useState(false);
+
 const [user, setUser] = useState<{
   name: string;
   email: string;
@@ -38,32 +40,7 @@ const [user, setUser] = useState<{
   const [menuOpen, setMenuOpen] = useState(false);
   
 
-useEffect(() => {
-  fetch("/api/me")
-    .then(res => res.json())
-    .then(data => {
-      if (data?.role) {
-        setUser(data);
 
-        if (data.role !== "USER") {
-          setCanAccessAdmin(true);
-        }
-      }
-    });
-}, []);
-
-useEffect(() => {
-  fetch("/api/my-stores")
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data) && data.length > 1) {
-        setHasMultipleStores(true);
-      }
-    })
-    .catch(() => {
-      setHasMultipleStores(false);
-    });
-}, []);
   const storeCode = searchParams.get("store");
 
   // Cargar inventario
@@ -114,112 +91,7 @@ useEffect(() => {
   }, {});
 
   return (
-    <div className="page-container">
-      {/* HEADER */}
-
-
-
-
-<div className="mobile-header">
-  <div className="mobile-header-left">
-    {user && (
-      <div className="mobile-greeting">
-        Hola, {user.name}
-      </div>
-    )}
-
-    <div className="mobile-store-title">
-      {storeName || storeCode || "Selecciona tu tienda"}
-    </div>
-  </div>
-
-{user && (
-  <div style={{ position: "relative" }}>
-    <div
-      className="avatar"
-      style={{ cursor: "pointer" }}
-      onClick={() => setMenuOpen(!menuOpen)}
-    >
-      {user.image ? (
-<img
-  src={user.image}
-  alt="Avatar"
-/>
-      ) : user.name ? (
-        user.name.charAt(0).toUpperCase()
-      ) : (
-        user.email.charAt(0).toUpperCase()
-      )}
-    </div>
-
-      {menuOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "60px",
-            right: 0,
-            background: "white",
-            border: "1px solid var(--color-secundario)",
-            borderRadius: "10px",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-            minWidth: "160px",
-            zIndex: 100,
-            padding: "8px",
-          }}
-        >
-                    {hasMultipleStores && (
-  <div
-    className="mobile-menu-item"
-    onClick={() => {
-      setMenuOpen(false);
-      location.href = "/mobile/select-store";
-    }}
-  >
-    Mis Tiendas
-  </div>
-)}
-
-          {(user.role === "ADMIN" || user.role === "SUPERVISOR") && (
-            <div
-              className="mobile-menu-item"
-              onClick={() => {
-                setMenuOpen(false);
-                location.href = "/admin";
-              }}
-            >
-              Dashboard
-            </div>
-          )}
-
-            <div
-    className="mobile-menu-item"
-    onClick={() => {
-      setMenuOpen(false);
-      location.href = "/mobile/profile";
-    }}
-  >
-    Perfil
-  </div>
-  
-
-          <div
-            className="mobile-logout-btn"
-            onClick={async () => {
-              setMenuOpen(false);
-              await fetch("/api/logout", { method: "POST" });
-              location.href = "/mobile/login";
-            }}
-          >
-            Logout
-          </div>
-        </div>
-      )}
-    </div>
-  )}
-</div>
-
-
-
+    <div>
 
       {/* BOTONES TV / AV */}
       <div className="category-tabs">
