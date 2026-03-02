@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import "../styles/ui.css";
 
 type User = {
-  name: string;
-  role: string;
+  name?: string;
+  email?: string;
+  role?: string;
   image?: string | null;
 };
 
@@ -23,11 +24,17 @@ export default function MobileLayout({
   const searchParams = useSearchParams();
   const storeCode = searchParams.get("store");
 
-  // 🔹 Cargar usuario
+  // 🔹 Cargar usuario (seguro)
   useEffect(() => {
     fetch("/api/me", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => setUser(data));
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((data) => {
+        if (data) setUser(data);
+      })
+      .catch(() => setUser(null));
   }, []);
 
   // 🔹 Cargar nombre tienda
@@ -38,7 +45,8 @@ export default function MobileLayout({
       .then((res) => res.json())
       .then((data) => {
         if (data?.name) setStoreName(data.name);
-      });
+      })
+      .catch(() => setStoreName(""));
   }, [storeCode]);
 
   // 🔹 Saber si tiene múltiples tiendas
@@ -53,12 +61,18 @@ export default function MobileLayout({
       .catch(() => setHasMultipleStores(false));
   }, []);
 
+  // 🔹 Inicial seguro para avatar
+  const avatarInitial =
+    user?.name?.charAt(0) ||
+    user?.email?.charAt(0) ||
+    "?";
+
   return (
     <div className="page-container">
       {/* HEADER GLOBAL */}
       <div className="mobile-header">
         <div className="mobile-header-left">
-          {user && (
+          {user?.name && (
             <div className="mobile-greeting">
               Hola, {user.name}
             </div>
@@ -84,7 +98,7 @@ export default function MobileLayout({
                   height={48}
                 />
               ) : (
-                user.name.charAt(0).toUpperCase()
+                avatarInitial.toUpperCase()
               )}
             </div>
 
