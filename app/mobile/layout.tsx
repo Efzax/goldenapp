@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import "../styles/ui.css";
+export const dynamic = "force-dynamic";
 
 type User = {
   name?: string;
