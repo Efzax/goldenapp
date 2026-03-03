@@ -15,16 +15,23 @@ export async function GET() {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { stores: true },
   });
 
   if (!user) {
-    return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Usuario no encontrado" },
+      { status: 404 }
+    );
   }
 
-  // 🔴 ADMIN → todas las tiendas
+  // 🔴 ADMIN → todas las tiendas PERO solo con inventario
   if (user.role === Role.ADMIN) {
     const stores = await prisma.store.findMany({
+      where: {
+        inventories: {
+          some: {}, // 🔥 solo tiendas con inventario
+        },
+      },
       select: {
         id: true,
         name: true,
@@ -36,13 +43,16 @@ export async function GET() {
     return NextResponse.json(stores);
   }
 
-  // 🟡 SUPERVISOR y USER → solo asignadas
+  // 🟡 SUPERVISOR y USER → solo asignadas Y con inventario
   const stores = await prisma.store.findMany({
     where: {
       users: {
         some: {
           userId: user.id,
         },
+      },
+      inventories: {
+        some: {}, // 🔥 solo tiendas con inventario
       },
     },
     select: {
