@@ -27,10 +27,12 @@ body {
 
 /* ===== BASE ===== */
 .page-container {
-  max-width: 600px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;   /* 👈 límite en desktop */
+  margin: 0 auto;     /* 👈 centra horizontal */
   padding: 16px;
 }
+
 .page-dashboard {
   max-width: 100%;
   margin: 0 auto;
@@ -1399,17 +1401,35 @@ svg {
 /* ===== MOBILE HEADER NUEVO ===== */
 
 .mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-fondo);
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.mobile-header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px 16px; /* aquí va el padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:20px 0;
-  margin-bottom: 20px;
-   position: sticky;
-  top: 0;
-  z-index: 100;
-background-color: var(--color-fondo);
- border-bottom: 1px solid #f1f5f9;
+}
 
+.app-badge {
+  background-color: var(--color-fondo2);
+  color: var(--color-font2);
+  font-size: 11px;
+  padding: 6px 12px;
+}
+
+.app-badge-inner {
+  width: 100%;        /* ocupa todo en mobile */
+  max-width: 700px;   /* límite en PC */
+  margin: 0 auto;     /* centra horizontalmente */
+  letter-spacing: 0.5px;
+  display: flex;
 }
 
 .mobile-header-left {

@@ -66,10 +66,17 @@ function MobileLayoutContent({
     "?";
 
   return (
-    <div className="page-container">
+    <>
+    
+    
       {/* HEADER GLOBAL */}
-      <div className="mobile-header">
+      <div className="mobile-header">      
+        <div className="app-badge">
+        <div className="app-badge-inner">GOLDENAPP
+      </div></div>
+        <div className="mobile-header-inner">
         <div className="mobile-header-left">
+
           {user?.name && (
             <div className="mobile-greeting">
               Hola, {user.name}
@@ -79,6 +86,7 @@ function MobileLayoutContent({
           <div className="mobile-store-title">
             {storeName || ""}
           </div>
+
         </div>
 
         {user && (
@@ -166,8 +174,8 @@ function MobileLayoutContent({
             )}
           </div>
         )}
-      </div>
-
+      </div></div>
+<div className="page-container">
       {/* CONTENIDO */}
       <main className="mobile-content">{children}</main>
 
@@ -175,6 +183,6 @@ function MobileLayoutContent({
       <footer className="mobile-footer">
         Desarrollado y creado por Efza y Orideken.cl
       </footer>
-    </div>
+    </div></>
   );
 }
