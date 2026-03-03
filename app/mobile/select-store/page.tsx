@@ -37,7 +37,7 @@ export default function SelectStorePage() {
   }, [router, setStoreName]);
 
   return (
-    <div className="page-container">
+
       <div className="card">
 
 
@@ -55,6 +55,6 @@ export default function SelectStorePage() {
           ))}
         </div>
       </div>
-    </div>
+   
   );
 }
