@@ -2,7 +2,9 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { MobileStoreProvider, useMobileStore } from "./MobileStoreContext";
+import { useRouter } from "next/navigation";
 import "../styles/ui.css";
+import { Router } from "next/router";
 
 
 type User = {
@@ -30,7 +32,7 @@ function MobileLayoutContent({
   children: ReactNode;
 }) {
   const { storeName } = useMobileStore();
-
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
@@ -131,7 +133,7 @@ function MobileLayoutContent({
                     className="mobile-menu-item"
                     onClick={() => {
                       setMenuOpen(false);
-                      location.href = "/mobile/select-store";
+                      router.push("/mobile/select-store");
                     }}
                   >
                     Mis Tiendas
@@ -144,7 +146,7 @@ function MobileLayoutContent({
                     className="mobile-menu-item"
                     onClick={() => {
                       setMenuOpen(false);
-                      location.href = "/admin";
+                      router.push("/admin");
                     }}
                   >
                     Dashboard
@@ -155,7 +157,7 @@ function MobileLayoutContent({
                   className="mobile-menu-item"
                   onClick={() => {
                     setMenuOpen(false);
-                    location.href = "/mobile/profile";
+                    router.push("/mobile/profile");
                   }}
                 >
                   Perfil

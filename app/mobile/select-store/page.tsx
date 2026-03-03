@@ -38,10 +38,10 @@ export default function SelectStorePage() {
 
   return (
 
-      <div className="card">
+<>
 
 
-        <div className="card-body">
+
           {stores.map((store) => (
             <button
               key={store.id}
@@ -53,8 +53,8 @@ export default function SelectStorePage() {
               {store.name}
             </button>
           ))}
-        </div>
-      </div>
-   
+
+
+   </>
   );
 }

@@ -61,8 +61,8 @@ export default function MobileSkuPage() {
       });
   }, [storeCode, sku, category, router, setStoreName]);
 
-  if (loading) return <div className="page-container">Cargando...</div>;
-  if (!item) return <div className="page-container">SKU no encontrado</div>;
+if (loading) return <div>Cargando...</div>;
+if (!item) return <div>SKU no encontrado</div>;
 
   const hasChanges =
     originalItem &&

@@ -2,6 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   CheckCircleIcon,
@@ -100,7 +101,7 @@ export default function MobileClient() {
 
             {grouped[family].map((item: Item) => (
               <div key={item.sku} className="card-body-dots">
-                <a
+                <Link
                   href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
                   className="sku-row"
                 >
@@ -123,7 +124,7 @@ export default function MobileClient() {
                       </span>
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

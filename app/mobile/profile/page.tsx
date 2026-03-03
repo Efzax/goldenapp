@@ -114,7 +114,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="page-container">
+    <div className="mobile-container">
       {/* ===== USER INFO ===== */}
       <div className="card">
         <div className="card-body" style={{ alignItems: "center" }}>
