@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ padding: 20, fontFamily: "system-ui", color: "#384961", }}>
-      <div className="page-container">
+      <div className="login-container">
      
 
       <div className="loginhome"><img src="/icon.png" alt="Logo" /></div>

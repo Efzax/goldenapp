@@ -34,6 +34,19 @@ body {
   width: 100%;
 }
 
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centra horizontal */
+  justify-content: center;  /* centra vertical */
+  min-height: 100vh;
+  width: 100%;
+  max-width: 420px;         /* ancho real tipo login moderno */
+  margin: 0 auto;           /* 🔥 esto lo centra horizontal */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .page-dashboard {
   max-width: 100%;
   margin: 0 auto;
