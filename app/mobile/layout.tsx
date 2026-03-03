@@ -66,7 +66,7 @@ function MobileLayoutContent({
     "?";
 
   return (
-    <>
+    <div className="mobile-layout">
     
     
       {/* HEADER GLOBAL */}
@@ -181,11 +181,11 @@ function MobileLayoutContent({
 <div className="page-container">
       {/* CONTENIDO */}
       <main className="mobile-content">{children}</main>
-
+</div>
       {/* FOOTER */}
       <footer className="mobile-footer">
         Desarrollado y creado por Efza y Orideken.cl
       </footer>
-    </div></>
+    </div>
   );
 }
