@@ -70,11 +70,14 @@ function MobileLayoutContent({
     
     
       {/* HEADER GLOBAL */}
-      <div className="mobile-header">      
-        <div className="app-badge">
-        <div className="app-badge-inner">GOLDENAPP
-      </div></div>
-        <div className="mobile-header-inner">
+<div className="app-badge">
+  <div className="app-badge-inner">
+    GOLDENAPP
+  </div>
+</div>
+
+<div className="mobile-header">
+  <div className="mobile-header-inner">
         <div className="mobile-header-left">
 
           {user?.name && (

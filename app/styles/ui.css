@@ -1402,7 +1402,7 @@ svg {
 
 .mobile-header {
   position: sticky;
-  top: 0;
+  top: 27px; /* altura real del badge */
   z-index: 100;
   background-color: var(--color-fondo);
   border-bottom: 1px solid #f1f5f9;
@@ -1418,10 +1418,10 @@ svg {
 }
 
 .app-badge {
+  position: sticky;
+  top: 0;
+  z-index: 101;
   background-color: var(--color-fondo2);
-  color: var(--color-font2);
-  font-size: 11px;
-  padding: 6px 12px;
 }
 
 .app-badge-inner {
@@ -1429,6 +1429,8 @@ svg {
   max-width: 700px;   /* límite en PC */
   margin: 0 auto;     /* centra horizontalmente */
   letter-spacing: 0.5px;
+  font-size: 11px;
+  padding: 6px 0;
   display: flex;
 }
 
