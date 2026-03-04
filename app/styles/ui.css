@@ -1751,22 +1751,25 @@ svg {
 }
 
 .role-badge.PS {
-  background: #2563eb;
-  color: white;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #1d4ed8;
 }
 
 .role-badge.PE {
-  background: #f59e0b;
-  color: white;
+  background: #ffeccf;
+  color: #f59e0b;
+  border: 1px solid #f59e0b;
 }
 
 .role-badge.PS_AUDIO {
-  background: #10b981;
-  color: white;
+  background: #ede9fe;
+  color: #6d28d9;
+  border: 1px solid #6d28d9;
 }
 
 .kpi-ps {
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #1d4ed8;
 }
 
 .kpi-pe {
@@ -1774,7 +1777,7 @@ svg {
 }
 
 .kpi-audio {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid #6d28d9;
 }
 
 /* FILA 1 */
@@ -1843,9 +1846,9 @@ svg {
 
 /* PE */
 .sku-badge.PE {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #b91c1c;
+  background: #ffeccf;
+  color: #f59e0b;
+  border: 1px solid #f59e0b;
 }
 
 /* PS Audio */
@@ -1871,9 +1874,9 @@ svg {
 
 /* PE */
 .sku-badge2.PE {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #b91c1c;
+  background: #ffeccf;
+  color: #f59e0b;
+  border: 1px solid #f59e0b;
 }
 
 .mobile-month {

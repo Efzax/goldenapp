@@ -41,7 +41,11 @@ useEffect(() => {
 
 const menu = [
   { name: "Dashbaord", href: "/admin", roles: ["ADMIN", "SUPERVISOR"] },
+  
     { name: "Import Product", href: "/admin/import", roles: ["ADMIN"] },
+
+      { name: "Classification PS-PE", href: "/admin/classification", roles: ["ADMIN", "SUPERVISOR"] },
+
   { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR"] },
 
   { name: "Stores", href: "/admin/stores", roles: ["ADMIN"] },
