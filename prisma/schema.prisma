@@ -43,6 +43,8 @@ model Store {
   chain     Chain @relation(fields: [chainId], references: [id])
   users       UserStore[]
   inventories Inventory[]
+
+  classifications ProductClassification[]
 }
 
 model UserStore {
@@ -71,6 +73,12 @@ enum Category {
   AV
 }
 
+enum ClassificationType {
+  PS
+  PE
+  PS_AUDIO
+}
+
 model Product {
   id        String   @id @default(uuid())
   sku       String   @unique
@@ -82,6 +90,8 @@ model Product {
 
   createdAt DateTime @default(now())
   inventory Inventory[]
+
+  classifications ProductClassification[]
 }
 
 
@@ -108,4 +118,26 @@ model Chain {
   createdAt DateTime @default(now())
 
   stores    Store[]
+}
+
+model ProductClassification {
+  id        String @id @default(uuid())
+
+  storeId   String
+  productId String
+
+  type      ClassificationType
+
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([storeId, productId])
+}
+
+model ClassificationMeta {
+  id        String   @id @default(uuid())
+  month     String
+  createdAt DateTime @default(now())
 }

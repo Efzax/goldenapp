@@ -213,6 +213,9 @@ if (Number(criticalPercent) >= 20) {
     <div className="page-dashboard">
       
 
+
+
+
   <h2 className="page-title">Dashboard</h2>
 
 

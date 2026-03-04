@@ -15,6 +15,7 @@ type Item = {
   stockTotal: number;
   status: string;
   empuje: number;
+  type?: string | null; // 👈 agregado
 };
 
 export default function MobileSkuPage() {
@@ -117,14 +118,28 @@ if (!item) return <div>SKU no encontrado</div>;
       {/* CARD */}
       <div className="card">
         {/* HEADER */}
-        <div className="card-header">
-          <div className="sku-title">{item.sku}</div>
-          <div
-            className={`status-badge status-${item.status.toLowerCase()}`}
-          >
-            {item.status}
-          </div>
-        </div>
+<div className="card-header">
+  <div className="sku-title-row">
+    <div className="sku-title">{item.sku}</div>
+    {item.type && (
+      <span className={`sku-badge2 ${item.type}`}>
+        {item.type === "PS_AUDIO"
+          ? "PS Audio"
+          : item.type}
+      </span>
+    )}
+
+  </div>
+
+  <div
+    className={`status-badge status-${item.status.toLowerCase()}`}
+  >
+    {item.status}
+    
+  </div>
+
+  
+</div>
 
         {/* BODY */}
         <div className="card-body">

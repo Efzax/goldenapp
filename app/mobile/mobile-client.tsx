@@ -18,13 +18,14 @@ type Item = {
   stock: number;
   exhib: boolean;
   status: string;
+  type?: string | null; // 👈 agregado
 };
 
 export default function MobileClient() {
   const [data, setData] = useState<Item[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"TV" | "AV">("TV");
-
+  const [month, setMonth] = useState<string | null>(null);
   const { setStoreName } = useMobileStore();
 
   const router = useRouter();
@@ -44,10 +45,11 @@ export default function MobileClient() {
         cache: "no-store",
       })
         .then((res) => res.json())
-        .then((json) => {
-          setStoreName(json.storeName || "");
-          setData(json.items);
-        });
+.then((json) => {
+  setStoreName(json.storeName || "");
+  setData(json.items);
+  setMonth(json.month || null); // 👈 NUEVO
+});
     }
   }, [storeCode, pathname, category, router, setStoreName]);
 
@@ -70,6 +72,12 @@ export default function MobileClient() {
 
   return (
     <div>
+            {month && (
+  <div className="mobile-month">
+    PS y PE del mes activo : <strong>{month}</strong>
+  </div>
+)}
+
       <div className="category-tabs">
         <button
           className={category === "TV" ? "tab active" : "tab"}
@@ -92,6 +100,8 @@ export default function MobileClient() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
+
+
       {Object.keys(grouped).map((family) => (
         <div key={family}>
           <div className="card-dots">
@@ -108,7 +118,17 @@ export default function MobileClient() {
                   <div className={`status-dot ${statusDotClass(item.status)}`} />
 
                   <div className="sku-info">
-                    <div className="sku-text">{item.sku}</div>
+                    <div className="sku-text-row">
+  <div className="sku-text">{item.sku}</div>
+
+  {item.type && (
+    <span className={`sku-badge ${item.type}`}>
+      {item.type === "PS_AUDIO"
+        ? "PS Audio"
+        : item.type}
+    </span>
+  )}
+</div>
 
                     <div className="sku-icons">
                       {item.stock > 0 ? (

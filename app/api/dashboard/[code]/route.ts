@@ -44,34 +44,49 @@ export async function GET(request: Request) {
         },
       },
     },
+include: {
+  product: {
     include: {
-      product: {
-        include: { family: true },
+      family: true,
+      classifications: {
+        where: {
+          storeId: store.id,
+        },
       },
     },
+  },
+},
   });
 
   const result = inventory.map((item: any) => {
     const stockTotal = item.stock + (item.exhib ? 1 : 0);
     const status = calculateStatus(stockTotal, item.minStock);
     const empuje = Math.max(item.minStock - stockTotal, 0);
+const classification =
+  item.product.classifications[0]?.type || null;
 
-    return {
-      sku: item.product.sku,
-      family: item.product.family.name,
-      stock: item.stock,
-      exhib: item.exhib,
-      min: item.minStock,
-      stockTotal,
-      status,
-      empuje,
-    };
+return {
+  sku: item.product.sku,
+  family: item.product.family.name,
+  stock: item.stock,
+  exhib: item.exhib,
+  min: item.minStock,
+  stockTotal,
+  status,
+  empuje,
+  type: classification, // 👈 NUEVO
+};
   });
 
-  // 👇 AHORA DEVOLVEMOS NOMBRE + ITEMS
-  return NextResponse.json({
-    storeName: store.name,
-    items: result,
-  });
+// 🔹 Obtener mes activo
+const meta = await prisma.classificationMeta.findFirst({
+  orderBy: { createdAt: "desc" },
+});
+
+return NextResponse.json({
+  storeName: store.name,
+  month: meta?.month || null,
+  items: result,
+});
 }
 
