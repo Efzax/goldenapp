@@ -106,20 +106,8 @@ export default function ImportPage() {
   }
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-<div className="header-left"></div>
-        <button
-          className="btn-logout"
-          onClick={async () => {
-            await fetch("/api/logout", { method: "POST" });
-            location.href = "/mobile/login";
-          }}
-        >
-          Logout
-        </button>
-      </div>
-
+    <div className="page-dashboard">
+      
       <h2 className="page-title">Importar Excel</h2>
 
       <div className="button-group">
