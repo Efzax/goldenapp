@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { cookies } from "next/headers";
 import * as XLSX from "xlsx";
 
 function calculateStatus(stockTotal: number, min: number) {
@@ -9,7 +10,36 @@ function calculateStatus(stockTotal: number, min: number) {
 }
 
 export async function GET() {
+
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value;
+
+  if (!userId) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    return NextResponse.json({ error: "Usuario inválido" }, { status: 401 });
+  }
+
+  let allowedStoreIds: string[] | null = null;
+
+  if (user.role !== "ADMIN") {
+    const relations = await prisma.userStore.findMany({
+      where: { userId },
+      select: { storeId: true },
+    });
+
+    allowedStoreIds = relations.map((r) => r.storeId);
+  }
   const inventory = await prisma.inventory.findMany({
+  where: allowedStoreIds
+    ? { storeId: { in: allowedStoreIds } }
+    : undefined,
 include: {
   store: {
     include: {

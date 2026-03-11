@@ -21,8 +21,11 @@ export default function ImportPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
+  const hasErrors = rows.some(r => !r.valid);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const validRows = rows.filter(r => r.valid);
+const errorRows = rows.filter(r => !r.valid);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -86,23 +89,34 @@ export default function ImportPage() {
     setLoading(true);
     setMessage("");
 
-    const res = await fetch("/api/admin/import", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(validRows),
-    });
+const res = await fetch("/api/admin/import", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(validRows),
+});
 
-    const json = await res.json();
-    setLoading(false);
+setLoading(false);
 
-    if (json.ok) {
-      setMessage(`✅ Importadas ${validRows.length} filas correctamente`);
-      setRows([]);
-      setFileName("");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    } else {
-      setMessage("❌ Error al importar");
-    }
+// si el backend devuelve un excel
+const contentType = res.headers.get("content-type");
+
+if (contentType?.includes("application/vnd.openxmlformats")) {
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "import-resultado.xlsx";
+  a.click();
+
+  setMessage("⚠ Importación finalizada. Revisa el archivo descargado.");
+  return;
+}
+
+// si devuelve error json
+const data = await res.json();
+
+setMessage(data.error || "❌ Error al importar");
   }
 
   return (
@@ -188,19 +202,32 @@ export default function ImportPage() {
                   <td>{r.stock}</td>
                   <td>{r.exhib ? "SI" : "NO"}</td>
                   <td>{r.minStock}</td>
-                  <td>{r.valid ? "OK" : r.error}</td>
+                  <td>
+  {r.valid ? (
+    <span className="status-ook">OK</span>
+  ) : (
+    <span className="status-error">{r.error}</span>
+  )}
+</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <button
-            className="btn-primary"
-            disabled={loading}
-            onClick={importToSystem}
-          >
-            {loading ? "Importando..." : "Importar filas válidas"}
-          </button>
+<button
+  className="btn-primary"
+  disabled={loading || validRows.length === 0}
+  onClick={importToSystem}
+>
+  {loading
+    ? "Importando..."
+    : `Importar ${validRows.length} filas válidas`}
+</button>
+{errorRows.length > 0 && (
+  <p className="status-error-info">
+    ⚠ {errorRows.length} filas tienen errores y no serán importadas
+  </p>
+)}
         </>
       )}
 

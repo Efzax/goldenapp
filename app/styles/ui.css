@@ -1889,3 +1889,39 @@ svg {
   color: #81771c;
   border: 1px solid #81771c;
 }
+
+.import-message {
+  font-size: 10px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.import-message:has(❌) {
+  background: #ffe8e8;
+  color: #b00020;
+}
+
+.import-message:has(⚠) {
+  background: #fff4e5;
+  color: #b26a00;
+}
+
+.status-ook {
+  font-size: 12px;
+  color: #0a7d2c;
+}
+
+.status-error {
+  font-size: 12px;
+  color: #b00020;
+
+}
+
+.status-error-info {
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: #ffe8e8;
+  color: #b00020;
+}

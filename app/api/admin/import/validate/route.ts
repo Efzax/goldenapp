@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { cookies } from "next/headers";
 
 type Row = {
   chain: string;
@@ -14,6 +15,18 @@ type Row = {
 };
 
 export async function POST(req: Request) {
+  const cookieStore = await cookies();
+const userId = cookieStore.get("userId")?.value;
+
+if (!userId) {
+  return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+}
+const userStores = await prisma.userStore.findMany({
+  where: { userId },
+  select: { storeId: true },
+});
+
+const allowedStoreIds = userStores.map((s) => s.storeId);
   const rows: Row[] = await req.json();
 
   const result = [];
@@ -62,6 +75,12 @@ export async function POST(req: Request) {
       valid = false;
       error = "ExternalCode no registrado";
     }
+
+    
+    if (store && !allowedStoreIds.includes(store.id)) {
+  valid = false;
+  error = "Tienda no asignada a tu usuario";
+}
 
     // 🔒 VALIDAR QUE LA TIENDA PERTENEZCA A ESA CADENA
     if (store && chain && store.chainId !== chain.id) {
