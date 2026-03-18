@@ -1,7 +1,7 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMobileStore } from "../MobileStoreContext";
 import "../../styles/ui.css";
@@ -15,8 +15,21 @@ type Store = {
 
 export default function SelectStorePage() {
   const [stores, setStores] = useState<Store[]>([]);
+  const [search, setSearch] = useState("");
   const router = useRouter();
   const { setStoreName } = useMobileStore();
+  const deferredSearch = useDeferredValue(search);
+
+  const filteredStores = stores.filter((store) => {
+    const term = deferredSearch.trim().toLowerCase();
+
+    if (!term) return true;
+
+    return (
+      store.name.toLowerCase().includes(term) ||
+      store.code.toLowerCase().includes(term)
+    );
+  });
 
   useEffect(() => {
     // ✅ Setear título del header
@@ -37,24 +50,28 @@ export default function SelectStorePage() {
   }, [router, setStoreName]);
 
   return (
+    <div>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Buscar tienda por nombre o código"
+        className="input search-input-full"
+      />
 
-<>
-
-
-
-          {stores.map((store) => (
-            <button
-              key={store.id}
-              onClick={() =>
-                router.push(`/mobile?store=${store.code}`)
-              }
-              className="store-select-btn"
-            >
-              {store.name}
-            </button>
-          ))}
-
-
-   </>
+      {filteredStores.length > 0 ? (
+        filteredStores.map((store) => (
+          <button
+            key={store.id}
+            onClick={() => router.push(`/mobile?store=${store.code}`)}
+            className="store-select-btn"
+          >
+            {store.name}
+          </button>
+        ))
+      ) : (
+        <p className="empty-text">No se encontraron tiendas.</p>
+      )}
+    </div>
   );
 }
