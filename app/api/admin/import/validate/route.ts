@@ -16,17 +16,32 @@ type Row = {
 
 export async function POST(req: Request) {
   const cookieStore = await cookies();
-const userId = cookieStore.get("userId")?.value;
+  const userId = cookieStore.get("userId")?.value;
 
-if (!userId) {
-  return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-}
-const userStores = await prisma.userStore.findMany({
-  where: { userId },
-  select: { storeId: true },
-});
+  if (!userId) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
 
-const allowedStoreIds = userStores.map((s) => s.storeId);
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  if (!user) {
+    return NextResponse.json({ error: "Usuario inválido" }, { status: 401 });
+  }
+
+  let allowedStoreIds: string[] | null = null;
+
+  if (user.role !== "ADMIN") {
+    const userStores = await prisma.userStore.findMany({
+      where: { userId },
+      select: { storeId: true },
+    });
+
+    allowedStoreIds = userStores.map((s) => s.storeId);
+  }
+
   const rows: Row[] = await req.json();
 
   const result = [];
@@ -76,11 +91,10 @@ const allowedStoreIds = userStores.map((s) => s.storeId);
       error = "ExternalCode no registrado";
     }
 
-    
-    if (store && !allowedStoreIds.includes(store.id)) {
-  valid = false;
-  error = "Tienda no asignada a tu usuario";
-}
+    if (store && allowedStoreIds && !allowedStoreIds.includes(store.id)) {
+      valid = false;
+      error = "Tienda no asignada a tu usuario";
+    }
 
     // 🔒 VALIDAR QUE LA TIENDA PERTENEZCA A ESA CADENA
     if (store && chain && store.chainId !== chain.id) {
