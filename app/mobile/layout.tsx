@@ -149,9 +149,19 @@ function MobileLayoutContent({
                       router.push("/admin");
                     }}
                   >
-                    Dashboard
+                    Admin
                   </div>
                 )}
+
+                <div
+                  className="mobile-menu-item"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push("/dashboard");
+                  }}
+                >
+                  Dashboard
+                </div>
 
                 <div
                   className="mobile-menu-item"

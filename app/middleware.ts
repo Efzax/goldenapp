@@ -9,10 +9,11 @@ export function middleware(request: NextRequest) {
 
   const isMobileRoute = pathname.startsWith("/mobile");
   const isAdminRoute = pathname.startsWith("/admin");
+  const isDashboardRoute = pathname.startsWith("/dashboard");
 
   // 🔐 No login
-  if ((isMobileRoute || isAdminRoute) && !userId) {
-    return NextResponse.redirect(new URL("/mobile/login", request.url));
+  if ((isMobileRoute || isAdminRoute || isDashboardRoute) && !userId) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   // 🔒 USER no puede entrar a admin
@@ -35,5 +36,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/mobile/:path*", "/admin/:path*"],
+  matcher: ["/mobile/:path*", "/admin/:path*", "/dashboard/:path*"],
 };

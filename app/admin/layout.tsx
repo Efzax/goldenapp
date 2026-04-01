@@ -48,6 +48,8 @@ const menu = [
 
   { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR"] },
 
+  { name: "Commercial Dashboard", href: "/admin/commercial-dashboard", roles: ["ADMIN", "SUPERVISOR"] },
+
   { name: "Stores", href: "/admin/stores", roles: ["ADMIN"] },
     { name: "Usuarios", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
   { name: "Assign Stores", href: "/admin/user-stores", roles: ["ADMIN"] },
