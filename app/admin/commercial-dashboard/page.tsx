@@ -401,7 +401,7 @@ export default function CommercialDashboardPage() {
           <div className={cx("mobile-header-inner", styles.mobileHeaderWide)}>
             <div className="mobile-header-left">
               {user?.name ? <div className="mobile-greeting">Hola, {user.name}</div> : null}
-              <div className="mobile-store-title">{formatStoreLabel(safeStore)}</div>
+              <div className="mobile-store-title">Summary Store Dashboard</div>
             </div>
             <div className={styles.mobileHeaderAvatar}>
               <div className={styles.avatarMenuWrap}>
