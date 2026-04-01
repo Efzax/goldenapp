@@ -97,6 +97,22 @@
   gap: 14px;
 }
 
+.storeSwitchButton {
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.storeSwitchButton:hover {
+  background: #eef4fb;
+}
+
 .topbarUpdated {
   color: var(--muted);
   font-size: 0.9rem;
