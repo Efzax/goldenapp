@@ -477,13 +477,6 @@ export default function CommercialDashboardPage() {
                     <span className={styles.eyebrow}>Resumen Comercial</span>
                     <h2>{formatStoreLabel(safeStore)}</h2>
                   </div>
-                  <button
-                    type="button"
-                    className={styles.storeSwitchButton}
-                    onClick={() => router.push("/mobile/select-store")}
-                  >
-                    Mis Tiendas
-                  </button>
                 </div>
                 <p>Lectura simple del mes, participación por marca y evolución semanal.</p>
               </div>
