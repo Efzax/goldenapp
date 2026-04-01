@@ -410,17 +410,15 @@ export default function CommercialDashboardPage() {
                 </div>
                 {menuOpen ? (
                   <div className={styles.avatarMenu}>
-                    {hasMultipleStores ? (
-                      <div
-                        className="mobile-menu-item"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          router.push("/mobile/select-store");
-                        }}
-                      >
-                        Mis Tiendas
-                      </div>
-                    ) : null}
+                    <div
+                      className="mobile-menu-item"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        router.push("/mobile/select-store");
+                      }}
+                    >
+                      Mis Tiendas
+                    </div>
 
                     {(user?.role === "ADMIN" || user?.role === "SUPERVISOR") ? (
                       <div
@@ -479,15 +477,13 @@ export default function CommercialDashboardPage() {
                     <span className={styles.eyebrow}>Resumen Comercial</span>
                     <h2>{formatStoreLabel(safeStore)}</h2>
                   </div>
-                  {hasMultipleStores ? (
-                    <button
-                      type="button"
-                      className={styles.storeSwitchButton}
-                      onClick={() => router.push("/mobile/select-store")}
-                    >
-                      Mis Tiendas
-                    </button>
-                  ) : null}
+                  <button
+                    type="button"
+                    className={styles.storeSwitchButton}
+                    onClick={() => router.push("/mobile/select-store")}
+                  >
+                    Mis Tiendas
+                  </button>
                 </div>
                 <p>Lectura simple del mes, participación por marca y evolución semanal.</p>
               </div>
