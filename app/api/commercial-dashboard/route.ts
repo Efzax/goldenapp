@@ -46,6 +46,7 @@ function normalizeExternalCode(value: unknown) {
 
 async function loadDashboardPayload() {
   const candidatePaths = [
+    path.join(process.cwd(), "app", "data", "dashboard-data.json"),
     path.join(process.cwd(), "DashPSI", "data", "dashboard-data.json"),
     path.join(process.cwd(), "..", "DashPSI", "data", "dashboard-data.json"),
   ];
