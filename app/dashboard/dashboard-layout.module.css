@@ -1,5 +1,5 @@
 .headerWide {
-  width: min(1600px, calc(100% - 32px));
+  width: min(1480px, calc(100% - 32px));
   margin: 0 auto;
 }
 
