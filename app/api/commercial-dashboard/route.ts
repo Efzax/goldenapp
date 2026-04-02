@@ -66,10 +66,30 @@ function buildRawStoreCodeMap(payload: DashboardPayload) {
   return map;
 }
 
+function buildCanonicalStoreNameByRawKey(
+  collection: Array<Record<string, unknown>> | undefined,
+  codeToName: Map<string, string>
+) {
+  const map = new Map<string, string>();
+
+  for (const row of collection || []) {
+    const rawStoreKey = normalizeStoreKey(row.store);
+    const storeCode = normalizeExternalCode(row.storeCode);
+    const canonicalName = storeCode ? codeToName.get(storeCode) : null;
+
+    if (rawStoreKey && canonicalName) {
+      map.set(rawStoreKey, canonicalName);
+    }
+  }
+
+  return map;
+}
+
 function canonicalizeCollection<T extends Record<string, unknown>>(
   collection: T[] | undefined,
   codeToName: Map<string, string>,
-  rawStoreCodeMap: Map<string, string>
+  rawStoreCodeMap: Map<string, string>,
+  canonicalStoreNameByRawKey: Map<string, string>
 ) {
   if (!Array.isArray(collection)) {
     return [];
@@ -77,7 +97,9 @@ function canonicalizeCollection<T extends Record<string, unknown>>(
 
   return collection.map((row) => {
     const storeCode = normalizeExternalCode(row.storeCode) || rawStoreCodeMap.get(normalizeStoreKey(row.store));
-    const canonicalName = storeCode ? codeToName.get(storeCode) : null;
+    const canonicalName =
+      (storeCode ? codeToName.get(storeCode) : null) ||
+      canonicalStoreNameByRawKey.get(normalizeStoreKey(row.store));
 
     if (!canonicalName) {
       return row;
@@ -154,15 +176,16 @@ export async function GET() {
         .filter(([code]) => Boolean(code))
     );
     const rawStoreCodeMap = buildRawStoreCodeMap(payload);
+    const canonicalStoreNameByRawKey = buildCanonicalStoreNameByRawKey(payload.storeCodes, codeToName);
 
-    const canonicalStoreCodes = canonicalizeCollection(payload.storeCodes, codeToName, rawStoreCodeMap);
-    const canonicalTargets = canonicalizeCollection(payload.targets, codeToName, rawStoreCodeMap);
-    const canonicalSellOutStores = canonicalizeCollection(payload.sellOutStores, codeToName, rawStoreCodeMap);
-    const canonicalTvavSummary = canonicalizeCollection(payload.tvavSummary, codeToName, rawStoreCodeMap);
-    const canonicalStockDi = canonicalizeCollection(payload.stockDi, codeToName, rawStoreCodeMap);
-    const canonicalIhsMaster = canonicalizeCollection(payload.ihsMaster, codeToName, rawStoreCodeMap);
-    const canonicalBenchmarks2025 = canonicalizeCollection(payload.benchmarks2025, codeToName, rawStoreCodeMap);
-    const canonicalProducts = canonicalizeCollection(payload.products, codeToName, rawStoreCodeMap);
+    const canonicalStoreCodes = canonicalizeCollection(payload.storeCodes, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalTargets = canonicalizeCollection(payload.targets, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalSellOutStores = canonicalizeCollection(payload.sellOutStores, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalTvavSummary = canonicalizeCollection(payload.tvavSummary, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalStockDi = canonicalizeCollection(payload.stockDi, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalIhsMaster = canonicalizeCollection(payload.ihsMaster, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalBenchmarks2025 = canonicalizeCollection(payload.benchmarks2025, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
+    const canonicalProducts = canonicalizeCollection(payload.products, codeToName, rawStoreCodeMap, canonicalStoreNameByRawKey);
 
     const canonicalDefaultStoreCode =
       rawStoreCodeMap.get(normalizeStoreKey(payload.filters.defaultStore)) ||
@@ -174,7 +197,7 @@ export async function GET() {
     if (user.role === Role.ADMIN) {
       const adminStores = [
         ...new Set(
-          canonicalIhsMaster
+          canonicalStoreCodes
             .map((item) => normalizeText(item.store))
             .filter(Boolean)
         ),
@@ -219,7 +242,7 @@ export async function GET() {
     const monthOrder = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
     const filteredStores = [
       ...new Set(
-        filteredIhsMaster
+        filteredStoreCodes
           .map((item) => normalizeText(item.store))
           .filter(Boolean)
       ),
