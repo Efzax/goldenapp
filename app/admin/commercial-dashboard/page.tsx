@@ -134,9 +134,14 @@ function toTitleCase(value = "") {
 }
 
 function formatStoreLabel(value = "") {
-  const normalized = normalizeStore(value);
+  const cleaned = String(value ?? "")
+    .replace(/[´`'"]/g, "")
+    .replace(/viñ?a/gi, "Vina")
+    .replace(/\s+/g, " ")
+    .trim();
+  const normalized = normalizeStore(cleaned);
   if (normalized === "falabella vina ii") return "Falabella Viña 2 Mall";
-  return toTitleCase(value)
+  return toTitleCase(cleaned)
     .replace(/Vina/g, "Viña")
     .replace(/Viña Ii/g, "Viña 2 Mall");
 }
