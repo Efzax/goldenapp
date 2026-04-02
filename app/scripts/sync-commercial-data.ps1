@@ -1,6 +1,6 @@
 param(
   [string]$SourcePath = "..\DashPSI\data\dashboard-data.json",
-  [string]$TargetPath = ".\app\data\dashboard-data.json"
+  [string]$TargetPath = ".\public\dashboard-data.json"
 )
 
 Set-StrictMode -Version Latest

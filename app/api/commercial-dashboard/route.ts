@@ -45,22 +45,14 @@ function normalizeExternalCode(value: unknown) {
 }
 
 async function loadDashboardPayload() {
-  const candidatePaths = [
-    path.join(process.cwd(), "app", "data", "dashboard-data.json"),
-    path.join(process.cwd(), "DashPSI", "data", "dashboard-data.json"),
-    path.join(process.cwd(), "..", "DashPSI", "data", "dashboard-data.json"),
-  ];
+  const filePath = path.join(process.cwd(), "public", "dashboard-data.json");
 
-  for (const filePath of candidatePaths) {
-    try {
-      const raw = await fs.readFile(filePath, "utf8");
-      return JSON.parse(raw) as DashboardPayload;
-    } catch {
-      continue;
-    }
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    return JSON.parse(raw) as DashboardPayload;
+  } catch {
+    throw new Error("No se encontró public/dashboard-data.json para el módulo comercial.");
   }
-
-  throw new Error("No se encontró dashboard-data.json para el módulo comercial.");
 }
 
 function filterByAllowedStores<T extends Record<string, unknown>>(

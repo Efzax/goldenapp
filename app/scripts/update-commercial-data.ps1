@@ -1,6 +1,6 @@
 param(
   [string]$DashPsiPath = "..\DashPSI",
-  [string]$GoldenAppDataPath = ".\app\data\dashboard-data.json",
+  [string]$GoldenAppDataPath = ".\public\dashboard-data.json",
   [switch]$PushToGitHub,
   [string]$CommitMessage = "Update commercial dashboard data"
 )
@@ -43,14 +43,14 @@ if (-not (Test-Path -LiteralPath $targetDataPath)) {
   throw "La data sincronizada no existe en: $targetDataPath"
 }
 
-$statusOutput = git status --short -- app\data\dashboard-data.json 2>$null
+$statusOutput = git status --short -- public\dashboard-data.json 2>$null
 
 Write-Host "3/3 Listo."
 Write-Host "Archivo actualizado: $targetDataPath"
 
 if ($PushToGitHub) {
   Write-Host "Sincronizando con GitHub..."
-  git add app\data\dashboard-data.json | Out-Null
+  git add public\dashboard-data.json | Out-Null
   git commit -m $CommitMessage
   git push
   Write-Host "GitHub actualizado correctamente."
