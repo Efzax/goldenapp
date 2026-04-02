@@ -19,7 +19,7 @@ export default function LoginPage() {
       <div className="loginhome"><img src="/icon.png" alt="Logo" /></div>
  <div className="login-title">
         BIENVENIDO SPARTAN
-        <h2>Golden App v0.1.9</h2>
+        <h2>Golden App v0.2.0</h2>
         </div>
 <input
   type="email"
