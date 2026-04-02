@@ -133,10 +133,26 @@ function toTitleCase(value = "") {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function repairMojibake(value = "") {
+  return String(value)
+    .replace(/Ã¡/g, "á")
+    .replace(/Ã©/g, "é")
+    .replace(/Ã­/g, "í")
+    .replace(/Ã³/g, "ó")
+    .replace(/Ãº/g, "ú")
+    .replace(/Ã/g, "Á")
+    .replace(/Ã‰/g, "É")
+    .replace(/Ã/g, "Í")
+    .replace(/Ã“/g, "Ó")
+    .replace(/Ãš/g, "Ú")
+    .replace(/Ã±/g, "ñ")
+    .replace(/Ã‘/g, "Ñ");
+}
+
 function formatStoreLabel(value = "") {
-  const cleaned = String(value ?? "")
+  const cleaned = repairMojibake(String(value ?? ""))
     .replace(/[´`'"]/g, "")
-    .replace(/viñ?a/gi, "Vina")
+    .replace(/vi(?:na|ña)/gi, "Vina")
     .replace(/\s+/g, " ")
     .trim();
   const normalized = normalizeStore(cleaned);
