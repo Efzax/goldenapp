@@ -200,6 +200,10 @@ export default function CommercialDashboardPage() {
   useEffect(() => {
     fetch("/api/commercial-dashboard")
       .then(async (res) => {
+        if (res.status === 401 || res.status === 404) {
+          router.replace("/login");
+          throw new Error("Redirigiendo a login");
+        }
         if (!res.ok) {
           const json = await res.json().catch(() => ({}));
           throw new Error(json.error || "No fue posible cargar el dashboard comercial");
@@ -212,13 +216,20 @@ export default function CommercialDashboardPage() {
         setCoverage(json.filters.coverages.find((item) => item !== "Todos") || json.filters.defaultCoverage || "");
         setStore(json.filters.defaultStore || json.filters.stores[0] || "");
       })
-      .catch((err: Error) => setError(err.message))
+      .catch((err: Error) => {
+        if (err.message === "Redirigiendo a login") return;
+        setError(err.message);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     fetch("/api/me", { cache: "no-store" })
       .then((res) => {
+        if (res.status === 401) {
+          router.replace("/login");
+          return null;
+        }
         if (!res.ok) return null;
         return res.json();
       })
@@ -226,7 +237,7 @@ export default function CommercialDashboardPage() {
         if (json) setUser(json);
       })
       .catch(() => setUser(null));
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     fetch("/api/my-stores")
