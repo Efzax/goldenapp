@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
 import { Role } from "@prisma/client";
-import { promises as fs } from "fs";
-import path from "path";
+import dashboardData from "@/app/data/dashboard-data.json";
 
 type DashboardPayload = {
   fileName: string;
@@ -45,14 +44,7 @@ function normalizeExternalCode(value: unknown) {
 }
 
 async function loadDashboardPayload() {
-  const filePath = path.join(process.cwd(), "public", "dashboard-data.json");
-
-  try {
-    const raw = await fs.readFile(filePath, "utf8");
-    return JSON.parse(raw) as DashboardPayload;
-  } catch {
-    throw new Error("No se encontró public/dashboard-data.json para el módulo comercial.");
-  }
+  return dashboardData as DashboardPayload;
 }
 
 function filterByAllowedStores<T extends Record<string, unknown>>(
