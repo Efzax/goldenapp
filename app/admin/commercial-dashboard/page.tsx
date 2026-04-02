@@ -2,7 +2,7 @@
 
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./commercial-dashboard.module.css";
 
 type DashboardRow = {
@@ -181,6 +181,8 @@ function groupBy<T>(items: T[], getKey: (item: T) => string) {
 
 export default function CommercialDashboardPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const isDashboardRoute = pathname.startsWith("/dashboard");
   const [data, setData] = useState<CommercialPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -431,77 +433,79 @@ export default function CommercialDashboardPage() {
   return (
     <div className={cx(styles.scope, styles.pageShell)}>
       <div className={styles.dashboard}>
-        <div className="mobile-header">
-          <div className={cx("mobile-header-inner", styles.mobileHeaderWide)}>
-            <div className="mobile-header-left">
-              {user?.name ? <div className="mobile-greeting">Hola, {user.name}</div> : null}
-              <div className="mobile-store-title">Summary Store Dashboard</div>
-            </div>
-            <div className={styles.mobileHeaderAvatar}>
-              <div className={styles.avatarMenuWrap}>
-                <div className="avatar" style={{ cursor: "pointer" }} onClick={() => setMenuOpen((current) => !current)}>
-                  {user?.image ? <img src={user.image} alt="Avatar" /> : avatarInitial.toUpperCase()}
-                </div>
-                {menuOpen ? (
-                  <div className={styles.avatarMenu}>
-                    <div
-                      className="mobile-menu-item"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        router.push("/mobile/select-store");
-                      }}
-                    >
-                      Mis Tiendas
-                    </div>
-
-                    {(user?.role === "ADMIN" || user?.role === "SUPERVISOR") ? (
+        {!isDashboardRoute ? (
+          <div className="mobile-header">
+            <div className={cx("mobile-header-inner", styles.mobileHeaderWide)}>
+              <div className="mobile-header-left">
+                {user?.name ? <div className="mobile-greeting">Hola, {user.name}</div> : null}
+                <div className="mobile-store-title">Summary Store Dashboard</div>
+              </div>
+              <div className={styles.mobileHeaderAvatar}>
+                <div className={styles.avatarMenuWrap}>
+                  <div className="avatar" style={{ cursor: "pointer" }} onClick={() => setMenuOpen((current) => !current)}>
+                    {user?.image ? <img src={user.image} alt="Avatar" /> : avatarInitial.toUpperCase()}
+                  </div>
+                  {menuOpen ? (
+                    <div className={styles.avatarMenu}>
                       <div
                         className="mobile-menu-item"
                         onClick={() => {
                           setMenuOpen(false);
-                          router.push("/admin");
+                          router.push("/mobile/select-store");
                         }}
                       >
-                        Admin
+                        Mis Tiendas
                       </div>
-                    ) : null}
 
-                    <div
-                      className="mobile-menu-item"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        router.push("/dashboard");
-                      }}
-                    >
-                      Dashboard
-                    </div>
+                      {(user?.role === "ADMIN" || user?.role === "SUPERVISOR") ? (
+                        <div
+                          className="mobile-menu-item"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            router.push("/admin");
+                          }}
+                        >
+                          Admin
+                        </div>
+                      ) : null}
 
-                    <div
-                      className="mobile-menu-item"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        router.push("/mobile/profile");
-                      }}
-                    >
-                      Perfil
-                    </div>
+                      <div
+                        className="mobile-menu-item"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          router.push("/dashboard");
+                        }}
+                      >
+                        Dashboard
+                      </div>
 
-                    <div
-                      className="mobile-logout-btn"
-                      onClick={async () => {
-                        setMenuOpen(false);
-                        await fetch("/api/logout", { method: "POST" });
-                        location.href = "/login";
-                      }}
-                    >
-                      Logout
+                      <div
+                        className="mobile-menu-item"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          router.push("/mobile/profile");
+                        }}
+                      >
+                        Perfil
+                      </div>
+
+                      <div
+                        className="mobile-logout-btn"
+                        onClick={async () => {
+                          setMenuOpen(false);
+                          await fetch("/api/logout", { method: "POST" });
+                          location.href = "/login";
+                        }}
+                      >
+                        Logout
+                      </div>
                     </div>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : null}
         <div className={styles.layoutShell}>
           <main className={styles.mainContent}>
             <section className={styles.topbar}>
