@@ -163,6 +163,16 @@ function MobileLayoutContent({
                   Dashboard
                 </div>
 
+                                <div
+                  className="mobile-menu-item"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push("/dashboard/di");
+                  }}
+                >
+                  DeadInventory
+                </div>
+
                 <div
                   className="mobile-menu-item"
                   onClick={() => {

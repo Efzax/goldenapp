@@ -2,9 +2,10 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./dashboard-layout.module.css";
 import "../styles/ui.css";
+
 
 type User = {
   name?: string;
@@ -15,6 +16,7 @@ type User = {
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
@@ -55,9 +57,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   }, [router]);
 
   const avatarInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || "?";
+  const sectionTitle = pathname === "/dashboard/di" ? "Dead Inventory Dashboard" : "Summary Store Dashboard";
 
   return (
-    <div className="mobile-layout">
+    <div className={`mobile-layout ${styles.dashboardShell}`}>
       <div className="app-badge">
         <div className={`app-badge-inner ${styles.headerWide}`}>GOLDENAPP</div>
       </div>
@@ -66,7 +69,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className={`mobile-header-inner ${styles.headerWide}`}>
           <div className="mobile-header-left">
             {user?.name ? <div className="mobile-greeting">Hola, {user.name}</div> : null}
-            <div className="mobile-store-title">Summary Store Dashboard</div>
+            <div className="mobile-store-title">{sectionTitle}</div>
           </div>
 
           <div className={styles.avatarWrap}>
@@ -106,6 +109,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   }}
                 >
                   Dashboard
+                </div>
+
+                <div
+                  className="mobile-menu-item"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push("/dashboard/di");
+                  }}
+                >
+                  DeadInventory
                 </div>
 
                 <div

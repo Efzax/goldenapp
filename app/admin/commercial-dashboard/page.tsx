@@ -166,6 +166,60 @@ function safeNumber(value: unknown) {
   return typeof value === "number" ? value : Number(value || 0);
 }
 
+function formatStoreLabelFixed(value = "") {
+  const cleaned = String(value ?? "")
+    .replace(/ViÃ±a/gi, "Vi\u00f1a")
+    .replace(/VI\u0104A/gi, "VI\u00d1A")
+    .replace(/Vi\u00a4a/gi, "Vi\u00f1a")
+    .replace(/Vina/gi, "Vi\u00f1a")
+    .replace(/ValparaiSo/gi, "Valpara\u00edso")
+    .replace(/Valparaiso/gi, "Valpara\u00edso")
+    .replace(/L[i\u00ed]der Belloto/gi, "Lider Belloto")
+    .replace(/L[i\u00ed]der Los Andes/gi, "Lider Los Andes")
+    .replace(/L[i\u00ed]der Quillota/gi, "Lider Quillota")
+    .replace(/L[i\u00ed]der San Felipe/gi, "Lider San Felipe")
+    .replace(/L[i\u00ed]der Vi(?:\u00f1a|Ã±a|\u00a4a)[\u00aa\u00ba\u2013\u2014-]* ?Del Mar Ii/gi, "Lider Vi\u00f1a Del Mar Ii")
+    .replace(/L[i\u00ed]der Vi(?:\u00f1a|Ã±a|\u00a4a)[\u00aa\u00ba\u2013\u2014-]* ?Del Mar/gi, "Lider Vi\u00f1a Del Mar")
+    .replace(/[’`´]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const normalized = normalizeStore(cleaned);
+  if (normalized === "falabella vina ii") return "Falabella Vi\u00f1a 2 Mall";
+  if (normalized === "la polar vina del mar") return "La Polar Vi\u00f1a Del Mar";
+  if (normalized === "lider vina del mar") return "Lider Vi\u00f1a Del Mar";
+  if (normalized === "lider vina del mar ii") return "Lider Vi\u00f1a Del Mar Ii";
+
+  return toTitleCase(cleaned)
+    .replace(/Vina/g, "Vi\u00f1a")
+    .replace(/Vi\u00f1a Ii/g, "Vi\u00f1a 2 Mall")
+    .replace(/Valparaiso/g, "Valpara\u00edso");
+}
+
+function getCanonicalStoreLabel(value = "") {
+  const raw = String(value ?? "");
+  const lowered = raw.toLowerCase();
+
+  if (lowered.includes("falabella") && lowered.includes("calera")) return "Falabella La Calera";
+  if (lowered.includes("falabella") && lowered.includes("san felipe")) return "Falabella San Felipe";
+  if (lowered.includes("falabella") && lowered.includes("valpar")) return "Falabella Valpara\u00edso";
+  if (lowered.includes("falabella") && lowered.includes("ii")) return "Falabella Vi\u00f1a 2 Mall";
+  if (lowered.includes("la polar") && lowered.includes("mar")) return "La Polar Vi\u00f1a Del Mar";
+  if (lowered.includes("lider") && lowered.includes("belloto")) return "Lider Belloto";
+  if (lowered.includes("lider") && lowered.includes("los andes")) return "Lider Los Andes";
+  if (lowered.includes("lider") && lowered.includes("quillota")) return "Lider Quillota";
+  if (lowered.includes("lider") && lowered.includes("san felipe")) return "Lider San Felipe";
+  if (lowered.includes("lider") && lowered.includes("del mar") && lowered.includes("ii")) return "Lider Vi\u00f1a Del Mar Ii";
+  if (lowered.includes("lider") && lowered.includes("del mar")) return "Lider Vi\u00f1a Del Mar";
+  if (lowered.includes("paris") && lowered.includes("marina")) return "Paris Marina Arauco";
+  if (lowered.includes("paris") && lowered.includes("belloto")) return "Paris Portal Belloto";
+  if (lowered.includes("paris") && lowered.includes("valpar")) return "Paris Portal Valpara\u00edso";
+  if (lowered.includes("ripley") && lowered.includes("marina")) return "Ripley Marina Arauco";
+  if (lowered.includes("ripley") && lowered.includes("andes")) return "Ripley Los Andes";
+
+  return formatStoreLabelFixed(raw);
+}
+
 function sum<T>(items: T[], accessor: (item: T) => number) {
   return items.reduce((total, item) => total + safeNumber(accessor(item)), 0);
 }
@@ -179,6 +233,37 @@ function groupBy<T>(items: T[], getKey: (item: T) => string) {
   }, new Map<string, T[]>());
 }
 
+function getTooltipPosition(clientX: number, clientY: number) {
+  const offset = 18;
+  const padding = 12;
+  const estimatedWidth = 170;
+  const estimatedHeight = 76;
+
+  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+  const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 0;
+
+  let x = clientX + offset;
+  let y = clientY - offset;
+
+  if (viewportWidth && x + estimatedWidth > viewportWidth - padding) {
+    x = clientX - estimatedWidth - offset;
+  }
+
+  if (viewportHeight && y + estimatedHeight > viewportHeight - padding) {
+    y = viewportHeight - estimatedHeight - padding;
+  }
+
+  if (y < padding) {
+    y = padding;
+  }
+
+  if (x < padding) {
+    x = padding;
+  }
+
+  return { x, y };
+}
+
 export default function CommercialDashboardPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -190,6 +275,7 @@ export default function CommercialDashboardPage() {
   const [coverage, setCoverage] = useState("");
   const [store, setStore] = useState("");
   const [user, setUser] = useState<UserInfo | null>(null);
+  const canViewCoverageFilter = user?.role === "ADMIN" || user?.role === "SUPERVISOR";
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
   const [tooltip, setTooltip] = useState<{ content: string; x: number; y: number; visible: boolean }>({
@@ -264,7 +350,7 @@ export default function CommercialDashboardPage() {
           .map((row) => row.store || "")
           .filter(Boolean),
       ),
-    ].sort((a, b) => formatStoreLabel(a).localeCompare(formatStoreLabel(b), "es"));
+    ].sort((a, b) => getCanonicalStoreLabel(a).localeCompare(getCanonicalStoreLabel(b), "es"));
   }, [coverage, data, month]);
 
   const availableCoverages = useMemo(() => {
@@ -353,19 +439,21 @@ export default function CommercialDashboardPage() {
   const avatarInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || "?";
 
   const showTooltip = (content: string, event: ReactMouseEvent<HTMLElement>) => {
+    const position = getTooltipPosition(event.clientX, event.clientY);
     setTooltip({
       content,
-      x: event.clientX + 18,
-      y: event.clientY - 18,
+      x: position.x,
+      y: position.y,
       visible: true,
     });
   };
 
   const moveTooltip = (event: ReactMouseEvent<HTMLElement>) => {
+    const position = getTooltipPosition(event.clientX, event.clientY);
     setTooltip((current) => ({
       ...current,
-      x: event.clientX + 18,
-      y: event.clientY - 18,
+      x: position.x,
+      y: position.y,
     }));
   };
 
@@ -428,84 +516,12 @@ export default function CommercialDashboardPage() {
   const topProducts = [...productMap.values()]
     .map((item) => ({ ...item, share: totalUnits ? item.units / totalUnits : 0 }))
     .sort((a, b) => b.units - a.units)
-    .slice(0, 5);
+    .slice(0, 7);
 
   return (
     <div className={cx(styles.scope, styles.pageShell)}>
       <div className={styles.dashboard}>
-        {!isDashboardRoute ? (
-          <div className="mobile-header">
-            <div className={cx("mobile-header-inner", styles.mobileHeaderWide)}>
-              <div className="mobile-header-left">
-                {user?.name ? <div className="mobile-greeting">Hola, {user.name}</div> : null}
-                <div className="mobile-store-title">Summary Store Dashboard</div>
-              </div>
-              <div className={styles.mobileHeaderAvatar}>
-                <div className={styles.avatarMenuWrap}>
-                  <div className="avatar" style={{ cursor: "pointer" }} onClick={() => setMenuOpen((current) => !current)}>
-                    {user?.image ? <img src={user.image} alt="Avatar" /> : avatarInitial.toUpperCase()}
-                  </div>
-                  {menuOpen ? (
-                    <div className={styles.avatarMenu}>
-                      <div
-                        className="mobile-menu-item"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          router.push("/mobile/select-store");
-                        }}
-                      >
-                        Mis Tiendas
-                      </div>
 
-                      {(user?.role === "ADMIN" || user?.role === "SUPERVISOR") ? (
-                        <div
-                          className="mobile-menu-item"
-                          onClick={() => {
-                            setMenuOpen(false);
-                            router.push("/admin");
-                          }}
-                        >
-                          Admin
-                        </div>
-                      ) : null}
-
-                      <div
-                        className="mobile-menu-item"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          router.push("/dashboard");
-                        }}
-                      >
-                        Dashboard
-                      </div>
-
-                      <div
-                        className="mobile-menu-item"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          router.push("/mobile/profile");
-                        }}
-                      >
-                        Perfil
-                      </div>
-
-                      <div
-                        className="mobile-logout-btn"
-                        onClick={async () => {
-                          setMenuOpen(false);
-                          await fetch("/api/logout", { method: "POST" });
-                          location.href = "/login";
-                        }}
-                      >
-                        Logout
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
         <div className={styles.layoutShell}>
           <main className={styles.mainContent}>
             <section className={styles.topbar}>
@@ -513,26 +529,28 @@ export default function CommercialDashboardPage() {
                 <div className={styles.topbarHeadingRow}>
                   <div>
                     <span className={styles.eyebrow}>Resumen Comercial</span>
-                    <h2>{formatStoreLabel(safeStore)}</h2>
+                    <h2>{getCanonicalStoreLabel(safeStore)}</h2>
                   </div>
                 </div>
-                <p>Lectura simple del mes, participación por marca y evolución semanal.</p>
-              </div>
-              <div className={styles.topbarMeta}>
-                <div className={styles.topbarFilters}>
-                  <label className={styles.filterSelectCard}>
-                    <span>Coverage</span>
-                    <select value={coverage} onChange={(e) => setCoverage(e.target.value)}>
-                      {data.filters.coverages.filter((item) => item !== "Todos").map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className={styles.filterSelectCard}>
-                    <span>Mes</span>
-                    <select value={month} onChange={(e) => setMonth(e.target.value)}>
+                <span className={styles.topbarUpdated}>Updated {new Date(data.generatedAt).toLocaleDateString("es-CL")}</span>
+                </div>
+                  <div className={styles.topbarMeta}>
+                    <div className={cx(styles.topbarFilters, !canViewCoverageFilter && styles.topbarFiltersCompact)}>
+                    {canViewCoverageFilter ? (
+                      <label className={styles.filterSelectCard}>
+                        <span>Coverage</span>
+                        <select value={coverage} onChange={(e) => setCoverage(e.target.value)}>
+                          {data.filters.coverages.filter((item) => item !== "Todos").map((item) => (
+                            <option key={item} value={item}>
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    ) : null}
+                    <label className={styles.filterSelectCard}>
+                      <span>Mes</span>
+                      <select value={month} onChange={(e) => setMonth(e.target.value)}>
                       {data.filters.months.map((item) => (
                         <option key={item} value={item}>
                           {item}
@@ -541,13 +559,13 @@ export default function CommercialDashboardPage() {
                     </select>
                   </label>
                   <div className={styles.filterSelectStack}>
-                    <span className={styles.topbarUpdated}>Updated {new Date(data.generatedAt).toLocaleDateString("es-CL")}</span>
+                    
                     <label className={styles.filterSelectCard}>
                       <span>Store</span>
                       <select value={safeStore} onChange={(e) => setStore(e.target.value)}>
                         {availableStores.map((item) => (
                           <option key={item} value={item}>
-                            {formatStoreLabel(item)}
+                            {getCanonicalStoreLabel(item)}
                           </option>
                         ))}
                       </select>
@@ -562,6 +580,7 @@ export default function CommercialDashboardPage() {
                 <article className={cx(styles.tvavCard, styles.tvavTv)}>
                   <div className={styles.tvavShell}>
                     <div className={styles.tvavComplianceCard}>
+                      <span style={{color: "#6B7280"}}>Compliance</span>
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.tvCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.tvCompliance)}
                       </strong>
@@ -569,6 +588,7 @@ export default function CommercialDashboardPage() {
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
+                        
                         <strong>{formatCurrency(tvav.tvSellOut)}</strong>
                         <span>Target meta: {formatCurrency(tvav.tvTarget)}</span>
                       </div>
@@ -599,6 +619,7 @@ export default function CommercialDashboardPage() {
                 <article className={cx(styles.tvavCard, styles.tvavAv)}>
                   <div className={styles.tvavShell}>
                     <div className={styles.tvavComplianceCard}>
+                      <span style={{color: "#6B7280"}}>Compliance</span>
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.avCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.avCompliance)}
                       </strong>
@@ -606,6 +627,7 @@ export default function CommercialDashboardPage() {
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
+                      
                         <strong>{formatCurrency(tvav.avSellOut)}</strong>
                         <span>Target meta: {formatCurrency(tvav.avTarget)}</span>
                       </div>
@@ -749,17 +771,11 @@ export default function CommercialDashboardPage() {
                         <div className={styles.productMetaInline}>
                           <div
                             className={styles.productMetric}
-                            onMouseEnter={(event) => showTooltip(`Unidades: ${formatNumber(product.units)}`, event)}
-                            onMouseMove={moveTooltip}
-                            onMouseLeave={hideTooltip}
                           >
                             <strong>{formatNumber(product.units)}</strong>
                           </div>
                           <div
                             className={styles.productGross}
-                            onMouseEnter={(event) => showTooltip(`Sellout: ${formatCurrency(product.gross)}`, event)}
-                            onMouseMove={moveTooltip}
-                            onMouseLeave={hideTooltip}
                           >
                             <strong>{formatCurrency(product.gross)}</strong>
                           </div>

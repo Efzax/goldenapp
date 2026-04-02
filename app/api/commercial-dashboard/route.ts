@@ -28,6 +28,11 @@ type DashboardPayload = {
   products?: Array<Record<string, unknown>>;
 };
 
+type StoreDirectoryEntry = {
+  name: string;
+  externalCode: string | null;
+};
+
 function normalizeText(value: unknown) {
   return String(value ?? "").trim();
 }
@@ -45,6 +50,45 @@ function normalizeExternalCode(value: unknown) {
 
 async function loadDashboardPayload() {
   return dashboardData as DashboardPayload;
+}
+
+function buildRawStoreCodeMap(payload: DashboardPayload) {
+  const map = new Map<string, string>();
+
+  for (const row of payload.storeCodes || []) {
+    const storeKey = normalizeStoreKey(row.store);
+    const storeCode = normalizeExternalCode(row.storeCode);
+    if (storeKey && storeCode) {
+      map.set(storeKey, storeCode);
+    }
+  }
+
+  return map;
+}
+
+function canonicalizeCollection<T extends Record<string, unknown>>(
+  collection: T[] | undefined,
+  codeToName: Map<string, string>,
+  rawStoreCodeMap: Map<string, string>
+) {
+  if (!Array.isArray(collection)) {
+    return [];
+  }
+
+  return collection.map((row) => {
+    const storeCode = normalizeExternalCode(row.storeCode) || rawStoreCodeMap.get(normalizeStoreKey(row.store));
+    const canonicalName = storeCode ? codeToName.get(storeCode) : null;
+
+    if (!canonicalName) {
+      return row;
+    }
+
+    return {
+      ...row,
+      store: canonicalName,
+      ...(row.storeCode ? { storeCode } : {}),
+    };
+  });
 }
 
 function filterByAllowedStores<T extends Record<string, unknown>>(
@@ -97,9 +141,63 @@ export async function GET() {
     }
 
     const payload = await loadDashboardPayload();
+    const storeDirectory = await prisma.store.findMany({
+      select: {
+        name: true,
+        externalCode: true,
+      },
+    });
+
+    const codeToName = new Map<string, string>(
+      (storeDirectory as StoreDirectoryEntry[])
+        .map((item) => [normalizeExternalCode(item.externalCode), item.name] as const)
+        .filter(([code]) => Boolean(code))
+    );
+    const rawStoreCodeMap = buildRawStoreCodeMap(payload);
+
+    const canonicalStoreCodes = canonicalizeCollection(payload.storeCodes, codeToName, rawStoreCodeMap);
+    const canonicalTargets = canonicalizeCollection(payload.targets, codeToName, rawStoreCodeMap);
+    const canonicalSellOutStores = canonicalizeCollection(payload.sellOutStores, codeToName, rawStoreCodeMap);
+    const canonicalTvavSummary = canonicalizeCollection(payload.tvavSummary, codeToName, rawStoreCodeMap);
+    const canonicalStockDi = canonicalizeCollection(payload.stockDi, codeToName, rawStoreCodeMap);
+    const canonicalIhsMaster = canonicalizeCollection(payload.ihsMaster, codeToName, rawStoreCodeMap);
+    const canonicalBenchmarks2025 = canonicalizeCollection(payload.benchmarks2025, codeToName, rawStoreCodeMap);
+    const canonicalProducts = canonicalizeCollection(payload.products, codeToName, rawStoreCodeMap);
+
+    const canonicalDefaultStoreCode =
+      rawStoreCodeMap.get(normalizeStoreKey(payload.filters.defaultStore)) ||
+      normalizeExternalCode(payload.filters.defaultStore);
+    const canonicalDefaultStore = canonicalDefaultStoreCode
+      ? codeToName.get(canonicalDefaultStoreCode) || payload.filters.defaultStore
+      : payload.filters.defaultStore;
 
     if (user.role === Role.ADMIN) {
-      return NextResponse.json(payload);
+      const adminStores = [
+        ...new Set(
+          canonicalIhsMaster
+            .map((item) => normalizeText(item.store))
+            .filter(Boolean)
+        ),
+      ];
+
+      return NextResponse.json({
+        ...payload,
+        filters: {
+          ...payload.filters,
+          stores: adminStores,
+          defaultStore: adminStores.includes(normalizeText(canonicalDefaultStore))
+            ? canonicalDefaultStore
+            : adminStores[0] || "",
+        },
+        storeCodes: canonicalStoreCodes,
+        targets: canonicalTargets,
+        sellOutStores: canonicalSellOutStores,
+        tvavSummary: canonicalTvavSummary,
+        stockDi: canonicalStockDi,
+        ihsMaster: canonicalIhsMaster,
+        benchmarks2025: canonicalBenchmarks2025,
+        products: canonicalProducts,
+      });
     }
 
     const allowedStoreKeys = new Set(
@@ -109,14 +207,14 @@ export async function GET() {
       user.stores.map((item) => normalizeExternalCode(item.store.externalCode)).filter(Boolean)
     );
 
-    const filteredStoreCodes = filterByAllowedStores(payload.storeCodes, allowedStoreKeys, allowedStoreCodes);
-    const filteredTargets = filterByAllowedStores(payload.targets, allowedStoreKeys, allowedStoreCodes);
-    const filteredSellOutStores = filterByAllowedStores(payload.sellOutStores, allowedStoreKeys, allowedStoreCodes);
-    const filteredTvavSummary = filterByAllowedStores(payload.tvavSummary, allowedStoreKeys, allowedStoreCodes);
-    const filteredStockDi = filterByAllowedStores(payload.stockDi, allowedStoreKeys, allowedStoreCodes);
-    const filteredIhsMaster = filterByAllowedStores(payload.ihsMaster, allowedStoreKeys, allowedStoreCodes);
-    const filteredBenchmarks2025 = filterByAllowedStores(payload.benchmarks2025, allowedStoreKeys, allowedStoreCodes);
-    const filteredProducts = filterByAllowedStores(payload.products, allowedStoreKeys, allowedStoreCodes);
+    const filteredStoreCodes = filterByAllowedStores(canonicalStoreCodes, allowedStoreKeys, allowedStoreCodes);
+    const filteredTargets = filterByAllowedStores(canonicalTargets, allowedStoreKeys, allowedStoreCodes);
+    const filteredSellOutStores = filterByAllowedStores(canonicalSellOutStores, allowedStoreKeys, allowedStoreCodes);
+    const filteredTvavSummary = filterByAllowedStores(canonicalTvavSummary, allowedStoreKeys, allowedStoreCodes);
+    const filteredStockDi = filterByAllowedStores(canonicalStockDi, allowedStoreKeys, allowedStoreCodes);
+    const filteredIhsMaster = filterByAllowedStores(canonicalIhsMaster, allowedStoreKeys, allowedStoreCodes);
+    const filteredBenchmarks2025 = filterByAllowedStores(canonicalBenchmarks2025, allowedStoreKeys, allowedStoreCodes);
+    const filteredProducts = filterByAllowedStores(canonicalProducts, allowedStoreKeys, allowedStoreCodes);
 
     const monthOrder = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
     const filteredStores = [
@@ -148,8 +246,8 @@ export async function GET() {
         months: filteredMonths,
         stores: filteredStores,
         coverages: filteredCoverages,
-        defaultStore: filteredStores.includes(normalizeText(payload.filters.defaultStore))
-          ? payload.filters.defaultStore
+        defaultStore: filteredStores.includes(normalizeText(canonicalDefaultStore))
+          ? canonicalDefaultStore
           : filteredStores[0] || "",
         defaultMonth: filteredMonths[filteredMonths.length - 1] || payload.filters.defaultMonth || "",
         defaultCoverage: filteredCoverages[0] || payload.filters.defaultCoverage || "",

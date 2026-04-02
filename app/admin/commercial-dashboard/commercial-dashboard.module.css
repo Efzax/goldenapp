@@ -163,6 +163,11 @@
   align-items: end;
 }
 
+.topbarFiltersCompact {
+  grid-template-columns: 120px minmax(220px, 1fr);
+  justify-content: end;
+}
+
 .filterSelectCard {
   display: grid;
   gap: 6px;
@@ -798,7 +803,7 @@
     grid-column: 2;
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: start;
+    justify-content: end;
     align-items: center;
     gap: 10px;
   }
@@ -810,7 +815,7 @@
   }
 
   .productGross {
-    justify-items: start;
-    text-align: left;
+    justify-items: end;
+    text-align: right;
   }
 }

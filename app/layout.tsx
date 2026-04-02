@@ -25,7 +25,7 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "GoldenApp v0.1.9",
+  title: "GoldenApp v0.2.1",
   description:
     "Gestor de Stock e inventario para tiendas, desarrollado por Efza & Orideken.cl",
   manifest: "/manifest.json", // ✅ Mejor usar metadata en vez de <link>

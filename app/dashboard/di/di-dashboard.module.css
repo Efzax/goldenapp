@@ -1,0 +1,312 @@
+.page {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  display: grid;
+  gap: 18px;
+}
+
+.panel,
+.filterPanel,
+.summaryCard,
+.tableWrap {
+  background: #fff;
+  border: 1px solid #d9e4f6;
+  border-radius: 20px;
+}
+
+.panel {
+  padding: 20px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 560px);
+  gap: 24px;
+  align-items: start;
+}
+
+.hero {
+  display: grid;
+  gap: 10px;
+}
+
+.eyebrow {
+  color: #2d6bff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: #183153;
+  font-size: clamp(1.9rem, 2vw, 2.7rem);
+  line-height: 1.05;
+}
+
+.description {
+  margin: 0;
+  color: #5f6f89;
+  font-size: 1.02rem;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.filtersCompact {
+  grid-template-columns: 120px minmax(220px, 1fr);
+  justify-content: end;
+}
+
+.updatedBlock {
+  grid-column: 1 / -1;
+  color: #697b95;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.filterCard,
+.familySelect {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #d9e4f6;
+  border-radius: 18px;
+}
+
+.filterCard span,
+.familySelect span,
+.toggleGroup > span,
+.weekFilter > span {
+  color: #6b7b93;
+  font-size: 0.9rem;
+}
+
+.filterCard select,
+.familySelect select {
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #183153;
+  font: inherit;
+  font-weight: 700;
+  outline: none;
+}
+
+.filterPanel {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(320px, 1fr) minmax(220px, 300px);
+  gap: 14px;
+  padding: 16px 18px;
+  align-items: end;
+}
+
+.toggleGroup,
+.weekFilter {
+  display: grid;
+  gap: 8px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-width: 118px;
+  border: 1px solid #d9e4f6;
+  border-radius: 999px;
+  background: #f6f9ff;
+  color: #183153;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.chipActive {
+  background: #4265d1;
+  border-color: #4265d1;
+  color: #fff;
+}
+
+.summaryCard {
+  overflow: hidden;
+}
+
+.summaryHead {
+  padding: 10px 16px;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.summaryTv .summaryHead {
+  background: #4265d1;
+}
+
+.summaryAv .summaryHead {
+  background: #7f7f7f;
+}
+
+.kpiStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kpiBox {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  text-align: center;
+  background: #fbfbfc;
+  border-right: 1px solid #d9e4f6;
+}
+
+.kpiBox:last-child {
+  border-right: 0;
+}
+
+.kpiBox span {
+  color: #183153;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.kpiBox strong {
+  color: #183153;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1.05;
+}
+
+.kpiBox small {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.deltaGood {
+  color: #16a34a;
+}
+
+.deltaBad {
+  color: #dc2626;
+}
+
+.tableWrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.table th,
+.table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #d9e4f6;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th {
+  color: #6b7b93;
+  font-size: 0.84rem;
+  font-weight: 700;
+  background: #f7f9fc;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.numericCol {
+  text-align: right !important;
+}
+
+.wwsAlert {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.emptyState {
+  text-align: center !important;
+  color: #6b7b93;
+  padding: 22px !important;
+}
+
+@media (max-width: 1080px) {
+  .topbar,
+  .filterPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .filters,
+  .filtersCompact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .updatedBlock {
+    text-align: left;
+  }
+}
+
+@media (max-width: 860px) {
+  .page {
+    padding: 14px 12px 24px;
+  }
+
+  .panel,
+  .filterPanel,
+  .summaryCard,
+  .tableWrap {
+    border-radius: 18px;
+  }
+
+  .kpiStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .kpiBox {
+    border-right: 0;
+    border-bottom: 1px solid #d9e4f6;
+  }
+
+  .kpiBox:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .filters,
+  .filtersCompact {
+    grid-template-columns: 1fr;
+  }
+
+  .chip {
+    min-width: 104px;
+  }
+
+  .familyCol,
+  .serieCol {
+    display: none;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 14px;
+  }
+}
