@@ -349,6 +349,8 @@ export default function CommercialDashboardPage() {
       normalizeText(item.month) === normalizeText(month) &&
       (!coverage || item.coverage === coverage),
   );
+  const tvPsPeGood = safeNumber(tvav?.tvCompliance) > 0.6;
+  const avPsGood = safeNumber(tvav?.avCompliance) > 0.8;
 
   const weekly = [...groupBy(rows, (row) => row.week || "").entries()]
     .map(([week, weekRows]) => {
@@ -534,22 +536,26 @@ export default function CommercialDashboardPage() {
                         <strong>{formatCurrency(tvav.tvSellOut)}</strong>
                         <span>Target meta: {formatCurrency(tvav.tvTarget)}</span>
                       </div>
-                      <div className={styles.tvavSideMetrics}>
-                        <div className={styles.tvavMiniCard}>
-                          <span>PS</span>
-                          <div className={styles.tvavMiniValues}>
-                            <strong>{formatPercent(tvav.tvPsShare)}</strong>
-                            <small>{formatCurrency(tvav.tvPsAmount)}</small>
+                        <div className={styles.tvavSideMetrics}>
+                          <div className={styles.tvavMiniCard}>
+                            <span>PS</span>
+                            <div className={styles.tvavMiniValues}>
+                              <strong className={tvPsPeGood ? styles.tvavComplianceGood : undefined}>
+                                {formatPercent(tvav.tvPsShare)}
+                              </strong>
+                              <small>{formatCurrency(tvav.tvPsAmount)}</small>
+                            </div>
+                          </div>
+                          <div className={styles.tvavMiniCard}>
+                            <span>PE</span>
+                            <div className={styles.tvavMiniValues}>
+                              <strong className={tvPsPeGood ? styles.tvavComplianceGood : undefined}>
+                                {formatPercent(tvav.tvPeShare)}
+                              </strong>
+                              <small>{formatCurrency(tvav.tvPeAmount)}</small>
+                            </div>
                           </div>
                         </div>
-                        <div className={styles.tvavMiniCard}>
-                          <span>PE</span>
-                          <div className={styles.tvavMiniValues}>
-                            <strong>{formatPercent(tvav.tvPeShare)}</strong>
-                            <small>{formatCurrency(tvav.tvPeAmount)}</small>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </article>
@@ -567,15 +573,17 @@ export default function CommercialDashboardPage() {
                         <strong>{formatCurrency(tvav.avSellOut)}</strong>
                         <span>Target meta: {formatCurrency(tvav.avTarget)}</span>
                       </div>
-                      <div className={cx(styles.tvavSideMetrics, styles.tvavSideMetricsSingle)}>
-                        <div className={styles.tvavMiniCard}>
-                          <span>PS AV</span>
-                          <div className={styles.tvavMiniValues}>
-                            <strong>{formatPercent(tvav.avPsShare)}</strong>
-                            <small>{formatCurrency(tvav.avPsAmount)}</small>
+                        <div className={cx(styles.tvavSideMetrics, styles.tvavSideMetricsSingle)}>
+                          <div className={styles.tvavMiniCard}>
+                            <span>PS AV</span>
+                            <div className={styles.tvavMiniValues}>
+                              <strong className={avPsGood ? styles.tvavComplianceGood : undefined}>
+                                {formatPercent(tvav.avPsShare)}
+                              </strong>
+                              <small>{formatCurrency(tvav.avPsAmount)}</small>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </article>
