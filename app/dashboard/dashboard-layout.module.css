@@ -1,11 +1,11 @@
-.shell {
-  min-height: 100vh;
-  background: #fcfcfc;
-}
-
 .headerWide {
   width: min(1600px, calc(100% - 32px));
   margin: 0 auto;
+}
+
+.dashboardContent {
+  max-width: none !important;
+  width: 100%;
 }
 
 .avatarWrap {

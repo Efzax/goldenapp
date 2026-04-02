@@ -57,7 +57,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const avatarInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || "?";
 
   return (
-    <div className={styles.shell}>
+    <div className="mobile-layout">
+      <div className="app-badge">
+        <div className={`app-badge-inner ${styles.headerWide}`}>GOLDENAPP</div>
+      </div>
+
       <div className="mobile-header">
         <div className={`mobile-header-inner ${styles.headerWide}`}>
           <div className="mobile-header-left">
@@ -130,7 +134,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      {children}
+      <div className="page-container">
+        <main className={`mobile-content ${styles.dashboardContent}`}>{children}</main>
+      </div>
+
+      <footer className="mobile-footer">Desarrollado y creado por Efza y Orideken.cl</footer>
     </div>
   );
 }
