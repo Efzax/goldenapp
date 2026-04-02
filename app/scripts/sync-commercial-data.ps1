@@ -18,5 +18,7 @@ if (-not (Test-Path -LiteralPath $targetDirectory)) {
   New-Item -ItemType Directory -Path $targetDirectory -Force | Out-Null
 }
 
-Copy-Item -LiteralPath $resolvedSource -Destination $resolvedTarget -Force
+$content = Get-Content -LiteralPath $resolvedSource -Raw
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+[System.IO.File]::WriteAllText($resolvedTarget, $content, $utf8NoBom)
 Write-Host "Data comercial sincronizada en $resolvedTarget"
