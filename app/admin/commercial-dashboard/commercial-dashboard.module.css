@@ -442,12 +442,13 @@
 }
 
 .weeklyChart {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
-  gap: 16px;
+  display: flex;
+  justify-content: space-evenly;
   align-items: end;
+  gap: clamp(16px, 2.8vw, 28px);
   min-height: 0;
   flex: 1;
+  width: 100%;
 }
 
 .weekColumn {
@@ -456,6 +457,8 @@
   text-align: center;
   grid-template-rows: auto 1fr auto;
   min-height: 0;
+  flex: 0 1 140px;
+  width: min(140px, 100%);
 }
 
 .weekTotal {
