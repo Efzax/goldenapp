@@ -350,7 +350,7 @@ export default function CommercialDashboardPage() {
           .map((row) => row.store || "")
           .filter(Boolean),
       ),
-    ].sort((a, b) => getCanonicalStoreLabel(a).localeCompare(getCanonicalStoreLabel(b), "es"));
+    ].sort((a, b) => String(a).localeCompare(String(b), "es"));
   }, [coverage, data, month]);
 
   const availableCoverages = useMemo(() => {
@@ -529,7 +529,7 @@ export default function CommercialDashboardPage() {
                 <div className={styles.topbarHeadingRow}>
                   <div>
                     <span className={styles.eyebrow}>Resumen Comercial</span>
-                    <h2>{getCanonicalStoreLabel(safeStore)}</h2>
+                    <h2>{safeStore}</h2>
                   </div>
                 </div>
                 <span className={styles.topbarUpdated}>Updated {new Date(data.generatedAt).toLocaleDateString("es-CL")}</span>
@@ -565,7 +565,7 @@ export default function CommercialDashboardPage() {
                       <select value={safeStore} onChange={(e) => setStore(e.target.value)}>
                         {availableStores.map((item) => (
                           <option key={item} value={item}>
-                            {getCanonicalStoreLabel(item)}
+                            {item}
                           </option>
                         ))}
                       </select>

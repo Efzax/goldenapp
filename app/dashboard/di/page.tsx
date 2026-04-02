@@ -243,7 +243,7 @@ export default function DeadInventoryDashboardPage() {
   const storeOptions = useMemo(() => {
     const filtered = monthRows.filter((row) => !coverage || normalizeText(row.coverage) === normalizeText(coverage));
     return [...new Set(filtered.map((row) => row.store).filter(Boolean) as string[])]
-      .sort((a, b) => formatStoreLabel(a).localeCompare(formatStoreLabel(b), "es"));
+      .sort((a, b) => String(a).localeCompare(String(b), "es"));
   }, [coverage, monthRows]);
 
   useEffect(() => {
@@ -387,6 +387,7 @@ export default function DeadInventoryDashboardPage() {
   const deltaIsPositive = divisionSummary.deltaShare > 0;
   const deltaClassName = deltaIsPositive ? styles.deltaBad : styles.deltaGood;
   const deltaArrow = deltaIsPositive ? "▲" : "▼";
+  const shareClassName = divisionSummary.diShare > DI_BASELINE ? styles.metricBad : styles.metricGood;
 
   return (
     <div className={styles.page}>
@@ -394,13 +395,11 @@ export default function DeadInventoryDashboardPage() {
         <div className={styles.topbar}>
           <div className={styles.hero}>
             <span className={styles.eyebrow}>Dead Inventory</span>
-            <h1 className={styles.title}>{store ? formatStoreLabel(store) : "Sin tienda"}</h1>
-            <p className={styles.description}>Revisión por tienda, categoría, week y familia desde la hoja DI.</p>
+            <h1 className={styles.title}>{store || "Sin tienda"}</h1>
+            <p className={styles.description}>Updated {formatUpdatedDate(payload.generatedAt)}</p>
           </div>
 
           <div className={cx(styles.filters, !canViewCoverageFilter && styles.filtersCompact)}>
-            <div className={styles.updatedBlock}>Updated {formatUpdatedDate(payload.generatedAt)}</div>
-
             {canViewCoverageFilter ? (
               <label className={styles.filterCard}>
                 <span>Coverage</span>
@@ -430,7 +429,7 @@ export default function DeadInventoryDashboardPage() {
               <select value={store} onChange={(event) => setStore(event.target.value)}>
                 {storeOptions.map((option) => (
                   <option key={option} value={option}>
-                    {formatStoreLabel(option)}
+                    {option}
                   </option>
                 ))}
               </select>
@@ -503,7 +502,7 @@ export default function DeadInventoryDashboardPage() {
           </div>
           <div className={styles.kpiBox}>
             <span>% Dead Inventory</span>
-            <strong>{formatPercent(divisionSummary.diShare)}</strong>
+            <strong className={shareClassName}>{formatPercent(divisionSummary.diShare)}</strong>
             <small className={deltaClassName}>
               {deltaArrow} {formatPercent(Math.abs(divisionSummary.deltaShare))}
             </small>
@@ -529,7 +528,7 @@ export default function DeadInventoryDashboardPage() {
                   <td className={styles.familyCol}>{row.family}</td>
                   <td className={styles.serieCol}>{row.serie}</td>
                   <td>{row.sku}</td>
-                  <td className={styles.numericCol}>{formatNumber(row.stock)}</td>
+                  <td className={cx(styles.numericCol, row.wws >= 8 && styles.wwsAlert)}>{formatNumber(row.stock)}</td>
                   <td className={cx(styles.numericCol, row.wws >= 8 && styles.wwsAlert)}>{formatNumber(row.wws)}</td>
                 </tr>
               ))

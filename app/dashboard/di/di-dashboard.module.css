@@ -54,7 +54,7 @@
 
 .filters {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 0.82fr) minmax(260px, 1.28fr);
   gap: 12px;
   align-items: end;
 }
@@ -189,6 +189,14 @@
   font-family: "Sora", sans-serif;
   font-size: clamp(2rem, 3vw, 2.8rem);
   line-height: 1.05;
+}
+
+.metricGood {
+  color: #16a34a !important;
+}
+
+.metricBad {
+  color: #dc2626 !important;
 }
 
 .kpiBox small {
