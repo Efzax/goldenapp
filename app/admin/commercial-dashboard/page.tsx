@@ -654,8 +654,8 @@ export default function CommercialDashboardPage() {
                 <section className={cx(styles.panel, styles.panelLarge)}>
                   <div className={styles.sectionHead}>
                     <div>
-                      <span className={styles.eyebrow}>IHS Semanal</span>
-                      <h3>Composición por semana</h3>
+                      <span className={styles.eyebrow}>IHS Weekly</span>
+                      <h3>Composición por Week</h3>
                       <p className={styles.panelSubtitle}>Cada columna representa el mix de marcas dentro del mes y tienda seleccionados.</p>
                     </div>
                   </div>
@@ -677,7 +677,7 @@ export default function CommercialDashboardPage() {
                             </span>
                           ))}
                         </div>
-                        <strong>Semana {week.label}</strong>
+                        <strong>Week {week.label}</strong>
                       </div>
                     ))}
                   </div>
