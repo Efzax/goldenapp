@@ -758,6 +758,33 @@
     height: 150px;
   }
 
+  .weeklyChart {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    row-gap: 18px;
+    column-gap: 16px;
+  }
+
+  .weeklyChart[data-weeks="4"] .weekColumn {
+    flex: 0 1 calc(50% - 12px);
+    width: calc(50% - 12px);
+    max-width: 136px;
+  }
+
+  .weeklyChart[data-weeks="5"] .weekColumn {
+    flex: 0 1 calc(33.333% - 12px);
+    width: calc(33.333% - 12px);
+    max-width: 124px;
+  }
+
+  .weeklyChart[data-weeks="1"] .weekColumn,
+  .weeklyChart[data-weeks="2"] .weekColumn,
+  .weeklyChart[data-weeks="3"] .weekColumn {
+    flex: 0 1 124px;
+    width: min(124px, 100%);
+  }
+
   .productCompactRow {
     grid-template-columns: 72px minmax(0, 1fr);
     align-items: start;

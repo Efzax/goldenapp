@@ -680,7 +680,7 @@ export default function CommercialDashboardPage() {
                       <p className={styles.panelSubtitle}>Cada columna representa el mix de marcas dentro del mes y tienda seleccionados.</p>
                     </div>
                   </div>
-                  <div className={styles.weeklyChart}>
+                  <div className={styles.weeklyChart} data-weeks={weekly.length}>
                     {weekly.map((week) => (
                       <div key={week.week} className={styles.weekColumn}>
                         <span className={styles.weekTotal}>{formatCurrency(week.total)}</span>
