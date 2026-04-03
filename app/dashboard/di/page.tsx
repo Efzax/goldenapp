@@ -123,7 +123,7 @@ function formatStoreLabel(value: string) {
 function formatWeekLabel(value: string) {
   const text = String(value ?? "").trim();
   const match = text.match(/(\d{1,2})$/);
-  return match ? `Week ${String(Number(match[1])).padStart(2, "0")}` : text;
+  return match ? `W${String(Number(match[1])).padStart(2, "0")}` : text;
 }
 
 function formatUpdatedDate(value: string) {
