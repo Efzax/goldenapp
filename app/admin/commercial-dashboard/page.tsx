@@ -31,6 +31,7 @@ type TvAvRow = {
   coverage?: string;
   tvSellOut?: number;
   tvCompliance?: number;
+  tvBaseCompliance?: number;
   tvTarget?: number;
   tvPsAmount?: number;
   tvPsShare?: number;
@@ -38,6 +39,7 @@ type TvAvRow = {
   tvPeShare?: number;
   avSellOut?: number;
   avCompliance?: number;
+  avBaseCompliance?: number;
   avTarget?: number;
   avPsAmount?: number;
   avPsShare?: number;
