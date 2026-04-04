@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./styles/ui.css";
 import localFont from "next/font/local";
+import { Sora } from "next/font/google";
 
 const satoshi = localFont({
   src: [
@@ -24,6 +25,13 @@ const satoshi = localFont({
   display: "swap",
 });
 
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sora",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "GoldenApp v0.2.1",
   description:
@@ -38,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={satoshi.variable}>
+      <body className={`${satoshi.variable} ${sora.variable}`}>
         {children}
       </body>
     </html>

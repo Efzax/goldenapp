@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./di-dashboard.module.css";
+import commercialStyles from "../../admin/commercial-dashboard/commercial-dashboard.module.css";
 
 type StockDiRow = {
   store?: string;
@@ -366,7 +367,7 @@ export default function DeadInventoryDashboardPage() {
       <div className={styles.page}>
         <section className={styles.panel}>
           <span className={styles.eyebrow}>DI</span>
-          <h1 className={styles.title}>Cargando Dead Inventory...</h1>
+          <h2 className={styles.title}>Cargando Dead Inventory...</h2>
         </section>
       </div>
     );
@@ -377,7 +378,7 @@ export default function DeadInventoryDashboardPage() {
       <div className={styles.page}>
         <section className={styles.panel}>
           <span className={styles.eyebrow}>Error</span>
-          <h1 className={styles.title}>No pudimos cargar la data DI</h1>
+          <h2 className={styles.title}>No pudimos cargar la data DI</h2>
           <p className={styles.description}>{error || "No fue posible cargar el módulo de Dead Inventory."}</p>
         </section>
       </div>
@@ -390,18 +391,24 @@ export default function DeadInventoryDashboardPage() {
   const shareClassName = divisionSummary.diShare > DI_BASELINE ? styles.metricBad : styles.metricGood;
 
   return (
-    <div className={styles.page}>
-      <section className={styles.panel}>
-        <div className={styles.topbar}>
-          <div className={styles.hero}>
-            <span className={styles.eyebrow}>Dead Inventory</span>
-            <h1 className={styles.title}>{store || "Sin tienda"}</h1>
-            <p className={styles.description}>Updated {formatUpdatedDate(payload.generatedAt)}</p>
-          </div>
+    <div className={cx(commercialStyles.scope, styles.page)}>
+      <section className={cx(commercialStyles.topbar, styles.diTopbar)}>
+        <div className={commercialStyles.topbarCopy}>
+          <span className={commercialStyles.eyebrow}>Dead Inventory</span>
+          <h2 className={styles.title}>{store || "Sin tienda"}</h2>
+          <span className={commercialStyles.topbarUpdated}>Updated {formatUpdatedDate(payload.generatedAt)}</span>
+        </div>
 
-          <div className={cx(styles.filters, !canViewCoverageFilter && styles.filtersCompact)}>
+        <div className={cx(commercialStyles.topbarMeta, styles.diTopbarMeta)}>
+          <div
+            className={cx(
+              commercialStyles.topbarFilters,
+              styles.diTopbarFilters,
+              !canViewCoverageFilter && commercialStyles.topbarFiltersCompact,
+            )}
+          >
             {canViewCoverageFilter ? (
-              <label className={styles.filterCard}>
+              <label className={commercialStyles.filterSelectCard}>
                 <span>Coverage</span>
                 <select value={coverage} onChange={(event) => setCoverage(event.target.value)}>
                   {coverageOptions.map((option) => (
@@ -413,18 +420,18 @@ export default function DeadInventoryDashboardPage() {
               </label>
             ) : null}
 
-            <label className={styles.filterCard}>
+            <label className={commercialStyles.filterSelectCard}>
               <span>Mes</span>
               <select value={month} onChange={(event) => setMonth(event.target.value)}>
                 {monthOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
-                  ))}
-                </select>
+                ))}
+              </select>
             </label>
 
-            <label className={styles.filterCard}>
+            <label className={cx(commercialStyles.filterSelectCard, styles.diStoreSelect)}>
               <span>Store</span>
               <select value={store} onChange={(event) => setStore(event.target.value)}>
                 {storeOptions.map((option) => (
@@ -438,55 +445,38 @@ export default function DeadInventoryDashboardPage() {
         </div>
       </section>
 
-      <section className={styles.filterPanel}>
-        <div className={styles.toggleGroup}>
-          <span>Categoría</span>
-          <div className={styles.chipRow}>
-            {divisionOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={cx(styles.chip, normalizeText(option) === normalizeText(division) && styles.chipActive)}
-                onClick={() => {
-                  setDivision(option);
-                  setFamily("Todos");
-                }}
-              >
-                {option}
-              </button>
-            ))}
+      <section className={commercialStyles.panel}>
+        <div className={styles.filterPanel}>
+          <div className={styles.weekFilter}>
+            <span>Week</span>
+            <div className={styles.chipRow}>
+              {weekOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={cx(styles.chip, option === week && styles.chipActive)}
+                  onClick={() => {
+                    setWeek(option);
+                    setFamily("Todos");
+                  }}
+                >
+                  {formatWeekLabel(option)}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className={styles.weekFilter}>
-          <span>Week</span>
-          <div className={styles.chipRow}>
-            {weekOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={cx(styles.chip, option === week && styles.chipActive)}
-                onClick={() => {
-                  setWeek(option);
-                  setFamily("Todos");
-                }}
-              >
-                {formatWeekLabel(option)}
-              </button>
-            ))}
-          </div>
+          <label className={cx(commercialStyles.filterSelectCard, styles.diFamilySelect)}>
+            <span>Familia</span>
+            <select value={family} onChange={(event) => setFamily(event.target.value)}>
+              {familyOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
-
-        <label className={styles.familySelect}>
-          <span>Familia</span>
-          <select value={family} onChange={(event) => setFamily(event.target.value)}>
-            {familyOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
       </section>
 
       <section className={styles.summaryLayout}>

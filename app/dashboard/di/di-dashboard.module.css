@@ -4,10 +4,11 @@
   padding: 20px 16px 32px;
   display: grid;
   gap: 18px;
+  color: #1f2937;
+  font-family: "DM Sans", var(--font-satoshi), sans-serif;
 }
 
 .panel,
-.filterPanel,
 .summaryCard,
 .tableWrap {
   background: #fff;
@@ -19,31 +20,14 @@
   padding: 20px;
 }
 
-.topbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 560px);
-  gap: 24px;
-  align-items: start;
-}
-
-.hero {
-  display: grid;
-  gap: 10px;
-}
-
-.eyebrow {
-  color: #2d6bff;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .title {
-  margin: 0;
+  margin: 8px 0 6px;
   color: #183153;
-  font-size: clamp(1.9rem, 2vw, 2.7rem);
-  line-height: 1.05;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 
 .description {
@@ -52,62 +36,38 @@
   font-size: 1.02rem;
 }
 
-.filters {
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 0.76fr) minmax(0, 1.24fr);
-  gap: 12px;
-  align-items: end;
-  justify-content: end;
+.diTopbar {
+  gap: 14px;
 }
 
-.filtersCompact {
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
-  justify-content: end;
+.diTopbarMeta {
+  min-width: min(100%, 500px);
 }
 
-.updatedBlock {
-  grid-column: 1 / -1;
-  color: #697b95;
-  font-size: 0.95rem;
-  text-align: right;
+.diTopbarFilters {
+  grid-template-columns: 140px 120px minmax(260px, 1fr);
 }
 
-.filterCard,
-.familySelect {
-  display: grid;
-  gap: 8px;
-  padding: 14px 16px;
-  background: #fff;
-  border: 1px solid #d9e4f6;
-  border-radius: 18px;
-}
-
-.filterCard span,
-.familySelect span,
-.toggleGroup > span,
-.weekFilter > span {
-  color: #6b7b93;
-  font-size: 0.9rem;
-}
-
-.filterCard select,
-.familySelect select {
-  width: 100%;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #183153;
-  font: inherit;
-  font-weight: 700;
-  outline: none;
+.diStoreSelect {
+  min-width: 0;
 }
 
 .filterPanel {
   display: grid;
   grid-template-columns: minmax(320px, 1fr) minmax(220px, 300px);
   gap: 14px;
-  padding: 16px 18px;
   align-items: end;
+}
+
+.diFamilySelect {
+  min-width: 0;
+}
+
+.diFamilySelect span,
+.toggleGroup > span,
+.weekFilter > span {
+  color: #6b7b93;
+  font-size: 0.9rem;
 }
 
 .toggleGroup,
@@ -217,10 +177,11 @@
 
 .summaryMetricCard strong {
   color: #183153;
-  font-family: "Sora", sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: clamp(2rem, 3vw, 2.8rem);
   line-height: 1.05;
 }
+
 
 .summaryMetricCard small {
   font-size: 0.88rem;
@@ -269,7 +230,7 @@
 
 .kpiBox strong {
   color: #183153;
-  font-family: "Sora", sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: clamp(2rem, 3vw, 2.8rem);
   line-height: 1.05;
 }
@@ -340,7 +301,6 @@
 }
 
 @media (max-width: 1080px) {
-  .topbar,
   .filterPanel {
     grid-template-columns: 1fr;
   }
@@ -359,13 +319,8 @@
     gap: 12px;
   }
 
-  .filters,
-  .filtersCompact {
+  .diTopbarFilters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .updatedBlock {
-    text-align: left;
   }
 }
 
@@ -375,7 +330,6 @@
   }
 
   .panel,
-  .filterPanel,
   .summaryCard,
   .tableWrap {
     border-radius: 18px;
@@ -396,8 +350,7 @@
 }
 
 @media (max-width: 640px) {
-  .filters,
-  .filtersCompact {
+  .diTopbarFilters {
     grid-template-columns: 1fr;
   }
 

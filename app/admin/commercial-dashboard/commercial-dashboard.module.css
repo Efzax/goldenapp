@@ -60,7 +60,7 @@
 }
 
 .mainContent {
-  padding: 18px;
+  padding: 18px 0 0;
   display: grid;
   gap: 16px;
 }
@@ -128,7 +128,7 @@
 
 .topbar h2 {
   margin: 8px 0 6px;
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.55rem;
 }
 
@@ -158,13 +158,13 @@
 .topbarFilters {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 140px 120px minmax(220px, 1fr);
+  grid-template-columns: 140px 120px minmax(260px, 1fr);
   gap: 10px;
   align-items: end;
 }
 
 .topbarFiltersCompact {
-  grid-template-columns: 120px minmax(220px, 1fr);
+  grid-template-columns: 120px minmax(260px, 1fr);
   justify-content: end;
 }
 
@@ -215,7 +215,7 @@
 }
 
 .summaryCard strong {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.35rem;
 }
 
@@ -231,7 +231,7 @@
 }
 
 .shareSplit b {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.15rem;
   color: var(--text);
 }
@@ -336,7 +336,7 @@
 }
 
 .tvavCompliance {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 2.1rem;
   font-weight: 700;
   line-height: 1;
@@ -373,7 +373,7 @@
 }
 
 .tvavSelloutCard strong {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.7rem;
   line-height: 1;
 }
@@ -419,7 +419,7 @@
 }
 
 .tvavMiniCard strong {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.05rem;
   line-height: 1.1;
 }
@@ -469,7 +469,7 @@
 
 .sectionHead h3 {
   margin: 8px 0 0;
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.05rem;
 }
 
@@ -577,7 +577,7 @@
 }
 
 .brandKpiValue {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 1.2rem;
 }
 
@@ -665,7 +665,7 @@
 
 .productMetric strong,
 .productGross strong {
-  font-family: "Sora", var(--font-satoshi), sans-serif;
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
   font-size: 0.92rem;
   font-weight: 600;
 }
@@ -751,7 +751,7 @@
   }
 
   .mainContent {
-    padding: 14px;
+    padding: 14px 0 0;
   }
 
   .summaryGrid,
