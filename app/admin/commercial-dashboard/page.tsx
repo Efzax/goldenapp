@@ -465,6 +465,12 @@ export default function CommercialDashboardPage() {
   const benchmark = data.benchmarks2025.find(
     (item) => normalizeStore(item.store) === normalizeStore(safeStore) && normalizeText(item.month) === normalizeText(month),
   );
+  const samsungShareDelta =
+    typeof benchmark?.samsungShare === "number" && typeof samsung.share === "number"
+      ? samsung.share - benchmark.samsungShare
+      : null;
+  const samsungShareTrend =
+    samsungShareDelta === null || Math.abs(samsungShareDelta) < 0.0001 ? null : samsungShareDelta > 0 ? "up" : "down";
   const tvav = data.tvavSummary.find(
     (item) =>
       normalizeStore(item.store) === normalizeStore(safeStore) &&
@@ -580,11 +586,15 @@ export default function CommercialDashboardPage() {
                 <article className={cx(styles.tvavCard, styles.tvavTv)}>
                   <div className={styles.tvavShell}>
                     <div className={styles.tvavComplianceCard}>
-                      <span style={{color: "#6B7280"}}>Compliance</span>
+                      <span className={cx(styles.tvavComplianceLabelChip, styles.tvavChipTv)}>Compliance TV</span>
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.tvCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.tvCompliance)}
                       </strong>
-                      <span className={cx(styles.tvavChip, styles.tvavChipTv)}>TV</span>
+                      {safeNumber(tvav.tvCompliance) > 0.6 ? (
+                        <small className={styles.tvavComplianceSubtle}>
+                          C/Real {formatPercent(tvav.tvBaseCompliance)}
+                        </small>
+                      ) : null}
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
@@ -619,11 +629,15 @@ export default function CommercialDashboardPage() {
                 <article className={cx(styles.tvavCard, styles.tvavAv)}>
                   <div className={styles.tvavShell}>
                     <div className={styles.tvavComplianceCard}>
-                      <span style={{color: "#6B7280"}}>Compliance</span>
+                      <span className={cx(styles.tvavComplianceLabelChip, styles.tvavChipAv)}>Compliance AV</span>
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.avCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.avCompliance)}
                       </strong>
-                      <span className={cx(styles.tvavChip, styles.tvavChipAv)}>AV</span>
+                      {safeNumber(tvav.avCompliance) > 0.6 ? (
+                        <small className={styles.tvavComplianceSubtle}>
+                          C/Real {formatPercent(tvav.avBaseCompliance)}
+                        </small>
+                      ) : null}
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
@@ -658,7 +672,17 @@ export default function CommercialDashboardPage() {
                 <span>Samsung Share</span>
                 <strong className={styles.shareSplit}>
                   <span>
-                    <b>{formatPercent(samsung.share)}</b>
+                    <b className={styles.shareValueRow}>
+                      <span>{formatPercent(samsung.share)}</span>
+                      {samsungShareTrend ? (
+                        <i
+                          className={cx(styles.shareTrend, samsungShareTrend === "up" ? styles.deltaPositive : styles.deltaNegative)}
+                          aria-label={samsungShareTrend === "up" ? "Sobre 2025" : "Bajo 2025"}
+                        >
+                          {samsungShareTrend === "up" ? "▲" : "▼"}
+                        </i>
+                      ) : null}
+                    </b>
                     <small>2026</small>
                   </span>
                   <span>

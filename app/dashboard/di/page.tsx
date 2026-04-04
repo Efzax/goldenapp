@@ -420,8 +420,8 @@ export default function DeadInventoryDashboardPage() {
                   <option key={option} value={option}>
                     {option}
                   </option>
-                ))}
-              </select>
+                  ))}
+                </select>
             </label>
 
             <label className={styles.filterCard}>
@@ -489,7 +489,50 @@ export default function DeadInventoryDashboardPage() {
         </label>
       </section>
 
-      <section className={cx(styles.summaryCard, normalizeText(division) === "av" ? styles.summaryAv : styles.summaryTv)}>
+      <section className={styles.summaryLayout}>
+        <div className={styles.divisionStack}>
+          {[...divisionOptions].sort((a, b) => {
+            const order = (value: string) => (normalizeText(value) === "tv" ? 0 : normalizeText(value) === "av" ? 1 : 2);
+            return order(a) - order(b);
+          }).map((option) => (
+            <button
+              key={option}
+              type="button"
+              className={cx(
+                styles.divisionButton,
+                normalizeText(option) === normalizeText(division) && styles.divisionButtonActive,
+                normalizeText(option) === "av" ? styles.divisionButtonAv : styles.divisionButtonTv,
+              )}
+              onClick={() => {
+                setDivision(option);
+                setFamily("Todos");
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.summaryMetricGrid}>
+          <article className={styles.summaryMetricCard}>
+            <span>Total Stock</span>
+            <strong>{formatNumber(divisionSummary.totalStock)}</strong>
+          </article>
+          <article className={styles.summaryMetricCard}>
+            <span>Stock DI</span>
+            <strong>{formatNumber(divisionSummary.diStock)}</strong>
+          </article>
+          <article className={styles.summaryMetricCard}>
+            <span>% Dead Inventory</span>
+            <strong className={shareClassName}>{formatPercent(divisionSummary.diShare)}</strong>
+            <small className={deltaClassName}>
+              {deltaArrow} {formatPercent(Math.abs(divisionSummary.deltaShare))}
+            </small>
+          </article>
+        </div>
+      </section>
+
+      <section className={cx(styles.summaryCard, styles.summaryLegacy, normalizeText(division) === "av" ? styles.summaryAv : styles.summaryTv)}>
         <div className={styles.summaryHead}>{division}</div>
         <div className={styles.kpiStrip}>
           <div className={styles.kpiBox}>
