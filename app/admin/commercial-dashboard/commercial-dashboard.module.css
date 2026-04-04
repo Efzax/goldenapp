@@ -348,8 +348,12 @@
 .tvavComplianceSubtle {
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
+}
+
+.tvavComplianceSubtle strong {
+  font-weight: 700;
 }
 
 .tvavComplianceGood {

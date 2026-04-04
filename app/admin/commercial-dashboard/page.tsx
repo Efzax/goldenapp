@@ -592,11 +592,16 @@ export default function CommercialDashboardPage() {
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.tvCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.tvCompliance)}
                       </strong>
-                      {safeNumber(tvav.tvCompliance) > 0.6 ? (
-                        <small className={styles.tvavComplianceSubtle}>
-                          C/Real {formatPercent(tvav.tvBaseCompliance)}
-                        </small>
-                      ) : null}
+                      <small className={styles.tvavComplianceSubtle}>
+                        {safeNumber(tvav.tvCompliance) > 0.6 ? (
+                          <>
+                            <span>C/Real </span>
+                            <strong>{formatPercent(tvav.tvBaseCompliance)}</strong>
+                          </>
+                        ) : (
+                          "\u00A0"
+                        )}
+                      </small>
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
@@ -635,11 +640,16 @@ export default function CommercialDashboardPage() {
                       <strong className={cx(styles.tvavCompliance, safeNumber(tvav.avCompliance) >= 1 ? styles.tvavComplianceGood : styles.tvavComplianceAlert)}>
                         {formatPercent(tvav.avCompliance)}
                       </strong>
-                      {safeNumber(tvav.avCompliance) > 0.6 ? (
-                        <small className={styles.tvavComplianceSubtle}>
-                          C/Real {formatPercent(tvav.avBaseCompliance)}
-                        </small>
-                      ) : null}
+                      <small className={styles.tvavComplianceSubtle}>
+                        {safeNumber(tvav.avCompliance) > 0.6 ? (
+                          <>
+                            <span>C/Real </span>
+                            <strong>{formatPercent(tvav.avBaseCompliance)}</strong>
+                          </>
+                        ) : (
+                          "\u00A0"
+                        )}
+                      </small>
                     </div>
                     <div className={styles.tvavRight}>
                       <div className={styles.tvavSelloutCard}>
