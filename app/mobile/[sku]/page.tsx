@@ -33,7 +33,7 @@ export default function MobileSkuPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
-  const [originalItem, setOriginalItem] = useState<any>(null);
+  const [originalItem, setOriginalItem] = useState<Pick<Item, "stock" | "exhib"> | null>(null);
   const [prevStock, setPrevStock] = useState<number | null>(null);
   const [stockAnim, setStockAnim] = useState<"" | "up" | "down">("");
 

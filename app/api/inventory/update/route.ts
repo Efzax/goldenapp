@@ -6,9 +6,14 @@ import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value;
   const role = cookieStore.get("role")?.value;
 
-  if (role !== "ADMIN" && role !== "SUPERVISOR") {
+  if (!userId) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  if (role !== "ADMIN" && role !== "SUPERVISOR" && role !== "USER") {
     return NextResponse.json({ error: "No autorizado" }, { status: 403 });
   }
 
@@ -28,6 +33,24 @@ export async function POST(request: Request) {
       { error: "Store or Product not found" },
       { status: 404 }
     );
+  }
+
+  if (role !== "ADMIN") {
+    const relation = await prisma.userStore.findUnique({
+      where: {
+        userId_storeId: {
+          userId,
+          storeId: store.id,
+        },
+      },
+    });
+
+    if (!relation) {
+      return NextResponse.json(
+        { error: "Tienda no asignada al usuario" },
+        { status: 403 }
+      );
+    }
   }
 
   const inventory = await prisma.inventory.update({

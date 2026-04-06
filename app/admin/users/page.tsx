@@ -277,6 +277,7 @@ Crear usuario
           <div className="modal">
             <h3>Editar Usuario</h3>
 
+            <div className="user-form-grid">
             <input
               className="input"
               value={form.name}
@@ -285,6 +286,19 @@ Crear usuario
               }
               placeholder="Nombre"
             />
+
+<select
+  className="input"
+  value={form.role}
+  onChange={(e) =>
+    setForm({ ...form, role: e.target.value })
+  }
+>
+  <option value="USER">Promotor</option>
+  <option value="SUPERVISOR">Supervisor</option>
+  <option value="MERCHAND">Merchand</option>
+  <option value="ADMIN">Administrador</option>
+</select>
 
             <input
               className="input"
@@ -304,19 +318,7 @@ Crear usuario
               }
               placeholder="Nueva contraseña (opcional)"
             />
-
-<select
-  className="input"
-  value={form.role}
-  onChange={(e) =>
-    setForm({ ...form, role: e.target.value })
-  }
->
-  <option value="USER">Promotor</option>
-  <option value="SUPERVISOR">Supervisor</option>
-  <option value="MERCHAND">Merchand</option>
-  <option value="ADMIN">Administrador</option>
-</select>
+            </div>
 
             {/* ===== Selector Profesional de Tiendas ===== */}
 
@@ -359,8 +361,8 @@ Crear usuario
   </div>
 </div>
 
-<div style={{ marginTop: 15 }}>
-  <strong>Tiendas asignadas:</strong>
+<div className="assigned-stores-panel">
+  <strong className="assigned-stores-title">Tiendas asignadas:</strong>
 
   {selectedStores.length === 0 && (
     <p style={{ fontSize: 12, opacity: 0.6 }}>
@@ -368,17 +370,11 @@ Crear usuario
     </p>
   )}
 
+  <div className="assigned-stores-grid">
   {selectedStores.map((store) => (
     <div
       key={store.id}
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "6px 10px",
-        marginTop: 5,
-        background: "#f5f5f5",
-        borderRadius: 6,
-      }}
+      className="assigned-store-chip"
     >
       <span>{store.name}</span>
 
@@ -388,16 +384,13 @@ Crear usuario
             selectedStores.filter((s) => s.id !== store.id)
           )
         }
-        style={{
-          border: "none",
-          background: "transparent",
-          cursor: "pointer",
-        }}
+        className="assigned-store-remove"
       >
         ✖
       </button>
     </div>
   ))}
+  </div>
 </div>
 
             <div className="modal-actions">
@@ -456,6 +449,7 @@ Crear usuario
     <div className="modal">
       <h3>Crear Usuario</h3>
 
+      <div className="user-form-grid">
       <input
         className="input"
         placeholder="Nombre"
@@ -464,6 +458,19 @@ Crear usuario
           setForm({ ...form, name: e.target.value })
         }
       />
+
+<select
+  className="input"
+  value={form.role}
+  onChange={(e) =>
+    setForm({ ...form, role: e.target.value })
+  }
+>
+  <option value="USER">Promotor</option>
+  <option value="SUPERVISOR">Supervisor</option>
+  <option value="MERCHAND">Merchand</option>
+  <option value="ADMIN">Administrador</option>
+</select>
 
       <input
         className="input"
@@ -483,19 +490,7 @@ Crear usuario
           setForm({ ...form, password: e.target.value })
         }
       />
-
-<select
-  className="input"
-  value={form.role}
-  onChange={(e) =>
-    setForm({ ...form, role: e.target.value })
-  }
->
-  <option value="USER">Promotor</option>
-  <option value="SUPERVISOR">Supervisor</option>
-  <option value="MERCHAND">Merchand</option>
-  <option value="ADMIN">Administrador</option>
-</select>
+      </div>
 
       {/* ===== Selector Profesional de Tiendas ===== */}
 
@@ -542,8 +537,8 @@ Crear usuario
 
 {/* Tiendas seleccionadas */}
 
-<div style={{ marginTop: 15 }}>
-  <strong>Tiendas asignadas:</strong>
+<div className="assigned-stores-panel">
+  <strong className="assigned-stores-title">Tiendas asignadas:</strong>
 
   {selectedStores.length === 0 && (
     <p style={{ fontSize: 12, opacity: 0.6 }}>
@@ -551,17 +546,11 @@ Crear usuario
     </p>
   )}
 
+  <div className="assigned-stores-grid">
   {selectedStores.map((store) => (
     <div
       key={store.id}
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "6px 10px",
-        marginTop: 5,
-        background: "#f5f5f5",
-        borderRadius: 6,
-      }}
+      className="assigned-store-chip"
     >
       <span>{store.name}</span>
 
@@ -571,16 +560,13 @@ Crear usuario
             selectedStores.filter((s) => s.id !== store.id)
           )
         }
-        style={{
-          border: "none",
-          background: "transparent",
-          cursor: "pointer",
-        }}
+        className="assigned-store-remove"
       >
         ✖
       </button>
     </div>
   ))}
+  </div>
 </div>
 
       <div className="modal-actions">
