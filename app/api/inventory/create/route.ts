@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const role = cookieStore.get("role")?.value;
+
+    if (role !== "ADMIN" && role !== "SUPERVISOR") {
+      return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+    }
+
     const body = await req.json();
     const { storeCode, sku, familyName, stock, exhib, minStock, category } = body;
 

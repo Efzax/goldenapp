@@ -1242,6 +1242,11 @@ svg {
   color: #6F628D;
 }
 
+.role-badge.MERCHAND {
+  background: #E8F7EF;
+  color: #2F7D57;
+}
+
 .role-badge.UNASSIGNED {
   background: #f3f4f6;
   color: #6b7280;

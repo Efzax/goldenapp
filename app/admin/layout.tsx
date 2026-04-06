@@ -40,22 +40,22 @@ useEffect(() => {
   }
 
 const menu = [
-  { name: "Dashbaord", href: "/admin", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Dashbaord", href: "/admin", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
   
     { name: "Import Product", href: "/admin/import", roles: ["ADMIN", "SUPERVISOR"] },
 
       { name: "Classification PS-PE", href: "/admin/classification", roles: ["ADMIN", "SUPERVISOR"] },
 
-  { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Summary Store", href: "/admin/store-summary", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
 
-  { name: "Commercial Dashboard", href: "/dashboard", roles: ["ADMIN", "SUPERVISOR"] },
-  { name: "Dead Inventory", href: "/dashboard/di", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Commercial Dashboard", href: "/dashboard", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
+  { name: "Dead Inventory", href: "/dashboard/di", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
 
   { name: "Stores", href: "/admin/stores", roles: ["ADMIN"] },
     { name: "Usuarios", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
   { name: "Assign Stores", href: "/admin/user-stores", roles: ["ADMIN"] },
 
-  { name: "Mobile Client", href: "/mobile", roles: ["ADMIN", "SUPERVISOR"] },
+  { name: "Mobile Client", href: "/mobile", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
 ];
 
   return (
@@ -66,7 +66,7 @@ const menu = [
           <div className="sidebar-user">
 <div className="avatar">
   {user?.image ? (
-    <img src={`${user.image}?t=${Date.now()}`} alt="Avatar" />
+    <img src={user.image} alt="Avatar" />
   ) : user?.name ? (
     user.name.charAt(0).toUpperCase()
   ) : (

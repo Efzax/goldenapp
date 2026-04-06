@@ -14,18 +14,16 @@ type Row = {
 
 export async function POST(req: Request) {
 
-  // 🔐 SOLO ADMIN (puedes volver a activarlo después)
+  // 🔐 SOLO ADMIN
   const cookieStore = await cookies();
   const role = cookieStore.get("role")?.value;
 
-  /*
   if (role !== "ADMIN") {
     return NextResponse.json(
       { error: "No autorizado" },
       { status: 403 }
     );
   }
-  */
 
   const rows: Row[] = await req.json();
   const result = [];

@@ -3,6 +3,8 @@ import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 
+const allowedRoles = ["ADMIN", "SUPERVISOR", "MERCHAND", "USER"];
+
 /* =======================
    PUT → actualizar usuario
    ======================= */
@@ -29,6 +31,13 @@ export async function PUT(
     }
 
     const { name, email, password, role, storeIds } = await req.json();
+
+    if (!allowedRoles.includes(role)) {
+      return NextResponse.json(
+        { error: "Rol inválido" },
+        { status: 400 }
+      );
+    }
 
     // 🔒 Validar tiendas
     if (!storeIds || !Array.isArray(storeIds) || storeIds.length === 0) {
@@ -69,10 +78,10 @@ export async function PUT(
 
     return NextResponse.json({ success: true });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("UPDATE USER ERROR:", error);
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : "Error interno" },
       { status: 500 }
     );
   }
@@ -102,16 +111,24 @@ export async function DELETE(
       );
     }
 
+    const admin = await prisma.user.findUnique({
+      where: { id: sessionUserId },
+    });
+
+    if (!admin || admin.role !== "ADMIN") {
+      return NextResponse.json({ error: "Solo ADMIN" }, { status: 403 });
+    }
+
     await prisma.user.delete({
       where: { id },
     });
 
     return NextResponse.json({ success: true });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("DELETE USER ERROR:", error);
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : "Error interno" },
       { status: 500 }
     );
   }

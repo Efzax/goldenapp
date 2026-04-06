@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
-import { Category } from "@prisma/client";
+import { Category, Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 
 type Row = {
@@ -16,6 +16,11 @@ type Row = {
   stock: number;
   exhib: boolean;
   minStock: number;
+};
+
+type ImportResult = Row & {
+  status: string;
+  message: string;
 };
 
 export async function POST(req: Request) {
@@ -35,6 +40,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Usuario inválido" }, { status: 401 });
   }
 
+  if (user.role !== "ADMIN" && user.role !== "SUPERVISOR") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   let allowedStoreIds: string[] | null = null;
 
   // si NO es admin → obtener tiendas asignadas
@@ -49,8 +58,8 @@ export async function POST(req: Request) {
   }
 
 const rows: Row[] = await req.json();
-const results: any[] = [];
-const inventoryOps: any[] = [];
+const results: ImportResult[] = [];
+const inventoryOps: Prisma.PrismaPromise<unknown>[] = [];
 
 // cache para evitar buscar la misma familia muchas veces
 const familyCache = new Map<string, string>();

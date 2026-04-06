@@ -26,6 +26,10 @@ export async function GET() {
     return NextResponse.json({ error: "Usuario inválido" }, { status: 401 });
   }
 
+  if (user.role !== "ADMIN" && user.role !== "SUPERVISOR") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   let allowedStoreIds: string[] | null = null;
 
   if (user.role !== "ADMIN") {

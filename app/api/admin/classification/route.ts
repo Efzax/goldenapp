@@ -8,13 +8,24 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const role = cookieStore.get("role")?.value;
+    const userId = cookieStore.get("userId")?.value;
 
-    if (role !== "ADMIN") {
+    if (!userId || (role !== "ADMIN" && role !== "SUPERVISOR")) {
       return NextResponse.json(
         { error: "No autorizado" },
         { status: 403 }
       );
     }
+
+    const assignedStoreIds =
+      role === "SUPERVISOR"
+        ? (
+            await prisma.userStore.findMany({
+              where: { userId },
+              select: { storeId: true },
+            })
+          ).map((relation) => relation.storeId)
+        : null;
 
     // 🔹 Obtener mes activo
     const meta = await prisma.classificationMeta.findFirst({
@@ -23,6 +34,9 @@ export async function GET() {
 
     // 🔹 Obtener clasificaciones
     const classifications = await prisma.productClassification.findMany({
+      where: assignedStoreIds
+        ? { storeId: { in: assignedStoreIds } }
+        : undefined,
       include: {
         store: {
           include: {
@@ -48,6 +62,7 @@ export async function GET() {
     return NextResponse.json({
       month: meta?.month || "SIN MES CARGADO",
       data: result,
+      canManage: role === "ADMIN",
     });
 
   } catch (error) {

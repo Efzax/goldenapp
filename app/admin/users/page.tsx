@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/ui.css";
 
@@ -20,6 +20,11 @@ type User = {
   };
 };
 
+type Store = {
+  id: string;
+  name: string;
+};
+
 export default function AdminUsersPage() {
   const router = useRouter();
 
@@ -28,8 +33,8 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [creating, setCreating] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [allStores, setAllStores] = useState<any[]>([]);
-    const [selectedStores, setSelectedStores] = useState<any[]>([]);
+  const [allStores, setAllStores] = useState<Store[]>([]);
+    const [selectedStores, setSelectedStores] = useState<Store[]>([]);
 const [storeSearch, setStoreSearch] = useState("");
 
   const [form, setForm] = useState({
@@ -38,6 +43,12 @@ const [storeSearch, setStoreSearch] = useState("");
     password: "",
     role: "USER",
   });
+
+  const loadUsers = useCallback(async () => {
+    const res = await fetch("/api/admin/users");
+    const data = await res.json();
+    setUsers(data);
+  }, []);
 
   // 🔐 Protección ADMIN
   useEffect(() => {
@@ -55,30 +66,14 @@ if (user.role === "USER") {
 }
     });
 
-    loadUsers();
-    loadStores();
-    async function loadStores() {
-  const res = await fetch("/api/stores");
-  const data = await res.json();
-  setAllStores(data);
-}
-  }, []);
+    fetch("/api/admin/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
 
-  async function loadUsers() {
-    const res = await fetch("/api/admin/users");
-    const data = await res.json();
-    setUsers(data);
-  }
-
-  async function deleteUser(id: string) {
-    if (!confirm("¿Eliminar usuario?")) return;
-
-    await fetch(`/api/admin/users/${id}`, {
-      method: "DELETE",
-    });
-
-    loadUsers();
-  }
+    fetch("/api/stores")
+      .then((res) => res.json())
+      .then((data) => setAllStores(data));
+  }, [router]);
 
 function openEdit(user: User) {
   setEditingUser(user);
@@ -136,6 +131,7 @@ const filteredUsers = users.filter((user) =>
 const roleLabels: Record<string, string> = {
   ADMIN: "Administrador",
   SUPERVISOR: "Supervisor",
+  MERCHAND: "Merchand",
   USER: "Promotor",
 };
 
@@ -318,6 +314,7 @@ Crear usuario
 >
   <option value="USER">Promotor</option>
   <option value="SUPERVISOR">Supervisor</option>
+  <option value="MERCHAND">Merchand</option>
   <option value="ADMIN">Administrador</option>
 </select>
 
@@ -496,6 +493,7 @@ Crear usuario
 >
   <option value="USER">Promotor</option>
   <option value="SUPERVISOR">Supervisor</option>
+  <option value="MERCHAND">Merchand</option>
   <option value="ADMIN">Administrador</option>
 </select>
 

@@ -218,7 +218,10 @@ export default function DeadInventoryDashboardPage() {
     };
   }, [router]);
 
-  const canViewCoverageFilter = user?.role === "ADMIN" || user?.role === "SUPERVISOR";
+  const canViewCoverageFilter =
+    user?.role === "ADMIN" ||
+    user?.role === "SUPERVISOR" ||
+    user?.role === "MERCHAND";
 
   const coverageOptions = useMemo(() => {
     const monthScopedRows = getStockDiRows(payload).filter((row) => normalizeMonth(row.month) === normalizeMonth(month));

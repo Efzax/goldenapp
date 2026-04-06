@@ -277,7 +277,10 @@ export default function CommercialDashboardPage() {
   const [coverage, setCoverage] = useState("");
   const [store, setStore] = useState("");
   const [user, setUser] = useState<UserInfo | null>(null);
-  const canViewCoverageFilter = user?.role === "ADMIN" || user?.role === "SUPERVISOR";
+  const canViewCoverageFilter =
+    user?.role === "ADMIN" ||
+    user?.role === "SUPERVISOR" ||
+    user?.role === "MERCHAND";
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMultipleStores, setHasMultipleStores] = useState(false);
   const [tooltip, setTooltip] = useState<{ content: string; x: number; y: number; visible: boolean }>({

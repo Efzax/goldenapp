@@ -11,13 +11,28 @@ type ClassificationRow = {
   type: string;
 };
 
+type ImportResult = {
+  externalCode: string;
+  sku: string;
+  status: string;
+};
+
+type SheetRow = {
+  Mes?: string;
+  ExternalCode?: string;
+  SKU?: string;
+  Type?: string;
+};
+
 export default function ClassificationPage() {
   const [data, setData] = useState<ClassificationRow[]>([]);
   const [loading, setLoading] = useState(true);
     const [month, setMonth] = useState("");
+  const [error, setError] = useState("");
+  const [canManage, setCanManage] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [importResults, setImportResults] = useState<any[]>([]);
+  const [importResults, setImportResults] = useState<ImportResult[]>([]);
 
   const [chainFilter, setChainFilter] = useState("ALL");
   const [storeFilter, setStoreFilter] = useState("ALL");
@@ -34,11 +49,29 @@ export default function ClassificationPage() {
 
 async function loadData() {
   setLoading(true);
-  const res = await fetch("/api/admin/classification");
-  const json = await res.json();
+  setError("");
 
-  setData(json.data);
-  setMonth(json.month);
+  try {
+    const res = await fetch("/api/admin/classification");
+    const json = await res.json();
+
+    if (!res.ok) {
+      throw new Error(json.error || "Error cargando clasificación");
+    }
+
+    setData(Array.isArray(json.data) ? json.data : []);
+    setMonth(json.month || "SIN MES CARGADO");
+    setCanManage(Boolean(json.canManage));
+  } catch (err) {
+    setData([]);
+    setMonth("SIN MES CARGADO");
+    setCanManage(false);
+    setError(
+      err instanceof Error
+        ? err.message
+        : "Error cargando clasificación"
+    );
+  }
 
   setLoading(false);
 }
@@ -53,7 +86,7 @@ async function loadData() {
       const data = evt.target?.result;
       const workbook = XLSX.read(data, { type: "binary" });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json<any>(sheet);
+      const json = XLSX.utils.sheet_to_json<SheetRow>(sheet);
 
 const cleaned = json
   .filter(
@@ -102,6 +135,17 @@ const cleaned = json
 
   if (loading)
     return <div className="page-dashboard">Cargando...</div>;
+
+  if (error) {
+    return (
+      <div className="page-dashboard">
+        <h2 className="page-title">
+          Classification Summary PS / PE
+        </h2>
+        <p className="status-error-info">{error}</p>
+      </div>
+    );
+  }
 
   const chains = Array.from(
     new Set(data.map((d) => d.chain_name))
@@ -286,6 +330,7 @@ className="filter-select-clean"
     />
   </div>
 
+  {canManage && (
   <div className="toolbar-right">
 
     <button
@@ -312,6 +357,7 @@ className="filter-select-clean"
     </button>
 
   </div>
+  )}
 
 </div>
 

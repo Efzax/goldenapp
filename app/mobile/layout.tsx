@@ -141,7 +141,8 @@ function MobileLayoutContent({
                 )}
 
                 {(user.role === "ADMIN" ||
-                  user.role === "SUPERVISOR") && (
+                  user.role === "SUPERVISOR" ||
+                  user.role === "MERCHAND") && (
                   <div
                     className="mobile-menu-item"
                     onClick={() => {

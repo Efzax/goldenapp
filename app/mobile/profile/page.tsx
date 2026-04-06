@@ -52,6 +52,7 @@ export default function ProfilePage() {
   const roleLabels: Record<string, string> = {
     ADMIN: "Administrador",
     SUPERVISOR: "Supervisor",
+    MERCHAND: "Merchand",
     USER: "Promotor",
   };
 
@@ -222,7 +223,7 @@ export default function ProfilePage() {
           Mis Tiendas
         </button>
 
-        {(user.role === "ADMIN" || user.role === "SUPERVISOR") && (
+        {(user.role === "ADMIN" || user.role === "SUPERVISOR" || user.role === "MERCHAND") && (
           <button
             className="btn-secondary"
             onClick={() => router.push("/admin")}

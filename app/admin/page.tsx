@@ -25,6 +25,7 @@ type Item = {
 
 export default function DashboardPage() {
     const router = useRouter();
+  const [role, setRole] = useState<string | null>(null);
 
 // Protección por rol (bloquear solo USER)
 useEffect(() => {
@@ -35,6 +36,7 @@ useEffect(() => {
     }
 
     const user = await res.json();
+    setRole(user.role);
 
     if (user.role === "USER") {
       router.replace("/mobile");
@@ -66,6 +68,7 @@ const [newItem, setNewItem] = useState({
   exhib: false,
   min: 0,
 });
+const canManageInventory = role === "ADMIN" || role === "SUPERVISOR";
 
 
   // Cargar tiendas
@@ -337,15 +340,17 @@ if (Number(criticalPercent) >= 20) {
     onChange={(e) => setSearch(e.target.value)}
   />
 
-  <button
-    className="btn-add"
-    onClick={() => setShowAddModal(true)}
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-  <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-</svg>
-    Agregar producto
-  </button>
+  {canManageInventory && (
+    <button
+      className="btn-add"
+      onClick={() => setShowAddModal(true)}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+  </svg>
+      Agregar producto
+    </button>
+  )}
 
 </div>
 
@@ -368,7 +373,7 @@ if (Number(criticalPercent) >= 20) {
                 <th>Total</th>
                 <th onClick={() => handleSort("status")} className="sortable">Status {renderSortIcon("status")}</th>
                 <th onClick={() => handleSort("empuje")} className="sortable">Empuje {renderSortIcon("empuje")}</th>
-                <th>Acción</th>
+                {canManageInventory && <th>Acción</th>}
               </tr>
             </thead>
             <tbody>
@@ -382,6 +387,7 @@ if (Number(criticalPercent) >= 20) {
                       type="number"
                       className="input-stock"
                       value={item.stock}
+                      disabled={!canManageInventory}
                       onChange={(e) => {
                         const newData = data.map((d) =>
                           d.sku === item.sku
@@ -400,6 +406,7 @@ if (Number(criticalPercent) >= 20) {
                     <input
                       type="checkbox"
                       checked={item.exhib}
+                      disabled={!canManageInventory}
                       onChange={(e) => {
                         const newData = data.map((d) =>
                           d.sku === item.sku
@@ -419,6 +426,7 @@ if (Number(criticalPercent) >= 20) {
     type="number"
     className="input-stock"
     value={item.min}
+    disabled={!canManageInventory}
     onChange={(e) => {
       const newData = data.map((d) =>
         d.sku === item.sku
@@ -442,6 +450,7 @@ if (Number(criticalPercent) >= 20) {
 
                   <td>{item.empuje}</td>
 
+                  {canManageInventory && (
                   <td>
                     <div className="action-cell">
                     <button
@@ -520,6 +529,7 @@ if (Number(criticalPercent) >= 20) {
 </div>
 
                   </td>
+                  )}
                 </tr>
               ))}
             </tbody>

@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { Role } from "@prisma/client";
 
+const allowedRoles = ["ADMIN", "SUPERVISOR", "MERCHAND", "USER"];
+
 /* =======================
    GET → listar usuarios
    ======================= */
@@ -102,6 +104,13 @@ export async function POST(req: Request) {
     }
 
     const { name, email, password, role, storeIds } = await req.json();
+
+    if (!allowedRoles.includes(role)) {
+      return NextResponse.json(
+        { error: "Rol inválido" },
+        { status: 400 }
+      );
+    }
 
     // 🔒 Validación obligatoria de tiendas
     if (!storeIds || !Array.isArray(storeIds) || storeIds.length === 0) {

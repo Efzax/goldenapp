@@ -89,7 +89,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   Mis Tiendas
                 </div>
 
-                {(user?.role === "ADMIN" || user?.role === "SUPERVISOR") ? (
+                {(user?.role === "ADMIN" || user?.role === "SUPERVISOR" || user?.role === "MERCHAND") ? (
                   <div
                     className="mobile-menu-item"
                     onClick={() => {

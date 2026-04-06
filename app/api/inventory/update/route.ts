@@ -2,8 +2,16 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
+
+  if (role !== "ADMIN" && role !== "SUPERVISOR") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const body = await request.json();
   const { storeCode, sku, stock, exhib, minStock } = body;
 
