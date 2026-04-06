@@ -439,8 +439,10 @@ export default function CommercialDashboardPage() {
 
   const leader = brands[0] || { brand: "--", amount: 0, share: 0, color: BRAND_COLORS.Samsung };
   const samsung = brands.find((item) => item.brand === "Samsung") || { brand: "Samsung", amount: 0, share: 0, color: BRAND_COLORS.Samsung };
-  const topCompetitorAmount = Math.max(...brands.filter((item) => item.brand !== "Samsung").map((item) => item.amount), 0);
-  const leaderDelta = samsung.amount - topCompetitorAmount;
+  const compareBrand = leader.brand === "Samsung" ? brands.find((item) => item.brand !== "Samsung") : leader;
+  const compareBrandLabel = compareBrand?.brand === "X-Brand" ? "LG" : compareBrand?.brand || "--";
+  const compareBrandAmount = compareBrand?.amount || 0;
+  const leaderDelta = samsung.amount - compareBrandAmount;
   const avatarInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || "?";
 
   const showTooltip = (content: string, event: ReactMouseEvent<HTMLElement>) => {
@@ -708,17 +710,19 @@ export default function CommercialDashboardPage() {
                 <small />
               </article>
               <article className={styles.summaryCard}>
-                <span>Marca Líder</span>
+                <span>First</span>
                 <strong className={styles.leaderValue} style={{ color: leader.color }}>
                   {leader.brand === "X-Brand" ? "LG" : leader.brand}
                 </strong>
-                <small>
-                  {formatPercent(leader.share)} ·{" "}
-                  <span className={leaderDelta >= 0 ? styles.deltaPositive : styles.deltaNegative}>
-                    {leaderDelta >= 0 ? "+" : ""}
-                    {formatCurrency(leaderDelta)}
-                  </span>
-                </small>
+                <small>{formatPercent(leader.share)}</small>
+              </article>
+              <article className={styles.summaryCard}>
+                <span>Accum. Difference</span>
+                <strong className={leaderDelta >= 0 ? styles.deltaPositive : styles.deltaNegative}>
+                  {leaderDelta >= 0 ? "+" : ""}
+                  {formatCurrency(leaderDelta)}
+                </strong>
+                <small>Samsung vs {compareBrandLabel}</small>
               </article>
             </section>
 
