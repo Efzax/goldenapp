@@ -484,6 +484,8 @@ export default function CommercialDashboardPage() {
       normalizeText(item.month) === normalizeText(month) &&
       (!coverage || item.coverage === coverage),
   );
+  const tvGap = safeNumber(tvav?.tvSellOut) - safeNumber(tvav?.tvTarget);
+  const avGap = safeNumber(tvav?.avSellOut) - safeNumber(tvav?.avTarget);
   const tvPsPeGood = safeNumber(tvav?.tvCompliance) > 0.6;
   const avPsGood = safeNumber(tvav?.avCompliance) > 0.8;
 
@@ -615,6 +617,14 @@ export default function CommercialDashboardPage() {
                         <span>Target meta: {formatCurrency(tvav.tvTarget)}</span>
                       </div>
                         <div className={styles.tvavSideMetrics}>
+                          <div className={styles.tvavGapCard}>
+                            <span className={tvGap >= 0 ? styles.tvavComplianceGood : styles.tvavComplianceAlert}>
+                              GAP {tvGap >= 0 ? "▲" : "▼"}
+                            </span>
+                            <strong className={tvGap >= 0 ? styles.tvavComplianceGood : styles.tvavComplianceAlert}>
+                              {formatCurrency(Math.abs(tvGap))}
+                            </strong>
+                          </div>
                           <div className={styles.tvavMiniCard}>
                             <span>PS</span>
                             <div className={styles.tvavMiniValues}>
@@ -662,7 +672,15 @@ export default function CommercialDashboardPage() {
                         <strong>{formatCurrency(tvav.avSellOut)}</strong>
                         <span>Target meta: {formatCurrency(tvav.avTarget)}</span>
                       </div>
-                        <div className={cx(styles.tvavSideMetrics, styles.tvavSideMetricsSingle)}>
+                        <div className={styles.tvavSideMetrics}>
+                          <div className={styles.tvavGapCard}>
+                            <span className={avGap >= 0 ? styles.tvavComplianceGood : styles.tvavComplianceAlert}>
+                              GAP {avGap >= 0 ? "▲" : "▼"}
+                            </span>
+                            <strong className={avGap >= 0 ? styles.tvavComplianceGood : styles.tvavComplianceAlert}>
+                              {formatCurrency(Math.abs(avGap))}
+                            </strong>
+                          </div>
                           <div className={styles.tvavMiniCard}>
                             <span>PS AV</span>
                             <div className={styles.tvavMiniValues}>
@@ -719,8 +737,7 @@ export default function CommercialDashboardPage() {
               <article className={styles.summaryCard}>
                 <span>Accum. Difference</span>
                 <strong className={leaderDelta >= 0 ? styles.deltaPositive : styles.deltaNegative}>
-                  {leaderDelta >= 0 ? "+" : ""}
-                  {formatCurrency(leaderDelta)}
+                  {formatCurrency(Math.abs(leaderDelta))} {leaderDelta >= 0 ? "▲" : "▼"}
                 </strong>
                 <small>Samsung vs {compareBrandLabel}</small>
               </article>

@@ -385,13 +385,39 @@
 
 .tvavSideMetrics {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   align-content: stretch;
 }
 
 .tvavSideMetricsSingle {
   grid-template-columns: 1fr;
+}
+
+.tvavGapCard {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(229, 235, 243, 0.92);
+  border-radius: 14px;
+  display: grid;
+  gap: 4px;
+  min-height: 64px;
+  padding: 8px 12px;
+  align-content: center;
+  justify-items: start;
+}
+
+.tvavGapCard span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tvavGapCard strong {
+  font-family: var(--font-sora), var(--font-satoshi), sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.1;
 }
 
 .tvavMiniCard {
