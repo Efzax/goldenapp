@@ -504,6 +504,7 @@
   justify-content: space-evenly;
   align-items: end;
   gap: clamp(16px, 2.8vw, 28px);
+  margin: 40px 0;
   min-height: 0;
   flex: 1;
   width: 100%;

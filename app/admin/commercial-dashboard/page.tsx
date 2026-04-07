@@ -701,10 +701,10 @@ export default function CommercialDashboardPage() {
               <article className={styles.summaryCard}>
                 <span>Store Total Sellout</span>
                 <strong>{formatCurrency(totals.total)}</strong>
-                <small>Target meta: {formatPercent(targetRow?.target)}</small>
+                <small>IHS Target Store: {formatPercent(targetRow?.target)}</small>
               </article>
               <article className={styles.summaryCard}>
-                <span>Samsung Share</span>
+                <span>Samsung IHS</span>
                 <strong className={styles.shareSplit}>
                   <span>
                     <b className={styles.shareValueRow}>
@@ -774,7 +774,6 @@ export default function CommercialDashboardPage() {
                     <div>
                       <span className={styles.eyebrow}>IHS Weekly</span>
                       <h3>Composición por Week</h3>
-                      <p className={styles.panelSubtitle}>Cada columna representa el mix de marcas dentro del mes y tienda seleccionados.</p>
                     </div>
                   </div>
                   <div className={styles.weeklyChart} data-weeks={weekly.length}>
@@ -816,7 +815,6 @@ export default function CommercialDashboardPage() {
                     <div>
                       <span className={styles.eyebrow}>Top SKU</span>
                       <h3>Productos relevantes</h3>
-                      <p className={styles.panelSubtitle}>Ranking del mes filtrado.</p>
                     </div>
                   </div>
                   <div className={styles.productCompactList}>
