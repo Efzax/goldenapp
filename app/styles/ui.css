@@ -1069,6 +1069,57 @@ svg {
   border: 1px solid #d1d5db;
 }
 
+.modal-description {
+  margin: 0 0 16px 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.add-product-modal {
+  max-width: 520px;
+  width: min(520px, calc(100vw - 32px));
+}
+
+.add-product-modal .modal-form {
+  gap: 14px;
+}
+
+.add-product-modal .modal-form > input {
+  display: none;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-field span,
+.add-product-check span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.modal-field .input {
+  margin-bottom: 0;
+}
+
+.add-product-check {
+  align-items: center;
+  gap: 10px;
+  color: transparent;
+  font-size: 0;
+}
+
+.add-product-check input,
+.add-product-check span {
+  color: #334155;
+  font-size: 12px;
+}
+
 .user-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

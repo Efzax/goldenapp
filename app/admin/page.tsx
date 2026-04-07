@@ -23,6 +23,11 @@ type Item = {
   empuje: number;
 };
 
+type ProductFamily = {
+  id: string;
+  name: string;
+};
+
 export default function DashboardPage() {
     const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
@@ -61,6 +66,7 @@ useEffect(() => {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc"); 
   const [skuToDelete, setSkuToDelete] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [familyOptions, setFamilyOptions] = useState<ProductFamily[]>([]);
 const [newItem, setNewItem] = useState({
   sku: "",
   family: "",
@@ -86,6 +92,14 @@ fetch("/api/my-stores")
       setStores([]);
     }
   });
+
+  fetch("/api/families")
+    .then((res) => res.json())
+    .then((json) => {
+      if (Array.isArray(json)) {
+        setFamilyOptions(json);
+      }
+    });
 
   }, []);
 
@@ -134,6 +148,13 @@ setOriginalData(recalculated);
 const families = Array.from(
   new Set(data.map((item) => item.family))
 );
+
+const addProductFamilies = Array.from(
+  new Set([
+    ...familyOptions.map((family) => family.name),
+    ...families,
+  ].filter(Boolean))
+).sort();
 
 const filteredData = Array.isArray(data)
   ? data
@@ -343,7 +364,16 @@ if (Number(criticalPercent) >= 20) {
   {canManageInventory && (
     <button
       className="btn-add"
-      onClick={() => setShowAddModal(true)}
+      onClick={() => {
+        setNewItem({
+          sku: "",
+          family: "",
+          stock: 0,
+          exhib: false,
+          min: 0,
+        });
+        setShowAddModal(true);
+      }}
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -578,36 +608,71 @@ if (Number(criticalPercent) >= 20) {
       )}
       {showAddModal && (
   <div className="modal-overlay">
-    <div className="modal">
+    <div className="modal add-product-modal">
       <h3>Agregar nuevo producto</h3>
+      <p className="modal-description">
+        Completa la informacion para crear el SKU en la tienda seleccionada.
+      </p>
 
       <div className="modal-form">
-        <input
-          placeholder="SKU"
-          value={newItem.sku}
-          onChange={(e) =>
-            setNewItem({ ...newItem, sku: e.target.value })
-          }
-        />
+        <label className="modal-field">
+          <span>SKU</span>
+          <input
+            className="input"
+            placeholder="Ej: MX-ST40F/ZS"
+            value={newItem.sku}
+            onChange={(e) =>
+              setNewItem({ ...newItem, sku: e.target.value.toUpperCase() })
+            }
+          />
+        </label>
 
-        <input
-          placeholder="Familia"
-          value={newItem.family}
-          onChange={(e) =>
-            setNewItem({ ...newItem, family: e.target.value })
-          }
-        />
+        <label className="modal-field">
+          <span>Familia</span>
+          <select
+            className="input"
+            value={newItem.family}
+            onChange={(e) =>
+              setNewItem({ ...newItem, family: e.target.value })
+            }
+          >
+            <option value="">Selecciona una familia</option>
+            {addProductFamilies.map((family) => (
+              <option key={family} value={family}>
+                {family}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <input
-          type="number"
-          placeholder="Stock"
-          value={newItem.stock}
-          onChange={(e) =>
-            setNewItem({ ...newItem, stock: Number(e.target.value) })
-          }
-        />
+        <label className="modal-field">
+          <span>Stock actual</span>
+          <input
+            className="input"
+            type="number"
+            min="0"
+            value={newItem.stock}
+            onChange={(e) =>
+              setNewItem({ ...newItem, stock: Number(e.target.value) })
+            }
+          />
+        </label>
 
-        <label className="checkbox-line">
+        <label className="modal-field">
+          <span>Minimo requerido</span>
+          <input
+            className="input"
+            type="number"
+            min="0"
+            value={newItem.min}
+            onChange={(e) =>
+              setNewItem({ ...newItem, min: Number(e.target.value) })
+            }
+          />
+        </label>
+
+        <label className="checkbox-line add-product-check">
+          <span>Exhibicion</span>
           <input
             type="checkbox"
             checked={newItem.exhib}
@@ -646,18 +711,19 @@ if (Number(criticalPercent) >= 20) {
 
             const calculated = calculateDerived({
               ...newItem,
+              sku: newItem.sku.trim().toUpperCase(),
               stockTotal: 0,
               status: "OK",
               empuje: 0,
             });
 
             // 👉 Aquí luego puedes conectar a API
-await fetch("/api/inventory/create", {
+const res = await fetch("/api/inventory/create", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     storeCode: selectedStore,
-    sku: newItem.sku,
+    sku: newItem.sku.trim().toUpperCase(),
     familyName: newItem.family,
     stock: newItem.stock,
     exhib: newItem.exhib,
@@ -665,6 +731,13 @@ await fetch("/api/inventory/create", {
     category: category, // TV o AV
   }),
 });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+              alert(result.error || "Error al agregar producto");
+              return;
+            }
 
             setData(prev => [...prev, calculated]);
             setOriginalData(prev => [...prev, calculated]);
