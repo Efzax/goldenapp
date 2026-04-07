@@ -54,6 +54,7 @@ const menu = [
   { name: "Stores", href: "/admin/stores", roles: ["ADMIN"] },
     { name: "Usuarios", href: "/admin/users", roles: ["ADMIN", "SUPERVISOR"] },
   { name: "Assign Stores", href: "/admin/user-stores", roles: ["ADMIN"] },
+  { name: "Productos / SKU", href: "/admin/products", roles: ["ADMIN"] },
 
   { name: "Mobile Client", href: "/mobile", roles: ["ADMIN", "SUPERVISOR", "MERCHAND"] },
 ];

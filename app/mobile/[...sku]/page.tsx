@@ -26,7 +26,11 @@ export default function MobileSkuPage() {
   const { setStoreName } = useMobileStore();
 
   const storeCode = searchParams.get("store");
-  const sku = params.sku as string;
+  const skuParam = params.sku;
+  const rawSku = Array.isArray(skuParam)
+    ? skuParam.join("/")
+    : String(skuParam || "");
+  const sku = decodeURIComponent(rawSku);
   const category = searchParams.get("category") || "TV";
 
   const [item, setItem] = useState<Item | null>(null);

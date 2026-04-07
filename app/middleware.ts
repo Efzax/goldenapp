@@ -45,6 +45,7 @@ export function middleware(request: NextRequest) {
     role === "SUPERVISOR" &&
     (pathname.startsWith("/admin/import") ||
      pathname.startsWith("/admin/user-stores") ||
+     pathname.startsWith("/admin/products") ||
      pathname.startsWith("/admin/stores"))
   ) {
     return NextResponse.redirect(new URL("/admin", request.url));

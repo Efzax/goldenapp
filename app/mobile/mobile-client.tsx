@@ -64,7 +64,7 @@ export default function MobileClient() {
     item.sku.toLowerCase().includes(search.toLowerCase())
   );
 
-  const grouped = filtered.reduce((acc: any, item) => {
+  const grouped = filtered.reduce<Record<string, Item[]>>((acc, item) => {
     acc[item.family] = acc[item.family] || [];
     acc[item.family].push(item);
     return acc;
@@ -112,7 +112,7 @@ export default function MobileClient() {
             {grouped[family].map((item: Item) => (
               <div key={item.sku} className="card-body-dots">
                 <Link
-                  href={`/mobile/${item.sku}?store=${storeCode}&category=${category}`}
+                  href={`/mobile/${encodeURIComponent(item.sku)}?store=${storeCode}&category=${category}`}
                   className="sku-row"
                 >
                   <div className={`status-dot ${statusDotClass(item.status)}`} />
