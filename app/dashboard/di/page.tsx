@@ -48,6 +48,7 @@ type DiDetailRow = {
 };
 
 const DI_BASELINE = 0.106;
+const MONTH_ORDER = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const percentFormatter = new Intl.NumberFormat("es-CL", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const numberFormatter = new Intl.NumberFormat("es-CL", { maximumFractionDigits: 0 });
 
@@ -61,6 +62,10 @@ function normalizeText(value: unknown) {
 
 function normalizeMonth(value: unknown) {
   return normalizeText(value);
+}
+
+function sortMonths(values: string[]) {
+  return [...values].sort((a, b) => MONTH_ORDER.indexOf(normalizeMonth(a)) - MONTH_ORDER.indexOf(normalizeMonth(b)));
 }
 
 function normalizeStore(value: unknown) {
@@ -193,7 +198,7 @@ export default function DeadInventoryDashboardPage() {
         if (!active || !data) return;
         setPayload(data);
         const stockDiRows = getStockDiRows(data);
-        const diMonths = [...new Set(stockDiRows.map((row) => row.month).filter(Boolean) as string[])];
+        const diMonths = sortMonths([...new Set(stockDiRows.map((row) => row.month).filter(Boolean) as string[])]);
         const initialMonth = diMonths.at(-1) || data.filters.defaultMonth || data.filters.months.at(-1) || "";
         const monthRows = stockDiRows.filter((row) => normalizeMonth(row.month) === normalizeMonth(initialMonth));
         const monthCoverages = [...new Set(monthRows.map((row) => row.coverage).filter((item) => item && normalizeText(item) !== "todos") as string[])];
@@ -241,7 +246,7 @@ export default function DeadInventoryDashboardPage() {
   }, [payload, month]);
 
   const monthOptions = useMemo(() => {
-    return [...new Set(getStockDiRows(payload).map((row) => row.month).filter(Boolean) as string[])];
+    return sortMonths([...new Set(getStockDiRows(payload).map((row) => row.month).filter(Boolean) as string[])]);
   }, [payload]);
 
   const storeOptions = useMemo(() => {
