@@ -1,13 +1,13 @@
 {
     "fileName":  "2026 - Matrix_Dash.xlsm",
-    "generatedAt":  "2026-04-30T12:06:07-04:00",
+    "generatedAt":  "2026-04-30T14:58:44-04:00",
     "sourceWorkbook":  "C:\\Users\\Msi Gaming\\Documents\\GitHub\\DashPSI\\2026 - Matrix_Dash.xlsm",
     "hero":  {
                  "headline":  "Dashboard Comercial 2026",
                  "subheadline":  "Vista moderna e interactiva por mes, tienda e IHS semanal"
              },
     "filters":  {
-                    "defaultStore":  "RIPLEY MARINA ARAUCO",
+                    "defaultStore":  "FALABELLA LA SERENA",
                     "defaultMonth":  "abr",
                     "defaultCoverage":  "Todos",
                     "months":  [
@@ -310,103 +310,103 @@
                               "store":  "FALABELLA VIÃ‘A 2 MALL",
                               "storeCode":  "C070212813",
                               "coverage":  "Promotor",
-                              "totalAmount":  48144691,
-                              "samsungAmount":  13354792,
+                              "totalAmount":  34527691,
+                              "samsungAmount":  9654792,
                               "xBrandAmount":  2619960,
-                              "tclAmount":  17428121,
+                              "tclAmount":  13258121,
                               "hisenseAmount":  0,
-                              "othersAmount":  14741818,
+                              "othersAmount":  8994818,
                               "targetAmount":  8825945,
-                              "samsungShare":  0.277389,
-                              "xBrandShare":  0.054418,
-                              "tclShare":  0.361995,
+                              "samsungShare":  0.279625,
+                              "xBrandShare":  0.07588,
+                              "tclShare":  0.383985,
                               "hisenseShare":  null,
-                              "othersShare":  0.306198
+                              "othersShare":  0.26051
                           },
                           {
                               "store":  "PARIS PORTAL BELLOTO",
                               "storeCode":  "C850_00000000000574",
                               "coverage":  "Promotor",
-                              "totalAmount":  94603302,
-                              "samsungAmount":  27289190,
-                              "xBrandAmount":  23652222,
-                              "tclAmount":  24397620,
-                              "hisenseAmount":  19264270,
+                              "totalAmount":  63116331,
+                              "samsungAmount":  18659450,
+                              "xBrandAmount":  13994531,
+                              "tclAmount":  17612850,
+                              "hisenseAmount":  12849500,
                               "othersAmount":  0,
                               "targetAmount":  27859251,
-                              "samsungShare":  0.288459,
-                              "xBrandShare":  0.250015,
-                              "tclShare":  0.257894,
-                              "hisenseShare":  0.203632,
+                              "samsungShare":  0.295636,
+                              "xBrandShare":  0.221726,
+                              "tclShare":  0.279054,
+                              "hisenseShare":  0.203584,
                               "othersShare":  null
                           },
                           {
                               "store":  "RIPLEY MARINA ARAUCO",
                               "storeCode":  "C850_00000000000177",
                               "coverage":  "Promotor",
-                              "totalAmount":  155680137,
-                              "samsungAmount":  37056238,
-                              "xBrandAmount":  51386847,
-                              "tclAmount":  31864782,
-                              "hisenseAmount":  26506122,
-                              "othersAmount":  8866148,
+                              "totalAmount":  111684834,
+                              "samsungAmount":  24482469,
+                              "xBrandAmount":  41112037,
+                              "tclAmount":  21267201,
+                              "hisenseAmount":  18574379,
+                              "othersAmount":  6248748,
                               "targetAmount":  36058747,
-                              "samsungShare":  0.238028,
-                              "xBrandShare":  0.33008,
-                              "tclShare":  0.204681,
-                              "hisenseShare":  0.17026,
-                              "othersShare":  0.056951
+                              "samsungShare":  0.21921,
+                              "xBrandShare":  0.368108,
+                              "tclShare":  0.190422,
+                              "hisenseShare":  0.166311,
+                              "othersShare":  0.05595
                           },
                           {
                               "store":  "PARIS LA SERENA",
                               "storeCode":  "C850_00000000000142",
                               "coverage":  "Promotor",
-                              "totalAmount":  151307856,
-                              "samsungAmount":  46451033,
-                              "xBrandAmount":  34182579,
-                              "tclAmount":  55542569,
-                              "hisenseAmount":  14891695,
+                              "totalAmount":  105497685,
+                              "samsungAmount":  30520415,
+                              "xBrandAmount":  22843422,
+                              "tclAmount":  40482048,
+                              "hisenseAmount":  11411820,
                               "othersAmount":  239980,
                               "targetAmount":  28739794,
-                              "samsungShare":  0.306997,
-                              "xBrandShare":  0.225914,
-                              "tclShare":  0.367083,
-                              "hisenseShare":  0.09842,
-                              "othersShare":  0.001586
+                              "samsungShare":  0.289299,
+                              "xBrandShare":  0.21653,
+                              "tclShare":  0.383725,
+                              "hisenseShare":  0.108171,
+                              "othersShare":  0.002275
                           },
                           {
                               "store":  "PARIS MARINA ARAUCO",
                               "storeCode":  "C850_00000000000128",
                               "coverage":  "Promotor",
-                              "totalAmount":  173021954,
-                              "samsungAmount":  53564785,
-                              "xBrandAmount":  30501184,
-                              "tclAmount":  43085005,
-                              "hisenseAmount":  45870980,
+                              "totalAmount":  117784058,
+                              "samsungAmount":  38603015,
+                              "xBrandAmount":  20695981,
+                              "tclAmount":  29693722,
+                              "hisenseAmount":  28791340,
                               "othersAmount":  0,
                               "targetAmount":  48966587,
-                              "samsungShare":  0.309584,
-                              "xBrandShare":  0.176285,
-                              "tclShare":  0.249015,
-                              "hisenseShare":  0.265117,
+                              "samsungShare":  0.327744,
+                              "xBrandShare":  0.175711,
+                              "tclShare":  0.252103,
+                              "hisenseShare":  0.244442,
                               "othersShare":  null
                           },
                           {
                               "store":  "FALABELLA LA SERENA",
                               "storeCode":  "C850_00000000000059",
                               "coverage":  "Promotor",
-                              "totalAmount":  156091534,
-                              "samsungAmount":  18375550,
-                              "xBrandAmount":  46639143,
-                              "tclAmount":  61957590,
-                              "hisenseAmount":  27027871,
-                              "othersAmount":  2091380,
+                              "totalAmount":  105647534,
+                              "samsungAmount":  14372550,
+                              "xBrandAmount":  29663143,
+                              "tclAmount":  41676590,
+                              "hisenseAmount":  18658871,
+                              "othersAmount":  1276380,
                               "targetAmount":  36149818,
-                              "samsungShare":  0.117723,
-                              "xBrandShare":  0.298794,
-                              "tclShare":  0.396931,
-                              "hisenseShare":  0.173154,
-                              "othersShare":  0.013398
+                              "samsungShare":  0.136042,
+                              "xBrandShare":  0.280775,
+                              "tclShare":  0.394487,
+                              "hisenseShare":  0.176614,
+                              "othersShare":  0.012081
                           },
                           {
                               "store":  "LIDER EL BELLOTO",
@@ -446,34 +446,34 @@
                               "store":  "FALABELLA LA CALERA",
                               "storeCode":  "C850_00000000000216",
                               "coverage":  "Merchand",
-                              "totalAmount":  80767749,
-                              "samsungAmount":  5839870,
-                              "xBrandAmount":  10719850,
-                              "tclAmount":  28767038,
-                              "hisenseAmount":  5480000,
-                              "othersAmount":  29960991,
+                              "totalAmount":  52513749,
+                              "samsungAmount":  4179870,
+                              "xBrandAmount":  6959850,
+                              "tclAmount":  19020038,
+                              "hisenseAmount":  2820000,
+                              "othersAmount":  19533991,
                               "targetAmount":  8059946,
-                              "samsungShare":  0.072304,
-                              "xBrandShare":  0.132724,
-                              "tclShare":  0.35617,
-                              "hisenseShare":  0.067849,
-                              "othersShare":  0.370952
+                              "samsungShare":  0.079596,
+                              "xBrandShare":  0.132534,
+                              "tclShare":  0.362192,
+                              "hisenseShare":  0.0537,
+                              "othersShare":  0.371979
                           },
                           {
                               "store":  "FALABELLA SAN FELIPE",
                               "storeCode":  "C850_00000000000570",
                               "coverage":  "Merchand",
-                              "totalAmount":  38471809,
-                              "samsungAmount":  13385780,
-                              "xBrandAmount":  18098157,
+                              "totalAmount":  25924809,
+                              "samsungAmount":  9677780,
+                              "xBrandAmount":  11539157,
                               "tclAmount":  899970,
-                              "hisenseAmount":  6087902,
+                              "hisenseAmount":  3807902,
                               "othersAmount":  0,
                               "targetAmount":  11460593,
-                              "samsungShare":  0.347937,
-                              "xBrandShare":  0.470426,
-                              "tclShare":  0.023393,
-                              "hisenseShare":  0.158243,
+                              "samsungShare":  0.373302,
+                              "xBrandShare":  0.445101,
+                              "tclShare":  0.034715,
+                              "hisenseShare":  0.146883,
                               "othersShare":  null
                           },
                           {
@@ -497,18 +497,18 @@
                               "store":  "RIPLEY LOS ANDES",
                               "storeCode":  "C850_00000000000247",
                               "coverage":  "Merchand",
-                              "totalAmount":  37563054,
-                              "samsungAmount":  3959868,
-                              "xBrandAmount":  6681238,
-                              "tclAmount":  15057452,
+                              "totalAmount":  26323813,
+                              "samsungAmount":  2457408,
+                              "xBrandAmount":  4898818,
+                              "tclAmount":  10362921,
                               "hisenseAmount":  0,
-                              "othersAmount":  11864496,
+                              "othersAmount":  8604666,
                               "targetAmount":  11361252,
-                              "samsungShare":  0.105419,
-                              "xBrandShare":  0.177867,
-                              "tclShare":  0.400858,
+                              "samsungShare":  0.093353,
+                              "xBrandShare":  0.186098,
+                              "tclShare":  0.393671,
                               "hisenseShare":  null,
-                              "othersShare":  0.315855
+                              "othersShare":  0.326878
                           },
                           {
                               "store":  "LIDER SAN FELIPE",
@@ -548,35 +548,35 @@
                               "store":  "FALABELLA VALPARAISO",
                               "storeCode":  "C850_00000000000215",
                               "coverage":  "Merchand",
-                              "totalAmount":  47846741,
-                              "samsungAmount":  13552540,
-                              "xBrandAmount":  27734781,
-                              "tclAmount":  389800,
-                              "hisenseAmount":  5480020,
-                              "othersAmount":  689600,
+                              "totalAmount":  33162741,
+                              "samsungAmount":  10262540,
+                              "xBrandAmount":  18795781,
+                              "tclAmount":  194800,
+                              "hisenseAmount":  3590020,
+                              "othersAmount":  319600,
                               "targetAmount":  13081552,
-                              "samsungShare":  0.283249,
-                              "xBrandShare":  0.579659,
-                              "tclShare":  0.008147,
-                              "hisenseShare":  0.114533,
-                              "othersShare":  0.014413
+                              "samsungShare":  0.30946,
+                              "xBrandShare":  0.566774,
+                              "tclShare":  0.005874,
+                              "hisenseShare":  0.108255,
+                              "othersShare":  0.009637
                           },
                           {
                               "store":  "PARIS PORTAL VALPARAISO",
                               "storeCode":  "C850_00000000000228",
                               "coverage":  "Merchand",
-                              "totalAmount":  53035758,
-                              "samsungAmount":  11011483,
-                              "xBrandAmount":  20695277,
-                              "tclAmount":  7030905,
-                              "hisenseAmount":  3749852,
-                              "othersAmount":  10548241,
+                              "totalAmount":  35299146,
+                              "samsungAmount":  6493188,
+                              "xBrandAmount":  14411685,
+                              "tclAmount":  5114871,
+                              "hisenseAmount":  2209911,
+                              "othersAmount":  7069491,
                               "targetAmount":  16722414,
-                              "samsungShare":  0.207624,
-                              "xBrandShare":  0.390214,
-                              "tclShare":  0.132569,
-                              "hisenseShare":  0.070704,
-                              "othersShare":  0.198889
+                              "samsungShare":  0.183947,
+                              "xBrandShare":  0.408273,
+                              "tclShare":  0.144901,
+                              "hisenseShare":  0.062605,
+                              "othersShare":  0.200274
                           },
                           {
                               "store":  "LIDER LOS ANDES",
@@ -650,18 +650,18 @@
                               "store":  "PARIS COQUIMBO",
                               "storeCode":  "C037751748",
                               "coverage":  "Merchand",
-                              "totalAmount":  31132950,
-                              "samsungAmount":  5270140,
-                              "xBrandAmount":  12819490,
-                              "tclAmount":  6243850,
+                              "totalAmount":  20046430,
+                              "samsungAmount":  4000180,
+                              "xBrandAmount":  7729690,
+                              "tclAmount":  3936900,
                               "hisenseAmount":  0,
-                              "othersAmount":  6799470,
+                              "othersAmount":  4379660,
                               "targetAmount":  9795420,
-                              "samsungShare":  0.169279,
-                              "xBrandShare":  0.411766,
-                              "tclShare":  0.200554,
+                              "samsungShare":  0.199546,
+                              "xBrandShare":  0.385589,
+                              "tclShare":  0.196389,
                               "hisenseShare":  null,
-                              "othersShare":  0.218401
+                              "othersShare":  0.218476
                           },
                           {
                               "store":  "LIDER COQUIMBO",
@@ -185387,17 +185387,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  2290000,
-                          "xBrandAmount":  5310000,
-                          "tclAmount":  13764000,
-                          "hisenseAmount":  5480000,
-                          "othersAmount":  15108000,
-                          "totalAmount":  41952000,
-                          "samsungShare":  0.054586,
-                          "xBrandShare":  0.126573,
-                          "tclShare":  0.328089,
-                          "hisenseShare":  0.130625,
-                          "othersShare":  0.360126,
+                          "samsungAmount":  630000,
+                          "xBrandAmount":  1550000,
+                          "tclAmount":  4017000,
+                          "hisenseAmount":  2820000,
+                          "othersAmount":  4681000,
+                          "totalAmount":  13698000,
+                          "samsungShare":  0.045992,
+                          "xBrandShare":  0.113155,
+                          "tclShare":  0.293254,
+                          "hisenseShare":  0.205869,
+                          "othersShare":  0.341729,
                           "target":  0.34,
                           "mall":  "8059946"
                       },
@@ -185409,17 +185409,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Promotor",
-                          "samsungAmount":  8953000,
-                          "xBrandAmount":  22216000,
-                          "tclAmount":  26973000,
-                          "hisenseAmount":  10499000,
-                          "othersAmount":  1011000,
-                          "totalAmount":  69652000,
-                          "samsungShare":  0.128539,
-                          "xBrandShare":  0.318957,
-                          "tclShare":  0.387254,
-                          "hisenseShare":  0.150735,
-                          "othersShare":  0.014515,
+                          "samsungAmount":  4950000,
+                          "xBrandAmount":  5240000,
+                          "tclAmount":  6692000,
+                          "hisenseAmount":  2130000,
+                          "othersAmount":  196000,
+                          "totalAmount":  19208000,
+                          "samsungShare":  0.257705,
+                          "xBrandShare":  0.272803,
+                          "tclShare":  0.348397,
+                          "hisenseShare":  0.110891,
+                          "othersShare":  0.010204,
                           "target":  0.34,
                           "mall":  "36149818"
                       },
@@ -185431,17 +185431,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  5104000,
-                          "xBrandAmount":  13098000,
-                          "tclAmount":  15970000,
-                          "hisenseAmount":  15493000,
-                          "othersAmount":  620000,
-                          "totalAmount":  50285000,
-                          "samsungShare":  0.101501,
-                          "xBrandShare":  0.260475,
-                          "tclShare":  0.31759,
-                          "hisenseShare":  0.308104,
-                          "othersShare":  0.01233,
+                          "samsungAmount":  2484000,
+                          "xBrandAmount":  3420000,
+                          "tclAmount":  6080000,
+                          "hisenseAmount":  4283000,
+                          "othersAmount":  430000,
+                          "totalAmount":  16697000,
+                          "samsungShare":  0.148769,
+                          "xBrandShare":  0.204827,
+                          "tclShare":  0.364137,
+                          "hisenseShare":  0.256513,
+                          "othersShare":  0.025753,
                           "target":  null,
                           "mall":  "15644860"
                       },
@@ -185453,16 +185453,16 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  5708000,
-                          "xBrandAmount":  8509000,
+                          "samsungAmount":  2000000,
+                          "xBrandAmount":  1950000,
                           "tclAmount":  null,
-                          "hisenseAmount":  2580000,
+                          "hisenseAmount":  300000,
                           "othersAmount":  null,
-                          "totalAmount":  16797000,
-                          "samsungShare":  0.339823,
-                          "xBrandShare":  0.506579,
+                          "totalAmount":  4250000,
+                          "samsungShare":  0.470588,
+                          "xBrandShare":  0.458824,
                           "tclShare":  null,
-                          "hisenseShare":  0.153599,
+                          "hisenseShare":  0.070588,
                           "othersShare":  null,
                           "target":  0.412679,
                           "mall":  "11460593"
@@ -185475,17 +185475,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  5353000,
-                          "xBrandAmount":  13298000,
-                          "tclAmount":  195000,
-                          "hisenseAmount":  2180000,
-                          "othersAmount":  370000,
-                          "totalAmount":  21396000,
-                          "samsungShare":  0.250187,
-                          "xBrandShare":  0.621518,
-                          "tclShare":  0.009114,
-                          "hisenseShare":  0.101888,
-                          "othersShare":  0.017293,
+                          "samsungAmount":  2063000,
+                          "xBrandAmount":  4359000,
+                          "tclAmount":  0,
+                          "hisenseAmount":  290000,
+                          "othersAmount":  0,
+                          "totalAmount":  6712000,
+                          "samsungShare":  0.30736,
+                          "xBrandShare":  0.649434,
+                          "tclShare":  null,
+                          "hisenseShare":  0.043206,
+                          "othersShare":  null,
                           "target":  0.384009,
                           "mall":  "13081552"
                       },
@@ -185497,17 +185497,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Promotor",
-                          "samsungAmount":  5480000,
+                          "samsungAmount":  1780000,
                           "xBrandAmount":  1270000,
-                          "tclAmount":  6490000,
+                          "tclAmount":  2320000,
                           "hisenseAmount":  0,
-                          "othersAmount":  7220000,
-                          "totalAmount":  20460000,
-                          "samsungShare":  0.26784,
-                          "xBrandShare":  0.062072,
-                          "tclShare":  0.317204,
+                          "othersAmount":  1473000,
+                          "totalAmount":  6843000,
+                          "samsungShare":  0.26012,
+                          "xBrandShare":  0.185591,
+                          "tclShare":  0.339033,
                           "hisenseShare":  null,
-                          "othersShare":  0.352884,
+                          "othersShare":  0.215256,
                           "target":  0.34,
                           "mall":  "8825945"
                       },
@@ -185519,17 +185519,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  6872594,
-                          "xBrandAmount":  22857392,
-                          "tclAmount":  3649920,
-                          "hisenseAmount":  12179681,
-                          "othersAmount":  2409770,
-                          "totalAmount":  47969357,
-                          "samsungShare":  0.143271,
-                          "xBrandShare":  0.4765,
-                          "tclShare":  0.076089,
-                          "hisenseShare":  0.253905,
-                          "othersShare":  0.050236,
+                          "samsungAmount":  1459970,
+                          "xBrandAmount":  11847762,
+                          "tclAmount":  539980,
+                          "hisenseAmount":  4129900,
+                          "othersAmount":  529950,
+                          "totalAmount":  18507562,
+                          "samsungShare":  0.078885,
+                          "xBrandShare":  0.640158,
+                          "tclShare":  0.029176,
+                          "hisenseShare":  0.223147,
+                          "othersShare":  0.028634,
                           "target":  null,
                           "mall":  "20409124"
                       },
@@ -185541,17 +185541,17 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  3080210,
-                          "xBrandAmount":  6529740,
-                          "tclAmount":  2306950,
+                          "samsungAmount":  1810250,
+                          "xBrandAmount":  1439940,
+                          "tclAmount":  0,
                           "hisenseAmount":  0,
-                          "othersAmount":  3609720,
-                          "totalAmount":  15526620,
-                          "samsungShare":  0.198383,
-                          "xBrandShare":  0.420551,
-                          "tclShare":  0.14858,
+                          "othersAmount":  1189910,
+                          "totalAmount":  4440100,
+                          "samsungShare":  0.407705,
+                          "xBrandShare":  0.324304,
+                          "tclShare":  null,
                           "hisenseShare":  null,
-                          "othersShare":  0.232486,
+                          "othersShare":  0.267992,
                           "target":  null,
                           "mall":  "9795420"
                       },
@@ -185563,16 +185563,16 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Promotor",
-                          "samsungAmount":  21598299,
-                          "xBrandAmount":  18371650,
-                          "tclAmount":  25783843,
-                          "hisenseAmount":  8036900,
+                          "samsungAmount":  5667681,
+                          "xBrandAmount":  7032493,
+                          "tclAmount":  10723322,
+                          "hisenseAmount":  4557025,
                           "othersAmount":  0,
-                          "totalAmount":  73790692,
-                          "samsungShare":  0.292697,
-                          "xBrandShare":  0.24897,
-                          "tclShare":  0.349419,
-                          "hisenseShare":  0.108915,
+                          "totalAmount":  27980521,
+                          "samsungShare":  0.202558,
+                          "xBrandShare":  0.251335,
+                          "tclShare":  0.383242,
+                          "hisenseShare":  0.162864,
                           "othersShare":  null,
                           "target":  0.42,
                           "mall":  "28739794"
@@ -185585,16 +185585,16 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Promotor",
-                          "samsungAmount":  24181998,
-                          "xBrandAmount":  13825533,
-                          "tclAmount":  20070915,
-                          "hisenseAmount":  22762480,
+                          "samsungAmount":  9220228,
+                          "xBrandAmount":  4020330,
+                          "tclAmount":  6679632,
+                          "hisenseAmount":  5682840,
                           "othersAmount":  0,
-                          "totalAmount":  80840926,
-                          "samsungShare":  0.299131,
-                          "xBrandShare":  0.171021,
-                          "tclShare":  0.248277,
-                          "hisenseShare":  0.281571,
+                          "totalAmount":  25603030,
+                          "samsungShare":  0.360123,
+                          "xBrandShare":  0.157026,
+                          "tclShare":  0.260892,
+                          "hisenseShare":  0.22196,
                           "othersShare":  null,
                           "target":  0.435608,
                           "mall":  "48966587"
@@ -185607,16 +185607,16 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Promotor",
-                          "samsungAmount":  12739630,
-                          "xBrandAmount":  12087611,
-                          "tclAmount":  11264600,
-                          "hisenseAmount":  8909650,
+                          "samsungAmount":  4109890,
+                          "xBrandAmount":  2429920,
+                          "tclAmount":  4479830,
+                          "hisenseAmount":  2494880,
                           "othersAmount":  0,
-                          "totalAmount":  45001491,
-                          "samsungShare":  0.283094,
-                          "xBrandShare":  0.268605,
-                          "tclShare":  0.250316,
-                          "hisenseShare":  0.197986,
+                          "totalAmount":  13514520,
+                          "samsungShare":  0.304109,
+                          "xBrandShare":  0.179801,
+                          "tclShare":  0.331483,
+                          "hisenseShare":  0.184607,
                           "othersShare":  null,
                           "target":  0.42,
                           "mall":  "27859251"
@@ -185629,85 +185629,19 @@
                           "month":  "Abr",
                           "year":  "2026",
                           "coverage":  "Merchand",
-                          "samsungAmount":  4858285,
-                          "xBrandAmount":  9356254,
-                          "tclAmount":  2986004,
-                          "hisenseAmount":  2109921,
-                          "othersAmount":  5432610,
-                          "totalAmount":  24743074,
-                          "samsungShare":  0.196349,
-                          "xBrandShare":  0.378136,
-                          "tclShare":  0.12068,
-                          "hisenseShare":  0.085273,
-                          "othersShare":  0.219561,
+                          "samsungAmount":  339990,
+                          "xBrandAmount":  3072662,
+                          "tclAmount":  1069970,
+                          "hisenseAmount":  569980,
+                          "othersAmount":  1953860,
+                          "totalAmount":  7006462,
+                          "samsungShare":  0.048525,
+                          "xBrandShare":  0.438547,
+                          "tclShare":  0.152712,
+                          "hisenseShare":  0.081351,
+                          "othersShare":  0.278865,
                           "target":  0.42,
                           "mall":  "16722414"
-                      },
-                      {
-                          "store":  "RIPLEY LA SERENA",
-                          "storeCode":  "C850_00000000000186",
-                          "week":  "week 17",
-                          "weekLabel":  "17",
-                          "month":  "Abr",
-                          "year":  "2026",
-                          "coverage":  "Merchand",
-                          "samsungAmount":  1039970,
-                          "xBrandAmount":  7169761,
-                          "tclAmount":  2707095,
-                          "hisenseAmount":  null,
-                          "othersAmount":  559960,
-                          "totalAmount":  11476786,
-                          "samsungShare":  0.090615,
-                          "xBrandShare":  0.624719,
-                          "tclShare":  0.235876,
-                          "hisenseShare":  null,
-                          "othersShare":  0.048791,
-                          "target":  null,
-                          "mall":  "7643875"
-                      },
-                      {
-                          "store":  "RIPLEY LOS ANDES",
-                          "storeCode":  "C850_00000000000247",
-                          "week":  "week 17",
-                          "weekLabel":  "17",
-                          "month":  "Abr",
-                          "year":  "2026",
-                          "coverage":  "Merchand",
-                          "samsungAmount":  2082440,
-                          "xBrandAmount":  4022360,
-                          "tclAmount":  7388052,
-                          "hisenseAmount":  null,
-                          "othersAmount":  6159740,
-                          "totalAmount":  19652592,
-                          "samsungShare":  0.105963,
-                          "xBrandShare":  0.204673,
-                          "tclShare":  0.375933,
-                          "hisenseShare":  null,
-                          "othersShare":  0.313431,
-                          "target":  0.506904,
-                          "mall":  "11361252"
-                      },
-                      {
-                          "store":  "RIPLEY MARINA ARAUCO",
-                          "storeCode":  "C850_00000000000177",
-                          "week":  "week 17",
-                          "weekLabel":  "17",
-                          "month":  "Abr",
-                          "year":  "2026",
-                          "coverage":  "Promotor",
-                          "samsungAmount":  16051921,
-                          "xBrandAmount":  15884737,
-                          "tclAmount":  15797451,
-                          "hisenseAmount":  11495154,
-                          "othersAmount":  4577310,
-                          "totalAmount":  63806573,
-                          "samsungShare":  0.251572,
-                          "xBrandShare":  0.248951,
-                          "tclShare":  0.247583,
-                          "hisenseShare":  0.180156,
-                          "othersShare":  0.071737,
-                          "target":  0.35,
-                          "mall":  "36058747"
                       },
                       {
                           "store":  "RIPLEY LA SERENA",
@@ -185730,6 +185664,50 @@
                           "othersShare":  0.027184,
                           "target":  null,
                           "mall":  "7643875"
+                      },
+                      {
+                          "store":  "RIPLEY LOS ANDES",
+                          "storeCode":  "C850_00000000000247",
+                          "week":  "week 17",
+                          "weekLabel":  "17",
+                          "month":  "Abr",
+                          "year":  "2026",
+                          "coverage":  "Merchand",
+                          "samsungAmount":  579980,
+                          "xBrandAmount":  2239940,
+                          "tclAmount":  2693521,
+                          "hisenseAmount":  null,
+                          "othersAmount":  2899910,
+                          "totalAmount":  8413351,
+                          "samsungShare":  0.068936,
+                          "xBrandShare":  0.266236,
+                          "tclShare":  0.320148,
+                          "hisenseShare":  null,
+                          "othersShare":  0.34468,
+                          "target":  0.506904,
+                          "mall":  "11361252"
+                      },
+                      {
+                          "store":  "RIPLEY MARINA ARAUCO",
+                          "storeCode":  "C850_00000000000177",
+                          "week":  "week 17",
+                          "weekLabel":  "17",
+                          "month":  "Abr",
+                          "year":  "2026",
+                          "coverage":  "Promotor",
+                          "samsungAmount":  3478152,
+                          "xBrandAmount":  5609927,
+                          "tclAmount":  5199870,
+                          "hisenseAmount":  3563411,
+                          "othersAmount":  1959910,
+                          "totalAmount":  19811270,
+                          "samsungShare":  0.175564,
+                          "xBrandShare":  0.283168,
+                          "tclShare":  0.26247,
+                          "hisenseShare":  0.179868,
+                          "othersShare":  0.098929,
+                          "target":  0.35,
+                          "mall":  "36058747"
                       }
                   ],
     "benchmarks2025":  [
@@ -202965,7 +202943,7 @@
                          "gross":  2676575,
                          "stockUnits":  49,
                          "sellOutUnits":  9,
-                         "weight":  0
+                         "weight":  0.167053
                      },
                      {
                          "month":  "Abr",
@@ -202987,7 +202965,7 @@
                          "gross":  10000,
                          "stockUnits":  19,
                          "sellOutUnits":  0,
-                         "weight":  0
+                         "weight":  0.000624
                      },
                      {
                          "month":  "Abr",
@@ -202998,7 +202976,7 @@
                          "gross":  719990,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.044937
                      },
                      {
                          "month":  "Abr",
@@ -203009,7 +202987,7 @@
                          "gross":  -489990,
                          "stockUnits":  5,
                          "sellOutUnits":  -1,
-                         "weight":  0
+                         "weight":  -0.030582
                      },
                      {
                          "month":  "Abr",
@@ -203020,7 +202998,7 @@
                          "gross":  299989,
                          "stockUnits":  12,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.018723
                      },
                      {
                          "month":  "Abr",
@@ -203031,7 +203009,7 @@
                          "gross":  4229866,
                          "stockUnits":  44,
                          "sellOutUnits":  13,
-                         "weight":  0
+                         "weight":  0.263999
                      },
                      {
                          "month":  "Abr",
@@ -203042,7 +203020,7 @@
                          "gross":  599990,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.037447
                      },
                      {
                          "month":  "Abr",
@@ -203053,7 +203031,7 @@
                          "gross":  389990,
                          "stockUnits":  54,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.02434
                      },
                      {
                          "month":  "Abr",
@@ -203097,7 +203075,7 @@
                          "gross":  729990,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.045561
                      },
                      {
                          "month":  "Abr",
@@ -203108,7 +203086,7 @@
                          "gross":  1209980,
                          "stockUnits":  12,
                          "sellOutUnits":  2,
-                         "weight":  0
+                         "weight":  0.075519
                      },
                      {
                          "month":  "Abr",
@@ -203119,7 +203097,7 @@
                          "gross":  878284,
                          "stockUnits":  41,
                          "sellOutUnits":  5,
-                         "weight":  0
+                         "weight":  0.054816
                      },
                      {
                          "month":  "Abr",
@@ -203152,7 +203130,7 @@
                          "gross":  859980,
                          "stockUnits":  29,
                          "sellOutUnits":  2,
-                         "weight":  0
+                         "weight":  0.053674
                      },
                      {
                          "month":  "Abr",
@@ -203185,7 +203163,7 @@
                          "gross":  1817740,
                          "stockUnits":  23,
                          "sellOutUnits":  7,
-                         "weight":  0
+                         "weight":  0.113451
                      },
                      {
                          "month":  "Abr",
@@ -203218,7 +203196,7 @@
                          "gross":  629970,
                          "stockUnits":  18,
                          "sellOutUnits":  3,
-                         "weight":  0
+                         "weight":  0.039318
                      },
                      {
                          "month":  "Abr",
@@ -203229,7 +203207,7 @@
                          "gross":  1089960,
                          "stockUnits":  17,
                          "sellOutUnits":  4,
-                         "weight":  0
+                         "weight":  0.068028
                      },
                      {
                          "month":  "Abr",
@@ -203240,7 +203218,7 @@
                          "gross":  179990,
                          "stockUnits":  -4,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.011234
                      },
                      {
                          "month":  "Abr",
@@ -203251,7 +203229,7 @@
                          "gross":  189989,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0
+                         "weight":  0.011858
                      },
                      {
                          "month":  "Abr",
@@ -209961,7 +209939,7 @@
                          "gross":  449970,
                          "stockUnits":  3,
                          "sellOutUnits":  3,
-                         "weight":  0.018114
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -209972,7 +209950,7 @@
                          "gross":  1859991,
                          "stockUnits":  -1,
                          "sellOutUnits":  1,
-                         "weight":  0.074874
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -209983,7 +209961,7 @@
                          "gross":  2595422,
                          "stockUnits":  6,
                          "sellOutUnits":  8,
-                         "weight":  0.104479
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210005,7 +209983,7 @@
                          "gross":  790491,
                          "stockUnits":  2,
                          "sellOutUnits":  1,
-                         "weight":  0.031821
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210060,7 +210038,7 @@
                          "gross":  569990,
                          "stockUnits":  26,
                          "sellOutUnits":  1,
-                         "weight":  0.022945
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210071,7 +210049,7 @@
                          "gross":  362691,
                          "stockUnits":  1,
                          "sellOutUnits":  1,
-                         "weight":  0.0146
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210082,7 +210060,7 @@
                          "gross":  1499990,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0.060382
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210093,7 +210071,7 @@
                          "gross":  1127981,
                          "stockUnits":  18,
                          "sellOutUnits":  2,
-                         "weight":  0.045407
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210104,7 +210082,7 @@
                          "gross":  669990,
                          "stockUnits":  4,
                          "sellOutUnits":  1,
-                         "weight":  0.026971
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210115,7 +210093,7 @@
                          "gross":  2179931,
                          "stockUnits":  11,
                          "sellOutUnits":  7,
-                         "weight":  0.087754
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210137,7 +210115,7 @@
                          "gross":  -9999,
                          "stockUnits":  7,
                          "sellOutUnits":  0,
-                         "weight":  -0.000403
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210192,7 +210170,7 @@
                          "gross":  510353,
                          "stockUnits":  0,
                          "sellOutUnits":  1,
-                         "weight":  0.020544
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210203,7 +210181,7 @@
                          "gross":  1570973,
                          "stockUnits":  2,
                          "sellOutUnits":  3,
-                         "weight":  0.06324
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210214,7 +210192,7 @@
                          "gross":  729959,
                          "stockUnits":  4,
                          "sellOutUnits":  4,
-                         "weight":  0.029385
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210236,7 +210214,7 @@
                          "gross":  1499980,
                          "stockUnits":  2,
                          "sellOutUnits":  2,
-                         "weight":  0.060382
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210247,7 +210225,7 @@
                          "gross":  1039990,
                          "stockUnits":  9,
                          "sellOutUnits":  1,
-                         "weight":  0.041865
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210280,7 +210258,7 @@
                          "gross":  1055470,
                          "stockUnits":  12,
                          "sellOutUnits":  3,
-                         "weight":  0.042488
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210291,7 +210269,7 @@
                          "gross":  1539960,
                          "stockUnits":  3,
                          "sellOutUnits":  4,
-                         "weight":  0.061991
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210302,7 +210280,7 @@
                          "gross":  1299979,
                          "stockUnits":  6,
                          "sellOutUnits":  2,
-                         "weight":  0.052331
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210313,7 +210291,7 @@
                          "gross":  2038472,
                          "stockUnits":  0,
                          "sellOutUnits":  3,
-                         "weight":  0.082059
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210401,7 +210379,7 @@
                          "gross":  209981,
                          "stockUnits":  18,
                          "sellOutUnits":  2,
-                         "weight":  0.008453
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210456,7 +210434,7 @@
                          "gross":  479980,
                          "stockUnits":  0,
                          "sellOutUnits":  2,
-                         "weight":  0.019322
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210467,7 +210445,7 @@
                          "gross":  339980,
                          "stockUnits":  8,
                          "sellOutUnits":  2,
-                         "weight":  0.013686
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210489,7 +210467,7 @@
                          "gross":  109991,
                          "stockUnits":  9,
                          "sellOutUnits":  1,
-                         "weight":  0.004428
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
@@ -210500,7 +210478,7 @@
                          "gross":  319980,
                          "stockUnits":  6,
                          "sellOutUnits":  2,
-                         "weight":  0.012881
+                         "weight":  0
                      },
                      {
                          "month":  "Abr",
